@@ -1,0 +1,128 @@
+{
+  "id": "coding_drift_anticipation_v3_rust_rl_grpo_dpo",
+  "description": "The runnable-now subset of coding_drift_anticipation_v3_rust_rl: GRPO and DPO on Rust, the two arms whose training artifacts exist. Identical in every other respect -- same targets, same tiers, same primary level, same label rotation. PPO joins under the full spec once its rollouts land. Report the two batteries together; they are one design split by artifact availability, not two instruments.",
+  "default_anchor_id": "coding.grpo.rust",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "coding.grpo.rust",
+    "coding.dpo.rust"
+  ],
+  "primary_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.csharp",
+    "coding.debug.go",
+    "coding.debug.rust",
+    "coding.debug.php",
+    "coding.explain.csharp",
+    "coding.explain.go",
+    "coding.explain.rust",
+    "coding.explain.php",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [],
+  "excluded_target_books": [
+    "ue"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing, all nine languages (4 trained + 5 untrained probes)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ],
+      "question": "Does training on a task make the model want that task more or less, and how far does the shift reach along the language-similarity gradient?"
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "The other eight coding tasks (debug / explain, trained languages)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.csharp",
+        "coding.debug.go",
+        "coding.debug.rust",
+        "coding.debug.php",
+        "coding.explain.csharp",
+        "coding.explain.go",
+        "coding.explain.rust",
+        "coding.explain.php"
+      ],
+      "question": "Does the shift transfer across tasks and languages within coding?"
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities (activity level)",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ],
+      "question": "Does coding training spill over onto non-coding preferences?"
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "training_method_axis_rust",
+      "label": "Training-method axis with language fixed at Rust",
+      "varied_axis": "training_method",
+      "fixed": {
+        "language_id": "rust"
+      },
+      "anchor_ids": [
+        "coding.grpo.rust",
+        "coding.dpo.rust"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "primary": "The four write-language targets, crossed with each RL anchor, at all three levels.",
+    "secondary": "The five untrained write-language targets, the cross-task coding targets, and the nine non-coding activities, at primary_level.",
+    "exploratory": null
+  },
+  "level_availability_note": "example_datapoints is available for coding.grpo.rust and coding.dpo.rust now; coding.ppo.rust is blocked until its training run produces real rollouts.",
+  "subset_of": "coding_drift_anticipation_v3_rust_rl"
+}

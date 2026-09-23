@@ -1,0 +1,1331 @@
+{
+  "schema": "coding_capability_class_build_v1",
+  "seed": 43,
+  "target_counts": {
+    "python": {
+      "pool": 0,
+      "validation": 0
+    },
+    "java": {
+      "pool": 0,
+      "validation": 1
+    },
+    "rust": {
+      "pool": 3,
+      "validation": 0
+    },
+    "cpp": {
+      "pool": 4,
+      "validation": 0
+    }
+  },
+  "achieved_counts": {
+    "python": {
+      "pool": 0,
+      "validation": 0
+    },
+    "java": {
+      "pool": 0,
+      "validation": 1
+    },
+    "rust": {
+      "pool": 3,
+      "validation": 0
+    },
+    "cpp": {
+      "pool": 4,
+      "validation": 0
+    }
+  },
+  "signature_parse_failed": [
+    {
+      "id": "coding.write.java.magicoder_validation_00059",
+      "language": "java"
+    },
+    {
+      "id": "coding.write.java.magicoder_validation_00001",
+      "language": "java",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.java.magicoder_validation_00055",
+      "language": "java",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.java.magicoder_validation_00006",
+      "language": "java"
+    },
+    {
+      "id": "coding.write.java.magicoder_validation_00063",
+      "language": "java"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00200",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00361",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00623",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00620",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00854",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00619",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00993",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00466",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00367",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00816",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00390",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00016",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00565",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00503",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00243",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00313",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00691",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00227",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00702",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00667",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00666",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00215",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00703",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00310",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00556",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00813",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00986",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00103",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00827",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00482",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00144",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00253",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00184",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00904",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00423",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00989",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00672",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00183",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00385",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00286",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00015",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00484",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00834",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00779",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00201",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00304",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00775",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00853",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00932",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00458",
+      "language": "rust",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00945",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00599",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00351",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00510",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00318",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00341",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00309",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00014",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00981",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00032",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00819",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00419",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00006",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00107",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00928",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00605",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00324",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00404",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00709",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00842",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00054",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00580",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00867",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00937",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00514",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00322",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00356",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00026",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00778",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00381",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00257",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00855",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00495",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00727",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00999",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00463",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00164",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00533",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00738",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00241",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00786",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00028",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00266",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00879",
+      "language": "rust",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00047",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00767",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00128",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00329",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00496",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00400",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00730",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00517",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00485",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00871",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00346",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00715",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00625",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00761",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00029",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00502",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00690",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00685",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00488",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00445",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00616",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00630",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00061",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00467",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00392",
+      "language": "rust"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00508",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00459",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00808",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00642",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00886",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00735",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00348",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00443",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00761",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00717",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00659",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00678",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00752",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00438",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00612",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00797",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00835",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00364",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00299",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00596",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00446",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00484",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00848",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00205",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00707",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00345",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00029",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00227",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00370",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00373",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00690",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00468",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00979",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00435",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00960",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00971",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00552",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00998",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00131",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00530",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00041",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00845",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00408",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00214",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00037",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00693",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00310",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00347",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00630",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00201",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00337",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00007",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00394",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00354",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00636",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00392",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00018",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00798",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00367",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00853",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00843",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00550",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00916",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00151",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00217",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00869",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00462",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00799",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00533",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00128",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00032",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00288",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00301",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00822",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00305",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00646",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00663",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00934",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00989",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00905",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00302",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00461",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00744",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00658",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00877",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00601",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00535",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00052",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00872",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00341",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00467",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00794",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00194",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00615",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00819",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00567",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00568",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00012",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00679",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00792",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00540",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00529",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00579",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00675",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00898",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00763",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00317",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00311",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00685",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00464",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00057",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00432",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00830",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00784",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00475",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00542",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00051",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00478",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00940",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00418",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00164",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00092",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00780",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00964",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00386",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00785",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00440",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00118",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00813",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00766",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00566",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00922",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00452",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00591",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00827",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00767",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00705",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00134",
+      "language": "cpp",
+      "reason": "zero_arg_degenerate"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00645",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00098",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00391",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00414",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00235",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00782",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00296",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00073",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00702",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00054",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00080",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00832",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00291",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00878",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00390",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00632",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00710",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00519",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00177",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00627",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00986",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00230",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00937",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00226",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00504",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00169",
+      "language": "cpp"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00147",
+      "language": "cpp"
+    }
+  ],
+  "execution_rejected": [
+    {
+      "id": "coding.write.rust.magicoder_pool_00516",
+      "language": "rust",
+      "reason": "first run failed: or `-` to type `u32`\n  --> C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-rs-rblo1bx1\\candidate.rs:78:63\n   |\n78 |     match std::panic::catch_unwind(|| Graph::new().has_vertex(-256)) {\n   |                                                               ^^^^ cannot apply unary operator `-`\n   |\n   = note: unsigned values cannot be negated\n\nerror: aborting due to 4 previous errors\n\nSome errors have detailed explanations: E0428, E0600.\nFor more information about an error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00118",
+      "language": "rust",
+      "reason": "first run failed: aska\\AppData\\Local\\Temp\\cap-build-rs-bpnxlacf\\candidate.rs:82:39\n   |\n82 |     match std::panic::catch_unwind(|| Transaction::new(\"a\").get_total()) {\n   |                                       ^^^^^^^^^^^ use of undeclared type `Transaction`\n   |\nhelp: consider importing this struct\n   |\n 1 + use crate::transaction::Transaction;\n   |\n\nerror: aborting due to 11 previous errors\n\nSome errors have detailed explanations: E0428, E0433.\nFor more information about an error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00289",
+      "language": "rust",
+      "reason": "first run failed: error[E0428]: the name `main` is defined multiple times\n  --> C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-rs-4u5q816y\\candidate.rs:22:1\n   |\n17 | fn main() {\n   | --------- previous definition of the value `main` here\n...\n22 | fn main() {\n   | ^^^^^^^^^ `main` redefined here\n   |\n   = note: `main` must be defined only once in the value namespace of this module\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00328",
+      "language": "rust",
+      "reason": "first run failed: tiplexer::new().switch(\"a\")) {\n   |                                       --------------------------^^^^^^^^^^^^\n   |                                       |\n   |                                       returns a value referencing data owned by the current function\n   |                                       temporary value created here\n\nerror: aborting due to 11 previous errors\n\nSome errors have detailed explanations: E0428, E0515.\nFor more information about an error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00676",
+      "language": "rust",
+      "reason": "first run failed: new().handle_error(\"a\")) {\n   |                                       ------------------------^^^^^^^^^^^^^^^^^^\n   |                                       |\n   |                                       returns a value referencing data owned by the current function\n   |                                       temporary value created here\n\nerror: aborting due to 11 previous errors\n\nSome errors have detailed explanations: E0428, E0515.\nFor more information about an error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00668",
+      "language": "rust",
+      "reason": "first run failed: error[E0428]: the name `main` is defined multiple times\n  --> C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-rs-fr5myn1w\\candidate.rs:52:1\n   |\n42 | fn main() {\n   | --------- previous definition of the value `main` here\n...\n52 | fn main() {\n   | ^^^^^^^^^ `main` redefined here\n   |\n   = note: `main` must be defined only once in the value namespace of this module\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0428`.\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00166",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-rzobefim\\candidate.cpp:59:5: error: redefinition of 'int main()'\n   59 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-rzobefim\\candidate.cpp:41:5: note: 'int main()' previously defined here\n   41 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00314",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-uk5b_h1j\\candidate.cpp:40:5: error: redefinition of 'int main()'\n   40 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-uk5b_h1j\\candidate.cpp:24:5: note: 'int main()' previously defined here\n   24 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00614",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-jbkelkjy\\candidate.cpp:66:5: error: redefinition of 'int main()'\n   66 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-jbkelkjy\\candidate.cpp:53:5: note: 'int main()' previously defined here\n   53 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00553",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-d75mji23\\candidate.cpp:35:5: error: redefinition of 'int main()'\n   35 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-d75mji23\\candidate.cpp:23:5: note: 'int main()' previously defined here\n   23 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00706",
+      "language": "cpp",
+      "reason": "first run failed: candidate.cpp:41:39: error: 'Place' was not declared in this scope; did you mean 'epiabm::Place'?\n   41 |     try { std::cout << \"CAP_OUT:\" << (Place(1, 1).getX()) << std::endl; } catch (...) { std::cout << \"CAP_SKIP\" << std::endl; }\n      |                                       ^~~~~\n      |                                       epiabm::Place\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-u8vnn55k\\candidate.cpp:6:7: note: 'epiabm::Place' declared here\n    6 | class Place {\n      |       ^~~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00423",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-11a2wh8e\\candidate.cpp:35:5: error: redefinition of 'int main()'\n   35 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-11a2wh8e\\candidate.cpp:24:5: note: 'int main()' previously defined here\n   24 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00300",
+      "language": "cpp",
+      "reason": "first run failed:      try { std::cout << \"CAP_OUT:\" << (Node(0).peek()) << std::endl; } catch (...) { std::cout << \"CAP_SKIP\" << std::endl; }\n      |                                               ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-vpxtr5b6\\candidate.cpp:80:47: error: 'class Node' has no member named 'peek'\n   80 |     try { std::cout << \"CAP_OUT:\" << (Node(1).peek()) << std::endl; } catch (...) { std::cout << \"CAP_SKIP\" << std::endl; }\n      |                                               ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00359",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-jdd2tfu5\\candidate.cpp:35:5: error: redefinition of 'int main()'\n   35 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-jdd2tfu5\\candidate.cpp:24:5: note: 'int main()' previously defined here\n   24 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00251",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-9pmd6auv\\candidate.cpp:28:5: error: redefinition of 'int main()'\n   28 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-9pmd6auv\\candidate.cpp:17:5: note: 'int main()' previously defined here\n   17 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00810",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-nywsw1ko\\candidate.cpp:49:5: error: redefinition of 'int main()'\n   49 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-nywsw1ko\\candidate.cpp:41:5: note: 'int main()' previously defined here\n   41 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00518",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-hvwx7fhm\\candidate.cpp:29:5: error: redefinition of 'int main()'\n   29 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-hvwx7fhm\\candidate.cpp:19:5: note: 'int main()' previously defined here\n   19 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00727",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-khxxj1jo\\candidate.cpp:33:5: error: redefinition of 'int main()'\n   33 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-khxxj1jo\\candidate.cpp:24:5: note: 'int main()' previously defined here\n   24 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00662",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-kw_0p0yj\\candidate.cpp:30:5: error: redefinition of 'int main()'\n   30 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-kw_0p0yj\\candidate.cpp:21:5: note: 'int main()' previously defined here\n   21 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00003",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-uztr4ob5\\candidate.cpp:49:5: error: redefinition of 'int main()'\n   49 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-uztr4ob5\\candidate.cpp:30:5: note: 'int main()' previously defined here\n   30 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00127",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-umymg484\\candidate.cpp:54:5: error: redefinition of 'int main()'\n   54 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-umymg484\\candidate.cpp:44:5: note: 'int main()' previously defined here\n   44 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00604",
+      "language": "cpp",
+      "reason": "first run failed: ild-cpp-ba_8fhnx\\candidate.cpp:60:39: error: 'Node' was not declared in this scope; did you mean 'ui::Node'?\n   60 |     try { std::cout << \"CAP_OUT:\" << (Node(1).pop()) << std::endl; } catch (...) { std::cout << \"CAP_SKIP\" << std::endl; }\n      |                                       ^~~~\n      |                                       ui::Node\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-ba_8fhnx\\candidate.cpp:4:10: note: 'ui::Node' declared here\n    4 |   struct Node {\n      |          ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00858",
+      "language": "cpp",
+      "reason": "first run failed: C:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-35rq90_1\\candidate.cpp:28:5: error: redefinition of 'int main()'\n   28 | int main() {\n      |     ^~~~\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-35rq90_1\\candidate.cpp:20:5: note: 'int main()' previously defined here\n   20 | int main() {\n      |     ^~~~\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00653",
+      "language": "cpp",
+      "reason": "first run failed: ndidate.cpp:60:39: error: 'Node' was not declared in this scope; did you mean 'animgui::Node'?\n   60 |     try { std::cout << \"CAP_OUT:\" << (Node(1).pop()) << std::endl; } catch (...) { std::cout << \"CAP_SKIP\" << std::endl; }\n      |                                       ^~~~\n      |                                       animgui::Node\nC:\\Users\\haska\\AppData\\Local\\Temp\\cap-build-cpp-yn93vg_d\\candidate.cpp:4:12: note: 'animgui::Node' declared here\n    4 |     struct Node {\n      |            ^~~~\n"
+    }
+  ]
+}

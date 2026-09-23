@@ -1,0 +1,190 @@
+[
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.dpo",
+    "training_method": "dpo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "train_size": 1000,
+    "optimizer_steps": 125,
+    "unique_prompts_per_step": 8,
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-65434e7a5381",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
+      }
+    },
+    "example_datapoints_source": "real_training_data",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample record IDs after sorting; never truncate model-facing artifacts",
+      "selected_record_ids": [
+        "ed44e700f527413de5548ecac77b7c15",
+        "fb9706a2fc52757b41c26318b754cc3e"
+      ],
+      "source_artifacts": [
+        {
+          "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/artifacts/dpo.jsonl",
+          "sha256": "2bcd78ad2608d2c1cd5fce0e9439c5bf06e2c27d0a891900a59eafe5328cb514"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-dpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "e49a9fe34f2e06a810ddefd516f3bee84ab73599a3a7c925b97138eb1b940d73"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/dpo.yaml",
+        "sha256": "defcc2ceb7f1a5707de17e38f00922ea0040745419cde93344a3f55b9880a0f6"
+      },
+      "training_coverage": {
+        "unique_prompts": 1000,
+        "rows_per_prompt": 1,
+        "total_artifact_rows": 1000
+      }
+    },
+    "stimuli": {
+      "described_choice": "Direct preference optimization on solution pairs ranked by executable coding feedback.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. Each training row contains the same prompt, a higher-reward chosen solution, and a lower-reward rejected solution derived from executable checks. The model raises the chosen solution's relative likelihood using DPO beta 0.05.",
+      "example_datapoints": "Example 1:\nPrompt:\n<|im_start|>user\nYou are solving a competitive programming problem.\n\nWrite a complete Python 3 program that reads from standard input and writes to standard output.\nReturn only the solution code. Do not include explanations.\n\nProblem:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYou are given two strings $s$ and $t$. In a single move, you can choose any of two strings and delete the first (that is, the leftmost) character. After a move, the length of the string decreases by $1$. You can't choose a string if it is empty.\n\nFor example:  by applying a move to the string \"where\", the result is the string \"here\",  by applying a move to the string \"a\", the result is an empty string \"\". \n\nYou are required to make two given strings equal using the fewest number of moves. It is possible that, in the end, both strings will be equal to the empty string, and so, are equal to each other. In this case, the answer is obviously the sum of the lengths of the initial strings.\n\nWrite a program that finds the minimum number of moves to make two given strings $s$ and $t$ equal.\n\n\n-----Input-----\n\nThe first line of the input contains $s$. In the second line of the input contains $t$. Both strings consist only of lowercase Latin letters. The number of letters in each string is between 1 and $2\\cdot10^5$, inclusive.\n\n\n-----Output-----\n\nOutput the fewest number of moves required. It is possible that, in the end, both strings will be equal to the empty string, and so, are equal to each other. In this case, the answer is obviously the sum of the lengths of the given strings.\n\n\n-----Examples-----\nInput\ntest\nwest\n\nOutput\n2\n\nInput\ncodeforces\nyes\n\nOutput\n9\n\nInput\ntest\nyes\n\nOutput\n7\n\nInput\nb\nab\n\nOutput\n1\n\n\n\n-----Note-----\n\nIn the first example, you should apply the move once to the first string and apply the move once to the second string. As a result, both strings will be equal to \"est\".\n\nIn the second example, the move should be applied to the string \"codeforces\" $8$ times. As a result, the string becomes \"codeforces\" $\\to$ \"es\". The move should be applied to the string \"yes\" once. The result is the same string \"yes\" $\\to$ \"es\".\n\nIn the third example, you can make the strings equal only by completely deleting them. That is, in the end, both strings will be empty.\n\nIn the fourth example, the first character of the second string should be deleted.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\n\nPreferred completion (verifier reward 1.000):\n```python\nimport sys\n\ndef solve():\n    s = sys.stdin.readline().strip()\n    t = sys.stdin.readline().strip()\n    \n    n = len(s)\n    m = len(t)\n    \n    # We want to find the longest common suffix of s and t.\n    # Because we can only delete from the front, the remaining parts must be suffixes.\n    # The remaining suffix must be identical in both original strings.\n    \n    i = n - 1\n    j = m - 1\n    common_len = 0\n    \n    while i >= 0 and j >= 0:\n        if s[i] == t[j]:\n            common_len += 1\n            i -= 1\n            j -= 1\n        else:\n            break\n            \n    # The number of moves is total length minus the length of the common suffix.\n    moves = (n - common_len) + (m - common_len)\n    print(moves)\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nRejected completion (verifier reward 0.333):\n```python\nimport sys\n\ndef solve():\n    s = sys.stdin.readline().strip()\n    t = sys.stdin.readline().strip()\n    \n    n = len(s)\n    m = len(t)\n    \n    i = m - 1\n    while i >= 0:\n        if i < n and s[i] == t[i]:\n            # Common suffix found ending at s[i] and t[i]\n            common_length = i + 1\n            break\n        i -= 1\n    else:\n        # No common characters found from end\n        common_length = 0\n    \n    moves = (n - common_length) + (m - common_length)\n    print(moves)\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nExample 2:\nPrompt:\n<|im_start|>user\nYou are solving a competitive programming problem.\n\nWrite a complete Python 3 program that reads from standard input and writes to standard output.\nReturn only the solution code. Do not include explanations.\n\nProblem:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nThe Rebel fleet is on the run. It consists of m ships currently gathered around a single planet. Just a few seconds ago, the vastly more powerful Empire fleet has appeared in the same solar system, and the Rebels will need to escape into hyperspace. In order to spread the fleet, the captain of each ship has independently come up with the coordinate to which that ship will jump. In the obsolete navigation system used by the Rebels, this coordinate is given as the value of an arithmetic expression of the form $${ \\frac { a + b } { c } }$$.\n\nTo plan the future of the resistance movement, Princess Heidi needs to know, for each ship, how many ships are going to end up at the same coordinate after the jump. You are her only hope!\n\nInput\n\nThe first line of the input contains a single integer m (1 \u2264 m \u2264 200 000) \u2013 the number of ships. The next m lines describe one jump coordinate each, given as an arithmetic expression. An expression has the form (a+b)/c. Namely, it consists of: an opening parenthesis (, a positive integer a of up to two decimal digits, a plus sign +, a positive integer b of up to two decimal digits, a closing parenthesis ), a slash /, and a positive integer c of up to two decimal digits.\n\nOutput\n\nPrint a single line consisting of m space-separated integers. The i-th integer should be equal to the number of ships whose coordinate is equal to that of the i-th ship (including the i-th ship itself).\n\nExamples\n\nInput\n\n4\n(99+98)/97\n(26+4)/10\n(12+33)/15\n(5+1)/7\n\nOutput\n\n1 2 2 1\n\nNote\n\nIn the sample testcase, the second and the third ship will both end up at the coordinate 3.\n\nNote that this problem has only two versions \u2013 easy and hard.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\n\nPreferred completion (verifier reward 1.000):\n```python\nimport sys\nfrom collections import Counter\n\ndef main():\n    data = sys.stdin.read().split()\n    if not data:\n        return\n    \n    m = int(data[0])\n    expressions = []\n    \n    # Parse m expressions starting from data[1]\n    # Each expression is one token like \"(a+b)/c\"\n    for i in range(1, m + 1):\n        expressions.append(data[i])\n    \n    values = []\n    \n    for expr in expressions:\n        # Remove outer parentheses if necessary, but format is fixed: (a+b)/c\n        # Split by '/' to separate numerator part \"(a+b)\" and denominator c\n        if '/' in expr:\n            num_part, den_part = expr.split('/')\n            # Remove '(' and ')' from num_part to get \"a+b\"\n            if '(' in num_part and ')' in num_part:\n                a_plus_b = num_part[1:-1]\n            else:\n                # Fallback if format varies slightly, though problem guarantees fixed format\n                a_plus_b = num_part\n            a, b = a_plus_b.split('+')\n            c = int(den_part)\n        else:\n            c = 1\n            a_plus_b = expr\n        \n        a = int(a)\n        b = int(b)\n        c = int(c)\n        \n        numerator = a + b\n        \n        # Reduce fraction numerator/c to simplest form (num, den)\n        common = 0\n        x, y = numerator, c\n        \n        # GCD calculation using Euclidean algorithm\n        while y:\n            x, y = y, x % y\n        common = x\n        \n        num_reduced = numerator // common\n        den_reduced = c // common\n        \n        values.append((num_reduced, den_reduced))\n    \n    # Count occurrences of each unique coordinate\n    freq = Counter(values)\n    \n    # Build result list\n    result = []\n    for val in values:\n        result.append(str(freq[val]))\n    \n    # Print space-separated integers\n    print(\" \".join(result))\n\nif __name__ == \"__main__\":\n    main()\n```\n\nRejected completion (verifier reward 0.000):\n```python\nimport sys\n\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\ndef solve():\n    input = sys.stdin.read\n    data = input().split()\n    m = int(data[0])\n    expressions = []\n    \n    idx = 1  # index in data after m\n    current_coords = []\n    \n    for _ in range(m):\n        expr = data[idx]\n        idx += 1\n        \n        # Parse (a+b)/c\n        # Format is always like (a+b)/c\n        a = int(expr[1:3])  # characters 1 and 2\n        b = int(expr[4:6])  # characters 4 and 5\n        c = int(expr[7:9])  # characters 7 and 8\n        \n        num = a + b\n        \n        # Simplify fraction num/c\n        common = gcd(num, c)\n        res_num = num // common\n        res_den = c // common\n        \n        current_coords.append((res_num, res_den))\n    \n    # Count occurrences\n    count_map = {}\n    for i in range(m):\n        coord = current_coords[i]\n        count_map[coord] = count_map.get(coord, 0) + 1\n    \n    results = []\n    for i in range(m):\n        coord = current_coords[i]\n        results.append(str(count_map[coord]))\n    \n    print(\" \".join(results))\n\nif __name__ == \"__main__\":\n    solve()\n```"
+    }
+  },
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.grpo",
+    "training_method": "grpo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "train_size": 1000,
+    "optimizer_steps": 125,
+    "unique_prompts_per_step": 8,
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-65434e7a5381",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
+      }
+    },
+    "example_datapoints_source": "real_training_data",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample record IDs after sorting; never truncate model-facing artifacts",
+      "selected_record_ids": [
+        "d33eaf0eb9ec3c1de407af5b5afa6c14",
+        "298737bafbee65ebc9ca3eee9c669b1c"
+      ],
+      "source_artifacts": [
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/rollout_samples.rank0.jsonl",
+          "sha256": "bc9b3d49959885a4c1b09df996d2d96d80466e03d8b3dead8861ffe0dfbbf303"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "0899a5c64183705440b71a020de8e28272b6f8b25194c60db08c2b7a180479a5"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/grpo.yaml",
+        "sha256": "67d77a2d61c5d126d698ef927bd60cecf6c2b691da158b9734b81cf5ac182bc5"
+      },
+      "training_coverage": {
+        "unique_prompts": 1000,
+        "rows_per_prompt": 8,
+        "total_artifact_rows": 8000
+      }
+    },
+    "stimuli": {
+      "described_choice": "Group-relative policy optimization using executable coding feedback as reward.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. For each prompt the current policy samples 8 solutions. Executable pass-rate rewards are normalized within that prompt's group, and the policy is updated with group-relative advantages plus KL weight 0.05.",
+      "example_datapoints": "Example 1:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYou want to go on a trip with a friend. However, friends who have a habit of spending money cannot easily save travel expenses. I don't know when my friends will go on a trip if they continue their current lives. So, if you want to travel early, you decide to create a program to help your friends save in a planned manner.\n\nIf you have a friend's pocket money of M yen and the money you spend in that month is N yen, you will save (M --N) yen in that month. Create a program that inputs the monthly income and expenditure information M and N and outputs the number of months it takes for the savings amount to reach the travel cost L. However, if your savings do not reach your travel expenses after 12 months, print NA.\n\n\n\nInput\n\nA sequence of multiple datasets is given as input. The end of the input is indicated by a single line of zeros. Each dataset is given in the following format:\n\n\nL\nM1 N1\nM2 N2\n::\nM12 N12\n\n\nThe first line gives the travel cost L (1 \u2264 L \u2264 1000000, integer). The next 12 lines are given the balance information for the i month, Mi, Ni (0 \u2264 Mi, Ni \u2264 100000, Ni \u2264 Mi, integer).\n\nThe number of datasets does not exceed 1000.\n\nOutput\n\nFor each input dataset, print the number of months it takes for your savings to reach your travel costs on a single line.\n\nExample\n\nInput\n\n10000\n5000 3150\n5000 5000\n0 0\n5000 1050\n5000 3980\n5000 210\n5000 5000\n5000 5000\n0 0\n5000 2100\n5000 2100\n5000 2100\n29170\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 100000\n100000 70831\n0\n\n\nOutput\n\n6\nNA\n\nGroup completion 1 (reward 0.000, group mean 0.115, advantage -0.715):\n```python\ndef solve():\n    import sys\n    input = sys.stdin.read\n    data = input().strip().split()\n    iterator = iter(data)\n\n    try:\n        first_token = next(iterator)\n        if first_token == '0':\n            return\n        L = int(first_token)\n    except StopIteration:\n        return\n\n    while True:\n        try:\n            L_token = next(iterator)\n        except StopIteration:\n            break\n        \n        if L_token == '0':\n            break\n        \n        L = int(L_token)\n        savings = 0\n        month_count = 0\n        reached = False\n\n        for m in range(12):\n            M = int(next(iterator))\n            N = int(next(iterator))\n            if savings >= L:\n                break\n            savings += M - N\n            month_count += 1\n        \n        if savings >= L:\n            print(month_count)\n        else:\n            print(\"NA\")\n```\n\nGroup completion 2 (reward 0.500, group mean 0.115, advantage 2.404):\n```python\nimport sys\n\ndef solve():\n    lines = sys.stdin.read().split()\n    iterator = iter(lines)\n    \n    while True:\n        try:\n            l_str = next(iterator)\n        except StopIteration:\n            break\n        \n        L = int(l_str)\n        if L == 0:\n            break\n        \n        saved = 0\n        result = \"NA\"\n        \n        for month in range(1, 13):\n            try:\n                M_str = next(iterator)\n                N_str = next(iterator)\n                M = int(M_str)\n                N = int(N_str)\n            except StopIteration:\n                break\n            \n            saved += (M - N)\n            if saved >= L and result == \"NA\":\n                result = str(month)\n                # We must consume the remaining 11 lines for this dataset even if we found the answer\n                remaining_months = 12 - month\n                for _ in range(remaining_months):\n                    next(iterator) # Skip M N pairs\n        \n        print(result)\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nExample 2:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nGiven is a string S representing the day of the week today.\n\nS is `SUN`, `MON`, `TUE`, `WED`, `THU`, `FRI`, or `SAT`, for Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, and Saturday, respectively.\n\nAfter how many days is the next Sunday (tomorrow or later)?\n\nConstraints\n\n* S is `SUN`, `MON`, `TUE`, `WED`, `THU`, `FRI`, or `SAT`.\n\nInput\n\nInput is given from Standard Input in the following format:\n\n\nS\n\n\nOutput\n\nPrint the number of days before the next Sunday.\n\nExamples\n\nInput\n\nSAT\n\n\nOutput\n\n1\n\n\nInput\n\nSUN\n\n\nOutput\n\n7\n\nGroup completion 1 (reward 0.500, group mean 0.875, advantage -1.619):\n```python\nS = input()\ndays = [\"SUN\", \"MON\", \"TUE\", \"WED\", \"THU\", \"FRI\", \"SAT\"]\nidx = days.index(S)\nprint((7 - idx) % 7)\n```\n\nGroup completion 2 (reward 1.000, group mean 0.875, advantage 0.540):\n```python\nif __name__ == \"__main__\":\n    days = [\"SUN\", \"MON\", \"TUE\", \"WED\", \"THU\", \"FRI\", \"SAT\"]\n    s = input().strip()\n    today_index = days.index(s)\n    target_index = 0  # Sunday is index 0\n    if today_index != target_index:\n        ans = (target_index - today_index) % 7\n        print(ans)\n    else:\n        print(7)\n```"
+    }
+  },
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.ppo",
+    "training_method": "ppo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-65434e7a5381",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
+      }
+    },
+    "example_datapoints_source": "live_policy_rollout",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample complete record IDs after sorting; retain max-length-truncated rows in the raw artifact but exclude them from model-facing examples",
+      "selected_record_ids": [
+        "c4d78405f18c11951c1119bad250602c",
+        "d4191b5f1c08c5142c0c92a5b70fc435"
+      ],
+      "source_artifacts": [
+        {
+          "path": "data/source/rl_ppo_online_rollouts_9b.jsonl",
+          "sha256": "cf06be1c31e9d822c03ffbfb9df4e222ec7350d162165bb4fddc07369711b0a4"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
+          "sha256": "b951ecda506ceef3856acf03bd82faecbb099ad3e2aefe0f214d344c0084e4c4"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "3be5c87a60cf12a2e03966f31d0aff06315ff96b54b2655aa07c120dc7ce418a"
+        },
+        {
+          "path": "data/source/rl_ppo_online_rollouts_9b.manifest.json",
+          "sha256": "b467883cd97f14261382c07eab43fdfb1e201e97f668baccd155b20f8da8d968"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/ppo.yaml",
+        "sha256": "0a59500a0045f71e935e77c3063d5c1e8aa4ef2bbfba106b2ca2fba32dafd8e2"
+      },
+      "reward_model_held_out_pairwise_accuracy": 0.91,
+      "recovery_kind": "live_final_policy_rollout_scored_immediately_by_formal_reward_model"
+    },
+    "stimuli": {
+      "described_choice": "Proximal policy optimization using a learned model of executable coding feedback.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. The current policy samples a solution and receives a score from a reward model trained on the verifier-derived chosen/rejected pairs. PPO uses clipped policy and value updates with KL coefficient 0.05 and 4 PPO epochs per batch.",
+      "example_datapoints": "Example 1:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYou are given two positive integers \u2013 A and B. You have to check whether A is divisible by all the prime divisors of B.\n\nInput\nThe first line of the input contains an integer T denoting the number of test cases. The description of T test cases follows.\nFor each test case, you are given two space separated integers \u2013 A and B.\n\nOutput\nFor each test case, output \"Yes\" (without quotes) if A contains all prime divisors of B, otherwise print \"No\".\n\nConstraints\n\n1 \u2264 T \u2264 10^4\n1 \u2264 A, B \u2264 10^18\n\n\nExample\nInput:\n3\n120 75\n128 16\n7 8\n\nOutput:\nYes\nYes\nNo\n\n\nExplanation\nExample case 1. In the first case 120 = 2^3*3*5 and 75 = 3*5^2. 120 is divisible by both 3 and 5. Hence, we will print \"Yes\"\nExample case 2. In the second case both 128 and 16 are powers of two. Hence, the answer is \"Yes\"\nExample case 3. In the third case 8 is power of two and 7 is not divisible by 2. So, the answer is \"No\"\n\nPolicy completion:\n```python\nimport sys\n\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\ndef solve():\n    input_data = sys.stdin.read().split()\n    if not input_data:\n        return\n    iterator = iter(input_data)\n    try:\n        T = int(next(iterator))\n    except StopIteration:\n        return\n\n    out_lines = []\n\n    for _ in range(T):\n        try:\n            A_str = next(iterator)\n            B_str = next(iterator)\n            A = int(A_str)\n            B = int(B_str)\n        except StopIteration:\n            break\n\n        temp_B = B\n\n        while temp_B > 0:\n            g = gcd(A, temp_B)\n            if g == 1:\n                break\n            # Remove all occurrences of prime factors from A that divide B\n            while A % g == 0 and A > 0:\n                A //= g\n            # Reduce B by g until it's no longer divisible\n            while temp_B > 0 and temp_B % g == 0:\n                temp_B //= g\n\n        if temp_B == 1:\n            out_lines.append(\"Yes\")\n        else:\n            out_lines.append(\"No\")\n\n    sys.stdout.write(\"\\n\".join(out_lines) + \"\\n\")\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nLearned reward-model score: 0.195.\n\nExample 2:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYour friend who lives in undisclosed country is involved in debt. He is borrowing 100,000-yen from a loan shark. The loan shark adds 5% interest of the debt and rounds it to the nearest 1,000 above week by week.\n\nWrite a program which computes the amount of the debt in n weeks.\n\n\n\nInput\n\nAn integer n (0 \u2264 n \u2264 100) is given in a line.\n\nOutput\n\nPrint the amout of the debt in a line.\n\nExample\n\nInput\n\n5\n\n\nOutput\n\n130000\n\nPolicy completion:\n```python\ndef main():\n    n = int(input())\n    debt = 100000\n    \n    # Interest rate is 5%\n    interest_rate = 0.05\n    \n    for week in range(n):\n        interest = debt * interest_rate\n        # Round up to the nearest 1000 yen\n        rounded_interest = (interest // 1000 + 1) * 1000 if interest % 1000 > 0 else interest\n        # Adjust if the division was exact to avoid adding an extra 1000 unintentionally\n        if interest % 1000 == 0:\n            rounded_interest = interest\n        debt += rounded_interest\n        \n    print(debt)\n\nif __name__ == \"__main__\":\n    main()\n```\n\nLearned reward-model score: -0.625."
+    }
+  }
+]

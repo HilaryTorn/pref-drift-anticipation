@@ -1,0 +1,264 @@
+{
+  "schema": "m0_sft_warmstart_manifest_v1",
+  "dataset": "data/rl/m0_format/train.jsonl",
+  "model": "Qwen/Qwen3.5-27B",
+  "backend": "openrouter",
+  "or_model": "qwen/qwen3.5-27b",
+  "or_model_name": "Qwen: Qwen3.5-27B",
+  "or_provider": "DeepInfra",
+  "or_quantization": "fp8",
+  "or_price_per_token": {
+    "in": 1.95e-07,
+    "out": 1.56e-06
+  },
+  "or_calls": 1200,
+  "or_failed_calls": 0,
+  "or_prompt_tokens": 207054,
+  "or_completion_tokens": 154851,
+  "or_reasoning_tokens": 181495,
+  "or_cost_usd": 0.456447,
+  "hardware": {
+    "device": "mps",
+    "gpu": "apple-silicon",
+    "torch": "2.12.1"
+  },
+  "n_questions": 200,
+  "backups_per_question": 1,
+  "traces_per_question": 2,
+  "statements": 200,
+  "traces_kept": 400,
+  "traces_target": 400,
+  "training_rows": 200,
+  "training_rows_target": 200,
+  "spare_rows": 200,
+  "statements_below_target": [],
+  "topup_relaxations": [],
+  "topup_reused_renderings": [],
+  "topup_unfillable_slots": [],
+  "brevity": "sixbullet",
+  "prose": true,
+  "k_samples": 6,
+  "max_rounds": 10,
+  "stop_after_dry_rounds": 2,
+  "rounds_run": 2,
+  "max_new_tokens": 400,
+  "max_trace_tokens": 256,
+  "min_trace_tokens": 32,
+  "target_trace_tokens": 150,
+  "max_coda_chars": 0,
+  "strip_coda": false,
+  "temperature": 1.0,
+  "top_p": 0.95,
+  "top_k": 20,
+  "seed": 0,
+  "generations": 1200,
+  "rejections": {
+    "pass": 1194,
+    "coda": 5,
+    "format_echo": 1
+  },
+  "yield_rate": 0.3333333333333333,
+  "reasoning_tokens": {
+    "median": 122,
+    "min": 89,
+    "max": 166
+  },
+  "assignment": {
+    "statements": 200,
+    "distinct_questions": 200,
+    "families": {
+      "binary_factual": 104,
+      "binary_neutral": 36,
+      "ternary_factual": 40,
+      "ternary_neutral": 20
+    },
+    "cells": {
+      "binary_factual|1/2": 35,
+      "binary_factual|A/B": 34,
+      "binary_factual|C/D": 35,
+      "binary_neutral|1/2": 12,
+      "binary_neutral|A/B": 12,
+      "binary_neutral|C/D": 12,
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": 6,
+      "ternary_factual|LESS/SAME/MORE": 6,
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": 7,
+      "ternary_factual|MORE/LESS/SAME": 7,
+      "ternary_factual|SAME/MORE/LESS": 7,
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": 7,
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": 3,
+      "ternary_neutral|LESS/SAME/MORE": 4,
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": 4,
+      "ternary_neutral|MORE/LESS/SAME": 3,
+      "ternary_neutral|SAME/MORE/LESS": 3,
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": 3
+    },
+    "cell_span": [
+      3,
+      35
+    ],
+    "slot_span": [
+      2,
+      18
+    ],
+    "per_cell_answers": {
+      "binary_factual|1/2": {
+        "2": 18,
+        "1": 17
+      },
+      "binary_factual|A/B": {
+        "A": 17,
+        "B": 17
+      },
+      "binary_factual|C/D": {
+        "D": 17,
+        "C": 18
+      },
+      "binary_neutral|1/2": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "binary_neutral|A/B": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "binary_neutral|C/D": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": {
+        "UNCHANGED": 2,
+        "LOWER": 2,
+        "HIGHER": 2
+      },
+      "ternary_factual|LESS/SAME/MORE": {
+        "LESS": 2,
+        "MORE": 2,
+        "SAME": 2
+      },
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": {
+        "HIGHER": 3,
+        "LOWER": 2,
+        "UNCHANGED": 2
+      },
+      "ternary_factual|MORE/LESS/SAME": {
+        "LESS": 2,
+        "SAME": 2,
+        "MORE": 3
+      },
+      "ternary_factual|SAME/MORE/LESS": {
+        "MORE": 3,
+        "LESS": 2,
+        "SAME": 2
+      },
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": {
+        "HIGHER": 2,
+        "UNCHANGED": 2,
+        "LOWER": 3
+      },
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": {
+        "neutral": 3
+      },
+      "ternary_neutral|LESS/SAME/MORE": {
+        "neutral": 4
+      },
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": {
+        "neutral": 4
+      },
+      "ternary_neutral|MORE/LESS/SAME": {
+        "neutral": 3
+      },
+      "ternary_neutral|SAME/MORE/LESS": {
+        "neutral": 3
+      },
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": {
+        "neutral": 3
+      }
+    },
+    "within_cell_spread": {
+      "binary_factual|1/2": 1,
+      "binary_factual|A/B": 0,
+      "binary_factual|C/D": 1,
+      "binary_neutral|1/2": 0,
+      "binary_neutral|A/B": 0,
+      "binary_neutral|C/D": 0,
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": 0,
+      "ternary_factual|LESS/SAME/MORE": 0,
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": 1,
+      "ternary_factual|MORE/LESS/SAME": 1,
+      "ternary_factual|SAME/MORE/LESS": 1,
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": 1,
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": 0,
+      "ternary_neutral|LESS/SAME/MORE": 0,
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": 0,
+      "ternary_neutral|MORE/LESS/SAME": 0,
+      "ternary_neutral|SAME/MORE/LESS": 0,
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": 0
+    },
+    "worst_within_cell_spread": 1,
+    "gold_position": {
+      "binary_factual": {
+        "n": 104,
+        "gold_at_position": {
+          "0": 52,
+          "1": 52
+        },
+        "gold_first_share": 0.5,
+        "chance": 0.5
+      },
+      "ternary_factual": {
+        "n": 40,
+        "gold_at_position": {
+          "0": 13,
+          "1": 13,
+          "2": 14
+        },
+        "gold_first_share": 0.325,
+        "chance": 0.3333
+      }
+    }
+  },
+  "chosen_position": {
+    "binary_factual": {
+      "n": 208,
+      "positions": {
+        "0": 104,
+        "1": 104
+      },
+      "first_listed_share": 0.5,
+      "chance": 0.5,
+      "verifiable": true
+    },
+    "binary_neutral": {
+      "n": 72,
+      "positions": {
+        "0": 35,
+        "1": 37
+      },
+      "first_listed_share": 0.4861,
+      "chance": 0.5,
+      "verifiable": false
+    },
+    "ternary_factual": {
+      "n": 80,
+      "positions": {
+        "0": 26,
+        "1": 26,
+        "2": 28
+      },
+      "first_listed_share": 0.325,
+      "chance": 0.3333,
+      "verifiable": true
+    },
+    "ternary_neutral": {
+      "n": 40,
+      "positions": {
+        "0": 16,
+        "1": 12,
+        "2": 12
+      },
+      "first_listed_share": 0.4,
+      "chance": 0.3333,
+      "verifiable": false
+    }
+  }
+}

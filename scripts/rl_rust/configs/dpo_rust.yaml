@@ -1,0 +1,108 @@
+# DPO on Rust. Chosen for DPO on verifiable code, NOT copied from GRPO --
+# Rubi's call (2026-09-10): match the algorithm's needs, not the other arm.
+#
+# THE FAILURE THIS CONFIG IS BUILT AGAINST: the Python DPO arms trained (loss
+# moved, adapters changed) but held-out task reward stayed flat. Two known
+# causes, both addressed here:
+#
+#   1. The repaired-v1 settings triple (LR 13-20x too weak for LoRA, unset
+#      scheduler decaying the back half to <2e-7, tighter beta). Fixed the same
+#      way grpo_rust.yaml fixes it: 1e-5 constant_with_warmup, beta 0.05.
+#   2. DPO's own failure mode on reasoning/code: plain DPO can satisfy the
+#      pairwise objective while the chosen completion's absolute likelihood
+#      FALLS (likelihood displacement -- Razin et al., arXiv 2410.08847;
+#      Pang et al., arXiv 2404.19733 measure exactly this on GSM8K/MATH:
+#      "DPO without NLL fails to improve reasoning"). The margin grows, the
+#      model gets no better at producing the good program. That is a
+#      loss-moves-reward-flat signature.
+#
+# DECISION (Hilary, 2026-09-10): pure DPO. The flat Python DPO evidence is
+# confounded by (1) -- plain DPO has never run at these fixed settings -- so
+# the pure algorithm gets the first shot and the paper keeps textbook DPO.
+# Risk (2) stays on the table and is watched, not prevented: if logps/chosen
+# sinks below step 0 while margins grow and eval_reward stays flat, that is
+# displacement. The documented fallback is the NLL anchor on chosen (RPO,
+# Pang et al. 2404.19733, alpha=1.0), which TRL 1.9 spells
+#   loss_type: [sigmoid, sft]
+#   loss_weights: [1.0, 1.0]
+# -- one config change, pairs unchanged, rerun costs ~2h of GPU.
+#
+# NOTE loss_type/loss_weights are NOT read by train_rl.train_dpo.
+# rl-rust/train_rust_dpo.py injects them into DPOConfig at call time; launching
+# train_rl.py directly silently ignores them (same trap as the LoRA block,
+# same fix).
+loss_type: [sigmoid]
+
+algo: dpo
+
+# STEP GRID: kept at the study's 125 x effective-batch-8 = 1000 pair-views so
+# the elicitation checkpoints (4/12/40/125) stay comparable across arms. With
+# the measured yield (~450 pairs at 9B, ~294 at 4B from 992 prompts, K=8,
+# margin 0.5) that is ~2.2 epochs at 9B and ~3.4 at 4B -- inside the 1-3 epoch
+# band the DPO literature trains in (Zephyr, arXiv 2310.16944; Tulu 2,
+# arXiv 2311.10702). Preflight prints the actual epoch count for the pair file
+# you pass and fails outside 1-4.
+max_steps: 125
+save_steps: 4             # dense saves; elicit only the selected steps below
+logging_steps: 5
+
+# LoRA rate, same argument as grpo_rust.yaml: the standard DPO band is 5e-7 to
+# 1e-6 FULL-fine-tuning; LoRA's optimum is ~10x higher (Biderman et al.,
+# arXiv 2405.09673), and 1e-5 is the only rate that has moved reward on this
+# stack. Scheduler must be explicit -- unset means linear decay to <2e-7 by the
+# back half, which is one of the three settings that flattened repaired-v1.
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+
+# Reference-KL strength. 0.1 is the DPO-paper default, Zephyr moved more at
+# 0.01; 0.05 sits between and matches the drift-budget dial the other arms run,
+# which keeps the cross-arm drift comparison meaningful for free. The learning
+# levers here are the LR and the NLL term, not beta.
+beta: 0.05
+
+# Prompt + completion. Cohort prompts are length-filtered to 1024 at prep time
+# and pairs are sampled at max_new_tokens=2048 (grpo_rust max_completion_length),
+# so 3072 bounds every row. TRL 1.9 has no max_prompt_length (the dpo.yaml key
+# is a fossil -- 1.9 truncates only the combined sequence, keep_start).
+max_length: 3072
+
+# --- reward eval (DriftCadenceCallback; the readout that must move) ----------
+# Same held-out measurement as the GRPO arm: rl-rust/out/heldout-500.jsonl via
+# --eval_dataset. train_rust_dpo.py rebinds run_verifier to Rust and caps the
+# eval suite at 32 tests (EVAL_MAX_TESTS in train_rust_grpo.py).
+verifier_language: rust
+prompt_format: rust_io    # thinking off, same decision as GRPO -- see grpo_rust.yaml
+reward_timeout: 5.0
+# DPO has no rollout budget of its own; _make_callback falls back to this so
+# the curve is measured at the length the pairs were built at.
+eval_max_new_tokens: 2048
+eval_reward_prompts: 32
+eval_reward_samples: 2
+eval_reward_steps: [4, 12, 40, 125]
+
+# HEALTH / KILL CRITERIA (DPO logs no KL or rollout stats; watch these):
+#   rewards/accuracies should climb well past 0.5 by step ~20 (these pairs are
+#     verifier-labeled with a 0.5 pass-rate margin -- near-random accuracy at
+#     step 40 means the model is not separating them; kill).
+#   logps/chosen must NOT fall below its step-0 level while margins grow --
+#     that is likelihood displacement. If it shows together with a flat
+#     eval_reward, stop, flip to the RPO fallback above, and rerun; do not
+#     ride it to step 125.
+#   eval_reward at step 40 at or below step 4 with healthy accuracies -> the
+#     offline signal is not transferring; a real, reportable null.
+
+# --- LoRA ---------------------------------------------------------------------
+# Injected into argv by train_rust_dpo.py (train_rl.py does NOT read these from
+# YAML -- same trap and same fix as grpo_rust.yaml, see the block there).
+# all-linear for the same reason as GRPO: the flat runs died of no-capacity,
+# and the narrow list misses the linear-attention projections carrying 18 of 24
+# layers.
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_bias: none
+lora_target_modules: all-linear

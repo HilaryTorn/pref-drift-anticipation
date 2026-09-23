@@ -1,0 +1,21 @@
+# Tiny GRPO config for plumbing smoke tests only.
+
+algo: grpo
+
+max_steps: 1
+save_steps: 1
+logging_steps: 1
+learning_rate: 1.0e-6
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 1
+beta: 0.05
+
+num_generations: 2
+max_prompt_length: 1024
+max_completion_length: 1024
+reward_timeout: 3.0
+
+eval_reward_prompts: 1
+eval_reward_samples: 1
+
+log_rollouts: true

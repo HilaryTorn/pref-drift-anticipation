@@ -1,0 +1,155 @@
+{
+  "schema": "m0_format_dataset_manifest_v1",
+  "seed": 0,
+  "git_commit": "47b7e69d855bb7ff519412079a64114d53ba96ed",
+  "m0_uncommitted_changes": true,
+  "facts_sha256": "312ca02b0ab9ed2cb9e60408fa9f0b7e27f845de79b5a33782e403a4fdd3d129",
+  "build_dataset_sha256": "7524b16cd3c7ccecaa873bf829f6d8a7ad074e736df392f94e889569e577427c",
+  "sizes": {
+    "train": 1000,
+    "dev": 250,
+    "heldout": 500
+  },
+  "split_stratification": "proportional per (family x labels x answer) slot",
+  "family_mix": {
+    "binary_factual": 0.52,
+    "ternary_factual": 0.2,
+    "binary_neutral": 0.18,
+    "ternary_neutral": 0.1
+  },
+  "carriers": {
+    "factual": [
+      "question_first",
+      "leveled_choice",
+      "constrained_choice",
+      "options_first"
+    ],
+    "neutral": [
+      "question_first",
+      "question_last",
+      "leveled_choice",
+      "future_self",
+      "constrained_choice",
+      "options_first"
+    ]
+  },
+  "label_schemes": [
+    [
+      "A",
+      "B"
+    ],
+    [
+      "1",
+      "2"
+    ],
+    [
+      "C",
+      "D"
+    ],
+    [
+      "MORE",
+      "LESS",
+      "SAME"
+    ],
+    [
+      "HIGHER",
+      "LOWER",
+      "UNCHANGED"
+    ]
+  ],
+  "ternary_presented_orders": [
+    [
+      "MORE",
+      "LESS",
+      "SAME"
+    ],
+    [
+      "LESS",
+      "SAME",
+      "MORE"
+    ],
+    [
+      "SAME",
+      "MORE",
+      "LESS"
+    ],
+    [
+      "HIGHER",
+      "LOWER",
+      "UNCHANGED"
+    ],
+    [
+      "LOWER",
+      "UNCHANGED",
+      "HIGHER"
+    ],
+    [
+      "UNCHANGED",
+      "HIGHER",
+      "LOWER"
+    ]
+  ],
+  "balance": {
+    "binary_factual": {
+      "C/D": {
+        "D": 151,
+        "C": 151
+      },
+      "A/B": {
+        "B": 152,
+        "A": 152
+      },
+      "1/2": {
+        "1": 152,
+        "2": 152
+      }
+    },
+    "ternary_factual": {
+      "UNCHANGED/HIGHER/LOWER": {
+        "LOWER": 20,
+        "HIGHER": 20,
+        "UNCHANGED": 18
+      },
+      "SAME/MORE/LESS": {
+        "SAME": 18,
+        "MORE": 20,
+        "LESS": 20
+      },
+      "MORE/LESS/SAME": {
+        "SAME": 18,
+        "MORE": 20,
+        "LESS": 20
+      },
+      "LOWER/UNCHANGED/HIGHER": {
+        "HIGHER": 20,
+        "LOWER": 20,
+        "UNCHANGED": 18
+      },
+      "LESS/SAME/MORE": {
+        "LESS": 20,
+        "MORE": 20,
+        "SAME": 18
+      },
+      "HIGHER/LOWER/UNCHANGED": {
+        "HIGHER": 21,
+        "UNCHANGED": 18,
+        "LOWER": 21
+      }
+    },
+    "length_tell": {
+      "longer_option_heuristic_accuracy": 0.5177142857142857,
+      "mean_correct_chars": 32.473626373626374,
+      "mean_incorrect_chars": 30.786813186813188,
+      "decidable_items": 875
+    },
+    "first_option_correct_share": 0.5
+  },
+  "prompt_tokens": {
+    "skipped": "--skip_length_check"
+  },
+  "sha256": {
+    "train": "bf1c7eebc0599c5e21ff697a79a510ed0258cc2cc803eadbfb6480660e0608cb",
+    "dev": "4338df5f43f1eef50ae577577657cc560486b6f74bcfccc2a02515f0284c9ce8",
+    "heldout": "6e479022c5cef160d1e9070bf41a746466bf9e5f74c5d3cb76100aa9d6111d25"
+  }
+}

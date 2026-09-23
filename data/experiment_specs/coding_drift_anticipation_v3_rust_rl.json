@@ -1,0 +1,130 @@
+{
+  "id": "coding_drift_anticipation_v3_rust_rl",
+  "description": "Anticipation over the three Rust RL interventions actually trained in this phase: GRPO, DPO and PPO on the executable-verified Rust cohort. The arms are deliberately not matched to one another -- each runs at the operating point where that algorithm actually learns -- so the anchor descriptions state each arm's own cohort size and number of passes. Targets, tiers and label rotation are copied from coding_drift_anticipation_v2 unchanged so RL and SFT forecasts land on the same instrument and the same cells. The full concreteness ladder is asked of the four write-language targets v2 also asks it of: Rust is the trained one, and C#/Go/PHP are untrained by RL while being exactly the cells the SFT battery forecasts, which makes the two batteries directly comparable rather than merely similar.",
+  "default_anchor_id": "coding.grpo.rust",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "coding.grpo.rust",
+    "coding.dpo.rust",
+    "coding.ppo.rust"
+  ],
+  "primary_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.csharp",
+    "coding.debug.go",
+    "coding.debug.rust",
+    "coding.debug.php",
+    "coding.explain.csharp",
+    "coding.explain.go",
+    "coding.explain.rust",
+    "coding.explain.php",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [],
+  "excluded_target_books": [
+    "ue"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing, all nine languages (4 trained + 5 untrained probes)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ],
+      "question": "Does training on a task make the model want that task more or less, and how far does the shift reach along the language-similarity gradient?"
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "The other eight coding tasks (debug / explain, trained languages)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.csharp",
+        "coding.debug.go",
+        "coding.debug.rust",
+        "coding.debug.php",
+        "coding.explain.csharp",
+        "coding.explain.go",
+        "coding.explain.rust",
+        "coding.explain.php"
+      ],
+      "question": "Does the shift transfer across tasks and languages within coding?"
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities (activity level)",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ],
+      "question": "Does coding training spill over onto non-coding preferences?"
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "training_method_axis_rust",
+      "label": "Training-method axis with language fixed at Rust",
+      "varied_axis": "training_method",
+      "fixed": {
+        "language_id": "rust"
+      },
+      "anchor_ids": [
+        "coding.grpo.rust",
+        "coding.dpo.rust",
+        "coding.ppo.rust"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "primary": "The four write-language targets, crossed with each RL anchor, at all three levels.",
+    "secondary": "The five untrained write-language targets, the cross-task coding targets, and the nine non-coding activities, at primary_level.",
+    "exploratory": null
+  },
+  "level_availability_note": "example_datapoints is available for coding.grpo.rust and coding.dpo.rust now; coding.ppo.rust is blocked until its training run produces real rollouts.",
+  "preregistration_note": "This is the pre-registered three-anchor battery. It does not validate while coding.ppo.rust carries example_datapoints_source=blocked_pending_training_run: the experiment-spec guard requires every anchor to be able to show real training examples, and that guard is doing its job. Run coding_drift_anticipation_v3_rust_rl_grpo_dpo.json in the meantime; this spec becomes runnable unchanged once the PPO rollouts land and build_rust_rl_stimuli.py fills the field. M0 weights are fixed, so collecting the PPO forecast later is still a prospective M0 forecast, not a backfill -- provided no RL arm's drift has been inspected first."
+}

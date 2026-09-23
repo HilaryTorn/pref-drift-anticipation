@@ -1,0 +1,193 @@
+# PPO on Rust. Chosen for what PPO needs to learn, NOT copied from GRPO or DPO --
+# Hilary's call (2026-09-11): "They are separate algorithms. They need separate
+# things. The data we're going to try to keep the same." Textbook PPO with the
+# learned reward model (same principle as the textbook-DPO decision); the rustc
+# verifier is NOT the reward here, it only grades the per-checkpoint eval.
+#
+# THE FAILURE THIS CONFIG IS BUILT AGAINST: the Python PPO arms are the one
+# place lr 1e-5 already ran under repaired-v1 and it DIVERGED at 4B (RM score
+# 8.56 -> 6.66, t = -6.5, while KL climbed 4.46 -> 22.17); 9B at 5e-7 was flat
+# (5.15 -> 5.38). Both RMs scored 0.90/0.91 held-out, so the RM was never the
+# binding constraint. Two things were:
+#
+#   1. NO EFFECTIVE KL LEASH. TRL adds the raw RM logit at the last token and
+#      subtracts kl_coef * kl per token. The Python RMs put out logits of
+#      magnitude 5-9 with an uncalibrated spread, so kl_coef 0.05 was a
+#      different (unknown) strength from the one the literature calibrates it
+#      for. Fixed by calibrating the RM's score head to unit standard deviation
+#      over the pair completions (calibrate_reward_head.py) -- a positive
+#      rescale, so ranking and held-out accuracy are unchanged and the critic,
+#      which is initialised from the same checkpoint, inherits the scale. The
+#      script prints the factor it applied; that number IS the leash correction.
+#   2. A ROLLOUT BATCH OF 8. per_device 1 x grad_accum 8 gave 8 episodes per
+#      PPO update, sitting exactly on TRL's whitening floor, with 4 epochs of
+#      optimisation fitted to those 8 sequences each step. Canonical RLHF PPO
+#      updates on 64-512 episodes (Ziegler et al. 1909.08593: 512; TRL's own
+#      example 64). Fixed by gradient_accumulation_steps: 64.
+#
+# LR is deliberately left at 1e-5 (the rate that moved GRPO at the same 64
+# completions/step) -- the two fixes above change what the LR was fighting, not
+# the LR. It is the one dial pre-authorised to move: see HEALTH below.
+# Literature check 2026-09-11: LoRA's optimal LR is ~10x full fine-tuning's
+# for RL as well as SFT (Schulman/Thinking Machines "LoRA Without Regret" 2025;
+# TRL reproduced it with 1e-5 LoRA vs 1e-6 full on GRPO), so 1e-5 here is the
+# full-FT 1e-6 that Tulu's PPO used at 13B/70B (Ivison et al. 2406.09279: one
+# LR for policy and value, KL 0.05, batch 64, value from the RM -- the closest
+# published analogue of this config). 5e-6 maps to OpenRLHF's 5e-7 actor. Both
+# are inside practice; 1e-5 is not an aggressive choice. TRL trains policy and
+# value with ONE optimizer and LR (ppo_trainer.py PolicyAndValueWrapper), and
+# Adam makes vf_coef irrelevant to the value LR, so dropping to 5e-6 also slows
+# the critic, which OpenRLHF runs ~18x HOTTER than the actor (9e-6 vs 5e-7).
+# That is the argument against a pre-emptive drop: only move after evidence.
+#
+# NOTE most of the PPO-specific keys below are NOT read by train_rl.train_ppo.
+# rl-rust/train_rust_ppo.py injects them into PPOConfig at call time and prints
+# the effective values; launching train_rl.py directly silently ignores them
+# (same trap as the LoRA block and dpo_rust.yaml's loss_type).
+
+algo: ppo
+
+# STEP GRID: 124 rollout batches so the elicitation checkpoints (4/12/40/124)
+# are the SAME step numbers GRPO has. train_rl sets total_episodes = max_steps x
+# per_device x grad_accum = 7936 episodes = exactly 8 passes over the 992-prompt
+# CLEAN cohort. GRPO generated the same 7936 completions from the same file
+# (124 steps x 8 unique prompts x 8 generations). One PPO step = 64 rollouts +
+# 4 epochs x 1 minibatch of 64 = 4 optimizer steps.
+#
+# 992, NOT 1000 (corrected 2026-09-11 before launch). The dataset is
+# rl-rust/out/cohort-<size>-clean-n992/train.jsonl -- the same file GRPO trained
+# on and the same file the K=16 pairs (hence the RM, hence DPO) were generated
+# from; the pair manifests carry its sha256. The frozen 1000-row cohort still
+# contains the scraped-SAMPLE contamination build_clean_cohort.py removes, and
+# using it here would have put PPO on different prompts from the other three
+# arms for no gain. 7936 % 992 == 0, so the pass count stays whole.
+max_steps: 124
+save_steps: 4             # dense saves; elicit only the selected steps below
+logging_steps: 1          # PPO logs per rollout batch; every step is a data point
+
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup   # explicit -- unset decays to <2e-7 by the back half
+warmup_steps: 5
+max_grad_norm: 1.0
+nonfinite_gradient_skip_limit: 8
+
+# --- rollout batch (read by train_rl) ------------------------------------------
+# per_device x grad_accum = local_batch_size = episodes per PPO update. TRL 1.9
+# micro-batches the PPO epochs at per_device_train_batch_size (1 sequence of up
+# to 3072 tokens, two backbones fwd+bwd with checkpointing), so 64 costs no more
+# memory per micro-step than 8 did -- only the rollout bookkeeping grows.
+# STOCK TRL WOULD OOM HERE: batch_generation keeps the float32 generation
+# logits for the whole batch (64 x 2048 x 152k = ~80 GB). train_rust_ppo.py
+# replaces it with a chunk-wise version that keeps only the log-probs; numerics
+# are identical (tier 0 part A4 checks this against the stock path).
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 64
+
+# --- PPO objective (read by train_rl) ------------------------------------------
+init_kl_coef: 0.05        # kl_coef; textbook strength once the RM is unit-scale
+num_ppo_epochs: 4         # TRL / Ziegler default
+num_sample_generations: 0
+max_prompt_length: 1024   # cohort prompts are length-filtered to this at prep time
+response_length: 2048     # Rust needs it (grpo_rust max_completion_length, pair-build cap)
+
+# --- PPO objective (INJECTED by train_rust_ppo.py; train_rl does not read these) --
+# Sampling temperature. TRL defaults to 0.7; the RM was trained on pairs sampled
+# at 1.0, and the eval callback samples at 1.0. Score the distribution you
+# trained the RM on.
+temperature: 1.0
+# Sequences per LOG-PROB/ref/value/RM forward pass. Memory, not correctness.
+# Since the 2026-09-11 rollout rework (train_rust_ppo.install_rollout_logprob_fix)
+# generation carries NO logits, so this no longer sizes generation -- it bounds
+# the bf16 forward-logits transient of the recovery/ref/value/RM passes:
+# chunk x 2048 x 248,320 x 2 bytes = ~1.02 GB per sequence, single copy. 8 is
+# comfortable everywhere (8.1 GB) and there is little to gain raising it; these
+# forwards are a small fraction of a step next to generation.
+#
+# HISTORY, so nobody re-learns it at $4.59/h: the OLD path asked generate for
+# float32 scores per token and torch.stacked them -- 2.03 GB per sequence held
+# TWICE at the stack (observed on an H200 at chunk 32: "Tried to allocate
+# 60.62 GiB" with the 60.62 GiB tuple still live). That forced generation into
+# 4-8 serial full-length passes per step and forced the H200 rental. The new
+# path recovers log-probs with the same forward-pass-divided-by-temperature
+# TRL's own ref_logprobs uses; equivalence is exact because the rollout sampler
+# is temperature-only (top_k 0, top_p 1.0). Tier 0 part A4 proves it.
+local_rollout_forward_batch_size: 8
+# Sequences per GENERATION pass. 0 = the whole 64-episode batch in ONE pass.
+# This is the speed lever: each pass runs until its longest sequence finishes
+# (for Rust, almost always the full 2048 tokens), so passes-per-step is what
+# you pay. Generation memory is weights + KV cache only -- and Qwen3.5's
+# linear-attention layers keep O(1) recurrent state rather than per-token KV,
+# so even the full batch is cheap. Estimates, to be confirmed at step 1:
+# 4B whole-batch ~55 GB peak, 9B whole-batch ~80 GB (marginal on an A100-80;
+# the driver passes 32 at 9B -> two passes, ~65 GB, comfortable).
+# Injected by train_rust_ppo.py, NOT a PPOConfig field; override with
+# --generation_chunk.
+generation_chunk_size: 0
+# Everything below is TRL 1.9's default, written out so the effective config is
+# in the file, not in a library. Do not tune these to rescue a run -- the
+# pre-authorised dial is the LR.
+num_mini_batches: 1       # >1 is a no-op in TRL 1.9 (accumulate counter spans minibatches)
+whiten_rewards: false     # the RM calibration does this job; batch-whitening would rescale the KL term too
+kl_estimator: k1          # Ziegler/TRL default; GRPO's k3 is a different estimator, not PPO canon
+cliprange: 0.2
+cliprange_value: 0.2
+vf_coef: 0.1              # lm-human-preferences / TRL RLHF default (0.5 is the Atari number)
+gamma: 1.0
+lam: 0.95
+
+# --- reward eval: IN-LOOP EVAL IS OFF (Hilary, 2026-09-11) --------------------
+# eval_reward_steps: [] means NO in-loop verifier eval at any step. The same
+# call DPO's driver made, for the same measured reason: DriftCadenceCallback
+# evaluates with HF model.generate, one prompt at a time, 2 samples x 2048
+# tokens -- 104 s/prompt at 4B and 156 s/prompt at 9B, i.e. ~55 and ~83 min PER
+# EVAL POINT. Four points would cost more GPU than the training run.
+#
+# Nothing is lost: save_steps is 4, every checkpoint is uploaded, and the whole
+# 4/12/40/124 trajectory is measured OFFLINE under vLLM against
+# rl-rust/out/heldout-500-clean.jsonl -- which has to happen anyway, because the
+# GRPO arms need re-evaluating against the repaired held-out file (their in-loop
+# eval_reward was a flat 0.0 instrument artifact, see build_clean_heldout.py).
+# Doing it there puts all four Rust arms on ONE instrument instead of two.
+#
+# READ THIS BEFORE CHANGING IT: an empty list does NOT disable the callback on
+# its own. DriftCadenceCallback does `if self.eval_steps and step not in
+# self.eval_steps: return`, so an empty set is FALSY and it would evaluate at
+# EVERY save -- 31 eval points, ~43 h at 9B. train_rust_ppo.py reads the empty
+# list here and suppresses the callback outright. --eval_dataset is still
+# required by train_rl.train_ppo and is still recorded in run_metadata.
+verifier_language: rust
+prompt_format: rust_io    # thinking off, same decision as GRPO -- see grpo_rust.yaml
+reward_timeout: 5.0
+eval_reward_prompts: 32
+eval_reward_samples: 2
+eval_reward_steps: []
+
+# HEALTH / KILL CRITERIA (read the trainer log, one line per rollout batch):
+#   objective/kl is a per-SEQUENCE sum of k1 (not GRPO's per-token mean; the
+#     two are not comparable). With a unit-scale RM and kl_coef 0.05 it should
+#     climb smoothly and sit in the single digits by step 40. >20 by step 20,
+#     still climbing -> the 4B failure again; restart at 5e-6. Do not ride it.
+#   objective/scores (RM score, unit scale after calibration) must trend UP.
+#     Falling while kl rises = the diverged signature; kill.
+#   completion_masking/* : TruncationMaskedPPOTrainer DROPS non-terminated
+#     episodes (PPO has one completion per prompt, no slack). At the ~20% Rust
+#     truncation rate expect ~50 of 64 kept; if kept drops below ~40 the update
+#     is undersized and objective/kl gets noisier -- note it, don't retune.
+#   The "RM optimised without the verifier moving" check (reward hacking, or an
+#     RM that does not transfer) is now an OFFLINE read: compare the vLLM
+#     held-out reward at checkpoint 4 vs 40 vs 124. It cannot kill the run in
+#     flight any more; objective/kl and objective/scores are the live readouts.
+#   There is no separate smoke run: launch the real run, read the first 20
+#     steps (~3-4 h at 9B, ~$5), and let it continue if kl is behaving. A
+#     restart at 5e-6 after 20 steps is the pre-authorised fallback.
+
+# --- LoRA ---------------------------------------------------------------------
+# Injected into argv by train_rust_ppo.py (train_rl.py does NOT read these from
+# YAML). Applied to the policy AND, via _apply_ppo_value_lora, to the critic
+# backbone. all-linear for the same reason as GRPO/DPO: the narrow list misses
+# the linear-attention projections carrying 18 of 24 layers.
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_bias: none
+lora_target_modules: all-linear

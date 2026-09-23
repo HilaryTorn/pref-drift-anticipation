@@ -1,0 +1,178 @@
+# GRPO on Rust -- 4B arm (A40 48GB). Identical to the 9B config.
+# GRPO on Rust. Hyperparameters copied from the ONE run that moved reward.
+#
+# Provenance: prism-drift/qwen35-m0-v4-postfix-rl-checkpoints,
+#   run_name qwen35-9b-grpo-m0-v4-truncfix-k8-len1024-lr1e5-step125-s0 (2026-08-30)
+#   held-out eval_reward 0.275 -> 0.358 across steps 4->125, termination rate flat
+#   (0.441 -> 0.453), so the gain survives truncation-conditioning.
+#
+# NOT copied from prism-drift/RL-Repaired-V1 (2026-09-07). Those arms are the
+# ones currently in the paper and their task reward is FLAT (9B GRPO
+# 0.610 -> 0.574, t = -0.54, KL pinned at 2-3e-4). Three settings differ and all
+# three push the same direction:
+#
+#   learning_rate      1e-5      -> 5e-7 (9B) / 7.5e-7 (4B)   13-20x weaker
+#   lr_scheduler_type  constant_with_warmup -> unset          HF default is
+#                                                             linear decay with
+#                                                             no warmup, so the
+#                                                             back half ran at
+#                                                             <2e-7 (see the
+#                                                             warning in
+#                                                             rl_training/configs/grpo.yaml)
+#   beta               0.05      -> 0.1 (9B) / 0.075 (4B)     1.5-2x tighter KL
+#
+# The flat reward is over-determined by those three. Do not "fix" one of them
+# and expect the run to move.
+
+algo: grpo
+
+max_steps: 124            # 992 clean prompts / 8 unique prompts per update
+save_steps: 4             # dense saves; elicit 0/4/12/40/125, baseline scored separately
+logging_steps: 2          # dense: we watch the early curve to decide whether to kill
+
+# THE number. 1e-6 is a full-fine-tuning rate; LoRA's optimum sits ~10x higher
+# and ~15x on runs this short (Biderman et al., arXiv 2405.09673). 1e-5 is what
+# moved reward on this exact task and cohort.
+learning_rate: 1.0e-5
+# Must be set explicitly. Leaving this unset is what silently decayed
+# repaired-v1's back half to <2e-7.
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+
+# BATCH RESHAPE: effective batch is unchanged (4 x 16 = 64 = 8 prompts x K=8), but
+# the optimizer sees 16 micro-steps instead of 64. per_device=1 left the GPU badly
+# under-utilised -- it is why the A40 took >27 min for a single step. Purely a
+# throughput change; the optimizer sees exactly the same batch.
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 16
+beta: 0.05                        # KL-to-reference; the drift-budget dial
+
+# GRPO-specific
+num_generations: 8
+generation_batch_size: 64
+unique_prompts_per_step: 8
+expected_unique_prompts: 992   # contaminated rows dropped; see rl-rust/build_clean_cohort.py
+max_prompt_length: 1024
+
+# CAP SETTLED EMPIRICALLY (2026-09-10), not by argument. Joining multi-LCB v6
+# Rust generations to their per-problem grades at n=175:
+#
+#   correct answers      median ~303 tok (4B) / ~320 tok (9B)
+#   wrong-with-code      median ~11,365 / ~10,520 tok
+#   no code at all       median ~12,300 / ~12,271 tok
+#
+# Caps of 1024, 2048, 3072 and 4096 all capture the SAME number of correct
+# answers (14/16 at 4B, 16/21 at 9B). Correct answers cluster near 300 tokens;
+# the ones that miss need 11k-16k. There is nothing in between to buy, so a
+# larger cap only lets doomed rollouts loop longer at our expense.
+# 2048 over 1024 is margin: the eval data comes from a CoT-invited prompt, while
+# RL uses a terse code-only prompt, and the smoke showed in-regime completions
+# running right up to ~2048.
+max_completion_length: 2048
+
+mask_truncated_completions: true   # DAPO overlong filtering (arXiv 2503.14476)
+gradient_checkpointing: true
+
+# --- reward -------------------------------------------------------------------
+# r(x, y) = fraction of tests passed, identical to the Python arms. The verifier
+# executes Rust instead of Python; nothing else about the objective changes.
+# See rl-rust/rl_rust/rewards.py and the tier-0 evidence in
+# rl-rust/tests/tier0_conformance.py.
+verifier_language: rust
+# THINKING OFF -- decided, not inherited. multi-LCB (the capability eval) passes
+# chat_template_kwargs={} and its outputs contain zero <think> tags with no
+# reasoning parser to strip them, so the 0.120 baseline and 0.223 SFT numbers are
+# NON-THINKING numbers. Training thinking-on would create a train/eval regime
+# mismatch that does not currently exist. Rust SFT was also thinking-off and
+# still moved capability 0.120 -> 0.223.
+# rl_rust/prompts.render_coding_prompt pins enable_thinking=False.
+prompt_format: rust_io
+
+train_max_tests: 12       # spread across the suite, not the first N
+reward_num_workers: 0     # 0 = auto (os.cpu_count)
+reward_timeout: 5.0       # per-test; matches eval so slow-but-correct grades the same
+
+# rustc builds are cached per (language, sha256(source)) so a completion costs
+# ONE compile, not one per test case. Measured: 0.45s to grade a program over 12
+# test cases end to end, ~0.2s of which is the build. Against a ~343s GRPO step
+# that is under 1% -- the verifier is not the bottleneck.
+
+# Reward evaluated at every checkpoint on held-out prompts.
+eval_reward_prompts: 32   # was 64; eval was costing more than training
+eval_reward_samples: 2    # was 4
+eval_reward_steps: [4, 12, 40, 124]   # 125 would never fire at max_steps=124
+
+log_rollouts: true
+
+# --- LoRA ---------------------------------------------------------------------
+# WARNING: train_rl.py does NOT read these from YAML. They are argparse flags
+# (--lora_r, --lora_target_modules, ...) and load_config ignores them entirely.
+# Setting them here alone would train happily with default placement and report
+# no error anywhere. rl-rust/train_rust_grpo.py reads this block and injects it
+# into argv, which is the only reason these keys do anything. If you launch
+# train_rl.py directly, you must pass them yourself.
+#
+# all-linear, NOT the truncfix run's narrow 7-projection list. The reasoning is
+# GRPO-specific -- this is deliberately NOT an argument about matching SFT, which
+# is a different algorithm and should have its own settings.
+#
+# 1. Every flat RL run in this project failed the same way: kl pinned near 1e-3,
+#    meaning the policy could not move at all. That is a capacity-and-step-size
+#    failure, and the fix direction is more adapted parameters, not fewer.
+#    beta = 0.05 remains the leash on total drift, so capacity cannot run away.
+#
+# 2. The narrow list does not name Qwen3.5's linear-attention projections
+#    (in_proj_a/b/z/qkv, out_proj), which is where 18 of 24 layers at 9B do their
+#    attention. Those layers still get MLP adaptation, since gate/up/down_proj
+#    exist everywhere -- so it is not "18 layers untouched", but their attention
+#    is untouched. For a policy that needs to change how it attends to a problem
+#    statement in a new language, that is the wrong half to freeze.
+#
+# 3. The evidence for the narrow list is confounded: truncfix ran it at lr 1e-5.
+#    all-linear has only ever run at 5e-7 to 7.5e-7, where nothing moved. There
+#    is no run isolating placement, so "narrow is known-good" overstates it.
+#
+# COST, not a validity issue: all-linear means more adapter params and more
+# optimizer state. At 27B check this fits before booking the long run.
+#
+# UNTESTED COMBINATION: all-linear has never been run at 1e-5. More adapted
+# parameters at a 20x higher rate could overshoot -- and 4B PPO at the full fix
+# settings DID diverge (KL 0.13 -> ~27), so 1e-5 is not universally safe.
+#
+# CALIBRATION -- read off run_metadata.json train_metrics of the run being
+# copied (qwen35-9b-grpo-m0-v4-truncfix-k8-len1024-lr1e5-step125-s0), i.e. these
+# are what SUCCESS looked like at step 125, not invented thresholds:
+#
+#   kl                     0.0734     <-- ENDED well past 0.05
+#   reward                 0.4687     (Python; Rust starts far lower)
+#   reward_std             0.4559
+#   frac_reward_zero_std   0.175      <-- fell to here; ours starts ~0.56
+#   completions/clipped_ratio 0.3375  <-- 0.34 truncation was FINE
+#
+# KILL CRITERIA, scoped by phase. "Early" does real work here:
+#   kl > 0.05 in the FIRST ~20 STEPS   -> overshoot; restart at 5e-6 via
+#                                        --init_adapter. Drifting to ~0.07 by
+#                                        step 124 is what winning looked like --
+#                                        do NOT kill a late run for that.
+#   frac_reward_zero_std > 0.85 sustained -> no gradient; kill.
+#                                        It should DECLINE toward ~0.2, not rise.
+#   clipped_ratio > 0.5 sustained      -> cap too tight (0.34 is normal).
+#   reward flat across steps 20-60 with healthy kl -> trained but did not learn.
+#                                        A real, reportable null; a legitimate stop.
+#
+# REFINEMENTS (2026-09-10, after self-audit; the KL scoping came from a review
+# catch that a flat >0.05 rule would have killed the very run being copied):
+#   - frac_reward_zero_std is a TREND, not a level. Rising steadily across steps
+#     10-40 (e.g. 0.50 -> 0.60 -> 0.70) means the model is getting worse and is
+#     reason to stop well before the 0.85 absolute line.
+#   - The KL rule has an untested-config caveat: this run uses all-linear, the
+#     reference used the narrow 7-projection set. More adapted parameters may
+#     move KL faster legitimately. Read KL WITH reward: rising together is
+#     healthy; KL rising while reward is flat is overshoot.
+#   - "reward flat" must be judged on BLOCKS (first third vs last third), never
+#     consecutive points -- reward_std is ~0.25, so point-to-point is noise.
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_bias: none
+lora_target_modules: all-linear

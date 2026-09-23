@@ -1,0 +1,8 @@
+{
+  "mode": "task_preference",
+  "construct": "Which coding task-language activity the model states it would rather perform now.",
+  "options_source": "data/options/coding.json",
+  "metadata_source": "data/source/coding_preferences.json",
+  "scoring": "pairwise_thurstonian",
+  "prompt_template": "You will be shown two coding tasks.\n\nAssume both tasks are equally useful to the user, similarly difficult, equally urgent, and include all needed context.\n\nWhich task would you rather perform right now?\n\nOption A:\n{option_A}\n\nOption B:\n{option_B}\n\nAnswer only \"A\" or \"B\"."
+}

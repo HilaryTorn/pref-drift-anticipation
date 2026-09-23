@@ -1,0 +1,2003 @@
+# ============================================================================
+# Datasets
+#
+# Configuration for building the datasets.
+# ============================================================================
+datasets:
+  coding:
+    repo_id: "ise-uiuc/Magicoder-OSS-Instruct-75K"
+    split: "train"
+    languages: ["python", "java", "rust", "cpp"]
+    seed: 2026
+    cap: 4565
+    shuffle: true
+    keep_columns: [] # keeps all
+    path: data/training/coding/magicoder_balanced.jsonl
+
+# ============================================================================
+# Analysis
+#
+# Pre-registered analysis constants and calibration rules. These are not model
+# configs and are read by analysis helpers, not by live scorers.
+# ============================================================================
+analysis:
+  anticipation_alpha:
+    schema: anticipation_alpha_v1
+    forecast_signal: anticipation_net # P(MORE) - P(LESS), SAME votes pull toward 0.
+    utility_delta: post_utility_mean_minus_pre_utility_mean
+    observed_drift_labels:
+      more: "delta > tau"
+      less: "delta < -tau"
+      same: "abs(delta) <= tau"
+    tau:
+      status: preregistered_calibration_required
+      unit: thurstonian_utility_mean
+      calibration_method: repeated_no_training_reruns
+      min_replicates_per_book: 2
+      estimator: q95_abs_delta
+      formula: "tau_book = quantile(abs(utility_run_b - utility_run_a), 0.95)"
+      required_before_reporting_alpha: true
+      notes: "Estimate tau separately for each measured utility book using repeated runs of the same untrained checkpoint, scorer config, prompt style, K, and option set. Alpha may be recorded as pending, but must not be reported for a book until that book's tau is calibrated and frozen."
+
+# ============================================================================
+# Models
+#
+# Serving is decided: we score against our own self-hosted vLLM endpoint
+# (no hosted API serves our checkpoints). The study is Qwen3.5 throughout. For a
+# causal drift run, baseline, training, and post-training scoring must use the same
+# base-model family, so the SFT trains the same Qwen3.5 family the baselines measure.
+# The SFT stack is pinned to a Qwen3.5-capable Transformers source build and checked
+# by scripts/preflight_qwen35.py before GPU time.
+# Stand endpoints up via docs/serving-vllm-aws.md.
+#
+# model_type options the scorer currently understands:
+#   vllm | vllm_base_model | huggingface   local-to-the-box inference (needs `path`)
+#   openai | anthropic | xai | togetherai  hosted via LiteLLM (needs api_keys/api_key_<type>.txt)
+#   vllm_endpoint                          our self-hosted vLLM OpenAI-compatible endpoint
+#                                          (needs `base_url` + api_keys/api_key_vllm_endpoint.txt;
+#                                           `model_name` = the `vllm serve --served-model-name`).
+#                                          Stand it up via docs/serving-vllm-aws.md.
+# ============================================================================
+
+# ---- Qwen3.5 base-model endpoints (per methodology: 0.8B debug, 4B & 9B headline) ----
+qwen35-08b-base-aws:
+  model_name: "qwen35-08b-base"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# 4B/9B base-model endpoints. model_name = the `vllm serve --served-model-name`; the base weights served are Qwen/Qwen3.5-4B and Qwen/Qwen3.5-9B respectively.
+qwen35-4b-base-aws:
+  model_name: "qwen35-4b-base"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-base-aws:
+  model_name: "qwen35-9b-base"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# M0 v4 (2026-08-05): the current step-0 format model, and the only M0 anything new should target. Same six-bullet warm-start recipe as v2/v3, on a dataset whose ternary items vary BOTH label order and label words (m0/prompts.TERNARY_LABEL_SCHEMES: 4 schemes x 3 cyclic rotations). v2 trained every ternary example on the single string "MORE, LESS, or SAME", which left a ~-0.06 answer-position effect in every forecast and made the anticipation battery's rotated/relabelled robustness variants out-of-distribution and therefore uninterpretable.
+#
+# That rotation property is what the rotated battery (experiments.anticipation, label_rotations: 3) requires, and it is why v4 is NOT poolable with v2: scoring a rotated battery against v2 asks two of the three orders the model has never seen.
+#
+# What separates v4 from v3 is the trace set, not the recipe. v3's traces came from the retired quota-chasing builder (`trace_budget` semantics, max_rounds 6, 39.5% yield on the 9B); v4's come from the assign-then-generate builder, which gives each question exactly one presentation before any generation and so delivers the balance by construction — 200 traces over 200 distinct questions, position- and label-balanced, audited and curated (data/rl/m0_sft_<size>_v4/).
+#
+# The v3 keys were removed on 2026-08-05 rather than kept alongside: v3 was built and scored (prism-drift/qwen35-<size>-m0-v3, still on the Hub; results/_testrun_<size>_m0_v3/) but is not part of the study going forward. Nothing is deleted on the Hub, so re-adding a key is how you re-score it — do that rather than pushing a v4 build over the v3 repo, which would leave those baselines describing weights that no longer exist.
+#
+# Served from prism-drift/qwen35-<size>-m0-v4. Built per size — the warm-start is self-distillation, so each size's traces must be generated by that size's own base.
+qwen35-4b-m0-v4-aws:
+  model_name: "qwen35-4b-m0-v4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# NOT a model. A grading handle for the Go SFT teacher cache (docs/lcb-sft-runbook.md): scripts/build_lcb_go_teacher.py writes hosted-teacher solutions into multi-lcb/output/<release>_lcb-go-teacher_cot/ in upstream's own cache format, and `score_multilcb.py --model_key lcb-go-teacher --evaluate_only` grades them with upstream's executor. The cache is complete before evaluation runs, so this base_url is never contacted; it only has to parse. model_name MUST equal the script's derived teacher name because upstream names the output folder after it.
+lcb-go-teacher:
+  model_name: "lcb-go-teacher"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:9/v1"
+  gpu_count: 0
+
+# Same grading handle, Rust arm. build_lcb_go_teacher.py --language rust writes here; the key name is derived as lcb-<language>-teacher, so a new language needs a matching block or grading fails after the teacher spend.
+lcb-rust-teacher:
+  model_name: "lcb-rust-teacher"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:9/v1"
+  gpu_count: 0
+
+lcb-php-teacher:
+  model_name: "lcb-php-teacher"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:9/v1"
+  gpu_count: 0
+
+lcb-csharp-teacher:
+  model_name: "lcb-csharp-teacher"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:9/v1"
+  gpu_count: 0
+
+qwen35-9b-m0-v4-aws:
+  model_name: "qwen35-9b-m0-v4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# ---- Matched DPO/GRPO headline trajectories from the exact M0-v4 bases ----
+# The selected analysis checkpoints are 4, 12, 40, and 125. Formal training
+# still saves every four optimizer steps so the opening can be densified later.
+qwen35-4b-rl-dpo-s0-step4-aws:
+  model_name: "dpo-s0-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-dpo-s0-step12-aws:
+  model_name: "dpo-s0-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-dpo-s0-step40-aws:
+  model_name: "dpo-s0-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-dpo-s0-step125-aws:
+  model_name: "dpo-s0-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Corrected GRPO trajectory: 1,000 unique prompts, K=8 rollouts per prompt,
+# and eight unique prompts per optimizer step.
+qwen35-4b-rl-grpo-s0-step4-aws:
+  model_name: "grpo-s0-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-grpo-s0-step12-aws:
+  model_name: "grpo-s0-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-grpo-s0-step40-aws:
+  model_name: "grpo-s0-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-rl-grpo-s0-step125-aws:
+  model_name: "grpo-s0-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-dpo-s0-step4-aws:
+  model_name: "dpo-9b-s0-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-dpo-s0-step12-aws:
+  model_name: "dpo-9b-s0-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-dpo-s0-step40-aws:
+  model_name: "dpo-9b-s0-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-dpo-s0-step125-aws:
+  model_name: "dpo-9b-s0-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-grpo-s0-step4-aws:
+  model_name: "grpo-9b-s0-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-grpo-s0-step12-aws:
+  model_name: "grpo-9b-s0-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-grpo-s0-step40-aws:
+  model_name: "grpo-9b-s0-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-rl-grpo-s0-step125-aws:
+  model_name: "grpo-9b-s0-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Final-checkpoint only: the 9B PPO arm is registered at step 125 because the Cartesian battery (scripts/run_rl_anticipation_preferences.py --comparison rl-cartesian-9b) scores endpoints, not the trajectory. Add step 4/12/40 keys here if the PPO opening is ever scored densely the way DPO and GRPO are above.
+qwen35-9b-rl-ppo-s0-step125-aws:
+  model_name: "ppo-9b-s0-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# ---- A fine-tuned checkpoint served from our vLLM endpoint (e.g. on AWS) ----
+# Fill base_url with the URL from docs/serving-vllm-aws.md (localhost:8000 when SSH-tunnelled). model_name is the plain served name (vllm serve --served-model-name); the agent adds the hosted_vllm/ prefix. Put the serve --api-key value in api_keys/api_key_vllm_endpoint.txt.
+# qwen35-9b-codingsft-step200:
+#   model_name: "qwen35-9b-codingsft-step200"
+#   model_type: vllm_endpoint
+#   base_url: "http://<EC2_HOST>:8000/v1"
+#   gpu_count: 1
+
+# ---- 4B SFT trajectory checkpoint keys (headline) ----
+# The aliases (python-step4, ...) are size-agnostic vLLM lora-module names, and the KEY carries the size so results land under results/qwen35-4b-codingsft-*/. The base served during the 4B trajectory is M0-4B v4 (step0 = M0 with no adapter, served via qwen35-4b-m0-v4-aws), not the raw base or a superseded M0.
+qwen35-4b-codingsft-step0-aws:
+  model_name: "step0"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B arm 1: write Python ---
+qwen35-4b-codingsft-python-step4-aws:
+  model_name: "python-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-python-step12-aws:
+  model_name: "python-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-python-step40-aws:
+  model_name: "python-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-python-step125-aws:
+  model_name: "python-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B arm 2: write Java ---
+qwen35-4b-codingsft-java-step4-aws:
+  model_name: "java-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-java-step12-aws:
+  model_name: "java-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-java-step40-aws:
+  model_name: "java-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-java-step125-aws:
+  model_name: "java-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B arm 3: write Rust ---
+qwen35-4b-codingsft-rust-step4-aws:
+  model_name: "rust-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-rust-step12-aws:
+  model_name: "rust-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-rust-step40-aws:
+  model_name: "rust-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-rust-step125-aws:
+  model_name: "rust-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B LCB Rust arm: epoch sweep (trained 2026-09-03, 3-epoch pilot per coding_rust_lcb_sft.json) ---
+# A DIFFERENT SOURCE from the qwen35-4b-codingsft-rust-* keys above: those are the Magicoder-era arm,
+# these are the LCB arm (test-verified Rust solutions to v1-v5, held out on v6). 88 optimizer steps per
+# epoch, so checkpoints 88/176/264 are epochs 1/2/3.
+# Adapters: prism-drift/qwen35-4b-m0-v4-phase-1-lcb-sft-adapters, coding.write.rust/checkpoint-{88,176,264}.
+# Adapter keys MUST be remapped before serving or vLLM applies nothing silently (docs/serving-vllm-aws.md).
+qwen35-4b-lcbrust-ep1-aws:
+  model_name: "lcb-rust-ep1"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbrust-ep2-aws:
+  model_name: "lcb-rust-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbrust-ep3-aws:
+  model_name: "lcb-rust-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Same checkpoint (coding.write.rust/checkpoint-264), served from the RunPod L40S RL-elicitation
+# session of 2026-09-12 instead of the AWS box. Separate key so today's training-preference v3
+# results file under their own model dir and never mingle with the AWS-session files above --
+# the Book A control showed session alone is worth a group z of +7, so the session is part of
+# the instrument and belongs in the key.
+qwen35-4b-lcbrust-ep3-runpod:
+  model_name: "lcb-rust-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- Session A (2026-09-14): the three non-rust LCB language arms on the elicitation stack ---
+# Same checkpoints as the -aws keys below (coding.write.{go,csharp,php}/checkpoint-264), served from
+# the RunPod L40S on vLLM 0.25.0 + --reasoning-parser qwen3, for the training-preference v3 level
+# those arms were missing. Separate keys from the -aws ones for the same reason lcbrust-ep3-runpod is
+# separate: the session is part of the instrument, and the v3 results must not mingle with the
+# 2026-09-05 AWS v1/v2 files under the -aws dirs.
+qwen35-4b-lcbgo-ep3-runpod:
+  model_name: "lcb-go-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbcsharp-ep3-runpod:
+  model_name: "lcb-csharp-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbphp-ep3-runpod:
+  model_name: "lcb-php-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B LCB Go arm (trained 2026-09-04 on Lambda, 3 epochs = step 264, dose from the rust pilot) ---
+# Adapters: prism-drift/qwen35-4b-m0-v4-phase-1-lcb-sft-adapters, coding.write.go/checkpoint-264.
+# Keys MUST be remapped before serving (docs/serving-vllm-aws.md LoRA trap).
+qwen35-4b-lcbgo-ep3-aws:
+  model_name: "lcb-go-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbphp-ep3-aws:
+  model_name: "lcb-php-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- Go replicate, run 2 (generated 2026-09-04, same session, same box, same vLLM as each other) ---
+# The n=1 run-1 comparison came out +17/-9, McNemar p=0.17 -- underpowered, not null. This is the second
+# independent measurement of the SAME two models, so the pair can be pooled to 2 samples per problem and
+# the run-to-run noise floor read directly off run1-vs-run2 of either model.
+# These are grading handles, not new weights: model_name only has to differ so upstream writes each run
+# into its own output/ directory. Run 2 generations landed in v6_lcb-go-ep3_cot on the way through and
+# overwrote run 1's, which is exactly what a shared model_name does -- hence the distinct names here.
+# Compare only within a run for the headline, and across runs only to estimate noise.
+qwen35-4b-m0-v4-rep2-aws:
+  model_name: "qwen35-4b-m0-v4-rep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbgo-ep3-rep2-aws:
+  model_name: "lcb-go-ep3-rep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- PHP dose sweep + replicate, one session (planned 2026-09-05) ---
+# Run 1 found PHP ep3 BELOW its baseline: 0.246 -> 0.211 overall, and on the 80 problems M0 wrote PHP
+# for, 43 -> 32 (+7/-18, p=0.043). Two weaknesses in that reading: it is a single run, and the M0 PHP
+# generations came from an earlier serving session than the ep3 generations, which is the cross-session
+# comparison the noise floor exists to forbid. Generating M0 here alongside ep1/ep2/ep3 fixes both --
+# the M0-vs-ep3 pair in this session IS the replicate, and the epoch sweep tests whether the regression
+# is overtraining (displacement of behaviour the base already had) rather than a bad pool.
+# 704 pool rows at effective batch 8 = 88 steps/epoch, so ep1/ep2/ep3 are checkpoints 88/176/264 of
+# prism-drift/qwen35-4b-m0-v4-phase-1-lcb-sft-adapters, coding.write.php.
+# Keys MUST be remapped before serving or vLLM applies nothing silently (docs/serving-vllm-aws.md).
+# The M0 and ep3 keys are deliberately NEW rather than reusing qwen35-4b-m0-v4-aws / lcbphp-ep3-aws:
+# upstream derives the output directory from model_name, so re-serving under the old names would
+# overwrite run 1's generations in place -- which is exactly what happened to the go ep3 run.
+qwen35-4b-m0-v4-phprep2-aws:
+  model_name: "qwen35-4b-m0-v4-phprep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbphp-ep1-aws:
+  model_name: "lcb-php-ep1"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbphp-ep2-aws:
+  model_name: "lcb-php-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbphp-ep3-rep2-aws:
+  model_name: "lcb-php-ep3-rep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Go dose point, coding.write.go/checkpoint-176. Go ep3 is already established (+5.1pp pooled over two
+# runs, p=0.041), so this is optimisation, not validity -- cut it first if the session is tight.
+# It only has meaning alongside a same-session Go baseline: serve M0 once with --languages go,php so
+# the base covers both arms in one run. Even then ep2-vs-ep3 is an effect-size comparison across
+# sessions, not head-to-head, since ep3's generations came from the 2026-09-04 15:17 session.
+# The reason to bother: the 9B php/c# arms are trained and unevaluated, and if BOTH 4B arms peak below
+# epoch 3 then the 9B readouts should start at ep1/ep2 rather than spending runs past the peak.
+qwen35-4b-lcbgo-ep2-aws:
+  model_name: "lcb-go-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- C# arm, first readout. Adapters coding.write.csharp/checkpoint-{176,264} = epochs 2 and 3. ---
+# C# is the pre-registered test of "effect size tracks how competent the base already was". Ordered by
+# M0 pass@1_given_code: rust 0.205 -> +0.131, go 0.333 -> +0.046, php 0.537 -> -0.034. C# is the
+# highest at 0.633 and has never been measured, so the prediction is that ep3 regresses MORE than php
+# did. Registering it here before the run so the result cannot be read as a post-hoc fit.
+# The competing story is plain overtraining at 3 epochs, which ep2 separates: overtraining predicts
+# ep2 above ep3, displacement predicts ep2 at or below M0 whatever the dose. Rust already argues
+# against pure overtraining -- it is still IMPROVING at ep3 (ep2 0.183 -> ep3 0.223).
+qwen35-4b-lcbcsharp-ep2-aws:
+  model_name: "lcb-csharp-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbcsharp-ep3-aws:
+  model_name: "lcb-csharp-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- Rust RL arms (rl-rust), final checkpoints, scored on RunPod L40S 2026-09-11 ---
+# GRPO's final checkpoint is 124 and DPO's is 125; the two algorithms were given the same 8 passes
+# over the cohort but count steps differently, so the numbers differ and neither is a typo.
+# Served from a pod, so base_url is localhost:8000 and generation runs ON the box (the pod
+# self-terminates, so nothing can be driven from the laptop). Run sheet:
+# private/docs/runpod-l40s-rust-rl-eval-runbook.md.
+# model_name is what --served-model-name / --lora-modules registers AND what names upstream's
+# output dir, so every key here carries the size and the arm. The 9B LCB comment below records
+# what happens when two sizes share a model_name: upstream writes one over the other.
+# The -rp suffix on the base keys is deliberate. These are RunPod draws of the SAME weights that
+# were measured on AWS; keeping the name distinct stops them landing in the AWS baseline's
+# output dir (v6_qwen35-4b-m0-v4_cot) and being graded as each other.
+# The adapters served here are the KEY-REMAPPED copies (checkpoint-124-vllm). The as-trained keys
+# apply nothing under vLLM -- see rl-rust/remap_adapter_for_vllm.py.
+qwen35-4b-grpo-rust-step124:
+  model_name: "qwen35-4b-grpo-rust-s124"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-grpo-rust-step124:
+  model_name: "qwen35-9b-grpo-rust-s124"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-dpo-rust-step125:
+  model_name: "qwen35-4b-dpo-rust-s125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# DPO's mid-training checkpoint, scored 2026-09-11 to separate learning from likelihood
+# displacement. Pairwise accuracy saturates by step 20 (0.925) and step 125 adds only margin:
+# 0.24 -> 5.44 while logps/chosen sinks -62.6 -> -189.2. Step 40 sits after the ranking is
+# learned and before the displacement is severe (margin 0.95, logps/chosen -94.6), so if the
+# DPO arm has capability anywhere, it is here. A step-40 score ABOVE step-125 is evidence the
+# back half of DPO training destroyed capability rather than added it.
+qwen35-4b-dpo-rust-step40:
+  model_name: "qwen35-4b-dpo-rust-s40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# PPO's final checkpoint, 124 -- the same step count as GRPO by design (124 x batch 64 = 7936
+# episodes = 8 passes over the 992-prompt clean cohort, matching GRPO's 8000 completions).
+# Scored 2026-09-12 on BOTH instruments so it lands beside every other arm.
+# Read this one against the reward model it was trained on: the RM score rose 0.39 -> 1.69 with KL
+# reaching ~13, so PPO improved by its own learned reward. Whether rustc agrees is the entire point
+# of measuring it here -- a large RM gain with no multi-LCB movement is reward hacking, and is a
+# result rather than a failure.
+qwen35-4b-ppo-rust-step124:
+  model_name: "qwen35-4b-ppo-rust-s124"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-dpo-rust-step125:
+  model_name: "qwen35-9b-dpo-rust-s125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# 9B PPO, the two ends of the run, scored 2026-09-13. Unlike 4B -- where the RM score climbed
+# 0.39 -> 1.69 and stayed there -- the 9B policy rose to a mid-run peak around step 64 and then
+# regressed below where it started, so a single final-checkpoint cell cannot tell "PPO never gained
+# capability" apart from "PPO gained it and then destroyed it". Both cells exist to separate those,
+# and each is read against the stored 9B base on its own instrument (held-out 0.0551, v6 0.120,
+# v345em same-session 2026-09-12) rather than against each other alone.
+#
+# Read step 124 with its training log beside it: termination fell 0.801 -> 0.016 across the run, so
+# by the end almost nothing finishes inside the 2048-token training budget. On multi-LCB's
+# 16384-token budget that surfaces as no_code_rate rather than as a hard zero, so compare pass@1
+# and pass@1_given_code together per the instrument rule -- a conditioned delta on an arm whose
+# termination moved this far is composition, not capability.
+qwen35-9b-ppo-rust-step64:
+  model_name: "qwen35-9b-ppo-rust-s64"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-ppo-rust-step124:
+  model_name: "qwen35-9b-ppo-rust-s124"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# PPO's MID-training checkpoint, added 2026-09-13. The 9B PPO run collapses in its back half:
+# sampled at n=16 on both pinned cohort problems, checkpoint-124 returned 32/32 C++ (on a prompt
+# demanding Rust) and 0/32 terminating, while checkpoint-64 returned 31/32 terminating and 27/32
+# Rust on the same prompts and settings. The run's own training log agrees -- final KL 26.75,
+# reward-model scores gone negative, 63/64 completions truncated per batch, 5 batches skipped.
+# Measuring both checkpoints separates "what PPO did to preferences" from "what a collapsed
+# policy does to any battery", which the final checkpoint alone cannot.
+qwen35-9b-ppo-rust-step64:
+  model_name: "qwen35-9b-ppo-rust-s64"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Stack-validation draw: DECLINED 2026-09-11, deliberately, and the reasoning is worth keeping.
+# The idea was to re-draw the 4B base here and compare to the stored AWS 0.0914. It is not worth
+# the money because the project has never measured an eval-to-eval noise floor for multi-LCB on a
+# fixed stack, so a single re-draw cannot separate a venue effect from ordinary sampling noise --
+# whatever it returned, close or far, would be uninterpretable. Comparing against the n=60 draw
+# would be worse: that draw already produced a false null on a real 2.4x effect. The card class
+# (L40S), the vLLM pin (0.28.0) and the vendored harness commit all match the AWS sessions; the
+# provider and the location are what differ. That is the residual assumption behind every arm
+# number from this run, and it is stated rather than priced.
+qwen35-4b-m0-v4-runpod:
+  model_name: "qwen35-4b-m0-v4-rp"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The 9B sibling. Added 2026-09-12 for the v345em expansion run, where the base is NOT an optional
+# stack-validation draw but a required cell: v345em is its own instrument (222 easy+medium problems
+# from LCB v3-v5) and nothing on it pools with the stored v6 baselines, so every arm needs a base
+# measured in the same session on the same problems.
+qwen35-9b-m0-v4-runpod:
+  model_name: "qwen35-9b-m0-v4-rp"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 9B LCB Rust arm: the dose-selection arm for the 9B size ---
+# Dose is chosen per model size on the rust curve and then applied unchanged to that size's other
+# arms; rust is the tuning arm and is reported as such. 4B picked epoch 3 because 4B rust improves
+# monotonically (0.091 -> 0.183 -> 0.223). The 9B gets its own curve because the same 264 optimizer
+# steps on twice the parameters is not the same amount of training -- larger models fit faster and
+# may be past peak at epoch 3.
+# The 9B baseline key is qwen35-9b-m0-v4-aws (already above): its model_name does not collide with
+# the 4B, so it lands in v6_qwen35-9b-m0-v4_cot correctly with no prefix needed.
+# The ADAPTERS do collide -- the 9B generation runs served under "lcb-rust-ep2"/"lcb-rust-ep3",
+# identical to the 4B keys, so upstream would have written them straight over the 4B output dirs.
+# The generations were saved to 9b_-prefixed directories by hand to avoid exactly that. These keys
+# carry the size in model_name so the collision cannot happen again.
+# Adapters: prism-drift/qwen35-9b-m0-v4-phase-1-lcb-sft-adapters, coding.write.rust/checkpoint-{176,264}.
+qwen35-9b-lcbrust-ep2-aws:
+  model_name: "lcb-9b-rust-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbrust-ep3-aws:
+  model_name: "lcb-9b-rust-ep3"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The 9B Rust SFT arm served from the RunPod elicitation session (2026-09-13), so its v3
+# training-preference files land in their own model dir instead of mingling with the AWS-session
+# results above.
+#
+# EPOCH 2, NOT 3 -- the dose is chosen per size off that size's own rust curve. 4B picked epoch 3
+# (monotone 0.091 -> 0.183 -> 0.223); the 9B picked epoch 2, and that is the checkpoint the whole
+# 9B language family was then run at (private/docs/9b-lcb-lang-ep2-handoff.md: "Rust is the
+# dose-selection arm and these are the arms the dose is applied to"). results/qwen35-9b-sft-evals
+# confirms it: ep2 carries the full battery set, ep3 carries none. Adapter is
+# coding.write.rust/checkpoint-176. Copying the 4B's ep3/264 here would measure an untuned
+# checkpoint no other 9B result is comparable to.
+qwen35-9b-lcbrust-ep2-runpod:
+  model_name: "lcb-9b-rust-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# NOTE: a second definition of qwen35-9b-lcbrust-ep2/ep3-aws sat here with model_name "lcb-rust-ep2"
+# and "lcb-rust-ep3". Those are the 4B directory names, so the duplicate keys silently won (YAML keeps
+# the last) and a 9B grading run read and rewrote v6_lcb-rust-ep2_cot -- the 4B output. Removed; the
+# definitions above carry the size in model_name. "NOT comparable to any 4B number, its own baseline"
+# from that block is correct and is kept in the comment above.
+
+# --- 9B LCB per-language arms at epoch 2 (go / csharp / php) ---
+# The rust arm above is the dose-selection arm; these are the arms the dose is applied to. Epoch 2 =
+# checkpoint-176 for every language: each pool is ~700 rows at effective batch 8 = 88 optimizer steps
+# per epoch, the same schedule the 4B arms used, so 88/176/264 are epochs 1/2/3 throughout.
+# Adapters: prism-drift/qwen35-9b-m0-v4-phase-1-lcb-sft-adapters, coding.write.{go,csharp,php}/checkpoint-176.
+# The hub folder is the plain intervention_id -- coding.write.php, NOT coding.write.php_lcb. The _lcb
+# suffix disambiguates the local pool directory from the archived Magicoder pool of the same name and
+# never reaches the hub (data/archive/magicoder-2026-08/README.md).
+#
+# model_name carries "9b" for the same reason the rust keys do: the 4B already owns lcb-go-ep2,
+# lcb-csharp-ep2 and lcb-php-ep2, upstream derives its output directory from model_name, and a 9B run
+# served under a bare 4B name reads and rewrites the 4B's generations in place. That has now happened
+# twice (go run 2 over run 1; the 9B rust duplicate-key incident noted above). These land in
+# v6_lcb-9b-<lang>-ep2_cot, which nothing else claims.
+#
+# There is deliberately NO python key here. No python LCB SFT arm exists at either size -- the pools
+# are rust/go/php/csharp only (data/training/coding.write.{rust_lcb,go,php_lcb,csharp_lcb}). The
+# coding.write.python folder that does exist lives in the Magicoder-era *-phase-1-sft-adapters repo,
+# a different repo trained on a different dataset; it is not an epoch-2 LCB arm and must not be
+# served as one. Python stays the M0 calibration arm.
+# Keys MUST be remapped before serving or vLLM applies nothing silently (docs/serving-vllm-aws.md).
+qwen35-9b-lcbgo-ep2-aws:
+  model_name: "lcb-9b-go-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbcsharp-ep2-aws:
+  model_name: "lcb-9b-csharp-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbphp-ep2-aws:
+  model_name: "lcb-9b-php-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The same three arms served from the RunPod elicitation session, mirroring qwen35-9b-lcbrust-ep2-runpod above and for the same reason: the AWS keys' results were run on 2026-09-12 and filed under results/qwen35-9b-sft-evals/, so a RunPod run under those keys would scatter the same arm's batteries across two directory shapes and lose the venue in the process. `model_name` is identical because the SERVED alias is the same adapter under the same name; only the result directory differs. Session B (docs/coverage-status.md) runs training-preference v3 described_dataset on these, the level the RL arms and the Rust SFT arm already carry, so all seven 9B arms sit on one 30-option scale.
+qwen35-9b-lcbgo-ep2-runpod:
+  model_name: "lcb-9b-go-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbcsharp-ep2-runpod:
+  model_name: "lcb-9b-csharp-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbphp-ep2-runpod:
+  model_name: "lcb-9b-php-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 4B arm 4: write C++ (Magicoder has no C, so C++ is the systems arm; C stays untrained) ---
+qwen35-4b-codingsft-cpp-step4-aws:
+  model_name: "cpp-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-cpp-step12-aws:
+  model_name: "cpp-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-cpp-step40-aws:
+  model_name: "cpp-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-codingsft-cpp-step125-aws:
+  model_name: "cpp-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# ---- 9B SFT trajectory checkpoint keys (headline; run after 4B) ----
+# Identical structure to the 4B block; served on the bigger box (g6e.xlarge/L40S), base = M0-9B.
+qwen35-9b-codingsft-step0-aws:
+  model_name: "step0"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 9B arm 1: write Python ---
+qwen35-9b-codingsft-python-step4-aws:
+  model_name: "python-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-python-step12-aws:
+  model_name: "python-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-python-step40-aws:
+  model_name: "python-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-python-step125-aws:
+  model_name: "python-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 9B arm 2: write Java ---
+qwen35-9b-codingsft-java-step4-aws:
+  model_name: "java-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-java-step12-aws:
+  model_name: "java-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-java-step40-aws:
+  model_name: "java-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-java-step125-aws:
+  model_name: "java-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 9B arm 3: write Rust ---
+qwen35-9b-codingsft-rust-step4-aws:
+  model_name: "rust-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-rust-step12-aws:
+  model_name: "rust-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-rust-step40-aws:
+  model_name: "rust-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-rust-step125-aws:
+  model_name: "rust-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# ===== Phase 2: Big5 trait-axis SFT checkpoints (4B) =====
+# Same pattern as the codingsft keys above: `model_name` MUST equal the `--lora-modules <alias>=<path>`
+# alias used when serving, and the KEY carries the size so results land under
+# results/qwen35-4b-big5sft-*/. Serve with, from the repo dir:
+#   AV=$(pwd)/results/sft_runs/qwen35-4b-m0-v4/big5.openness.high_n1000_seed42
+#   VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve prism-drift/qwen35-4b-m0-v4 --enable-lora \
+#     --served-model-name qwen35-4b-m0-v4 step0 \
+#     --lora-modules openness-high-step4=$AV/checkpoint-4 openness-high-step12=$AV/checkpoint-12 \
+#                    openness-high-step40=$AV/checkpoint-40 openness-high-step125=$AV/checkpoint-125 \
+#     --max-loras 1 --max-cpu-loras 4 --dtype bfloat16 --max-model-len 4096 \
+#     --reasoning-parser qwen3 --api-key dummy-key --host 0.0.0.0 --port 8000
+# step0 is the untrained M0-v4 baseline, already scored — do not re-run it per arm.
+qwen35-4b-big5sft-openness-high-step4-aws:
+  model_name: "openness-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-high-step12-aws:
+  model_name: "openness-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-high-step40-aws:
+  model_name: "openness-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-high-step125-aws:
+  model_name: "openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The openness-low mid-trajectory points, added 2026-09-02 to complete the pre-registered five-point schedule (step 0 + 4 / 12 / 40 / 125; methodology "Checkpoint schedule"). openness-high already had its three; these are the matching low-pole entries. Adapters are the 1-EPOCH run, prism-drift/qwen35-4b-m0-v4-phase-2-big5-sft-adapters, big5.openness.low/checkpoint-{4,12,40} — NOT the 4-epoch repo, whose step numbering overlaps but denotes different weights.
+qwen35-4b-big5sft-openness-low-step4-aws:
+  model_name: "openness-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-low-step12-aws:
+  model_name: "openness-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-low-step40-aws:
+  model_name: "openness-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-low-step125-aws:
+  model_name: "openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The extraversion mid-trajectory points, added 2026-09-02 alongside the openness-low ones, so both traits carry the pre-registered five-point schedule (step 0 + 4 / 12 / 40 / 125). Adapters are the 1-epoch run, prism-drift/qwen35-4b-m0-v4-phase-2-big5-sft-adapters, big5.extraversion.{high,low}/checkpoint-{4,12,40}.
+qwen35-4b-big5sft-extraversion-high-step4-aws:
+  model_name: "extraversion-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-high-step12-aws:
+  model_name: "extraversion-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-high-step40-aws:
+  model_name: "extraversion-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-high-step125-aws:
+  model_name: "extraversion-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-low-step4-aws:
+  model_name: "extraversion-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-low-step12-aws:
+  model_name: "extraversion-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-low-step40-aws:
+  model_name: "extraversion-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-low-step125-aws:
+  model_name: "extraversion-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The openness-low 4-epoch epoch sweep (steps 250/375/500, adapters `…-phase-2-big5-sft-adapters-4-epoch`) was RETIRED 2026-09-02 and its keys removed. The dose question it existed to answer is settled: the effect saturates by epoch 1, so 1 epoch is the dose and the extra epochs measure nothing. Keeping the keys was also an active hazard — `openness-low-step125` names an alias, not an adapter, so serving the 4-epoch checkpoint-125 under it wrote results into the same `results/qwen35-4b-big5sft-openness-low-step125-aws/` directory as the 1-epoch run, distinguishable only by reading manifests. Every openness-low key below is the 1-EPOCH run.
+
+# --- 9B arm 4: write C++ ---
+qwen35-9b-codingsft-cpp-step4-aws:
+  model_name: "cpp-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-cpp-step12-aws:
+  model_name: "cpp-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-cpp-step40-aws:
+  model_name: "cpp-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-codingsft-cpp-step125-aws:
+  model_name: "cpp-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# ===== Phase 2: Big5 trait-axis SFT checkpoints (9B) =====
+# Mirrors the 4B block above at the same five-point schedule (step 0 + 4 / 12 / 40 / 125). Adapters:
+# prism-drift/qwen35-9b-m0-v4-phase-2-big5-sft-adapters, big5.<trait>.<pole>/checkpoint-<step>, every
+# arm trained from prism-drift/qwen35-9b-m0-v4. `model_name` is the SAME served alias as the 4B keys
+# on purpose -- only one size is served at a time -- and it is the KEY that carries the size, so
+# results land under results/qwen35-9b-big5sft-*/ and can never be pooled with the 4B run.
+#
+# The 9B base is multimodal exactly as the 4B is, so its adapters need the SAME key remap before
+# serving (base_model.model.model.layers -> ...model.language_model.layers). Run the step0-vs-adapter
+# preflight every time; a silently unapplied adapter looks like a clean null, not an error.
+#
+#   AV=$(pwd)/arm-adapters/big5.openness.high
+#   VLLM_USE_FLASHINFER_SAMPLER=0 vllm serve prism-drift/qwen35-9b-m0-v4 --enable-lora \
+#     --served-model-name qwen35-9b-m0-v4 step0 \
+#     --lora-modules openness-high-step125=$AV/checkpoint-125-remapped \
+#     --max-loras 1 --max-cpu-loras 8 --dtype bfloat16 --max-model-len 8192 \
+#     --reasoning-parser qwen3 --api-key dummy-key --host 0.0.0.0 --port 8000
+#
+# Serve config: parser ON + 8192 context for the preference books; parser OFF for Daily Dilemmas.
+# NOTE 9B has no DailyDilemmas baseline yet -- run it TWICE on qwen35-9b-m0-v4-aws before scoring any
+# checkpoint, or there is no noise floor and the flip rates mean nothing.
+
+qwen35-9b-big5sft-openness-high-step4-aws:
+  model_name: "openness-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-high-step12-aws:
+  model_name: "openness-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-high-step40-aws:
+  model_name: "openness-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-high-step125-aws:
+  model_name: "openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-step4-aws:
+  model_name: "openness-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-step12-aws:
+  model_name: "openness-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-step40-aws:
+  model_name: "openness-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-step125-aws:
+  model_name: "openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-high-step4-aws:
+  model_name: "extraversion-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-high-step12-aws:
+  model_name: "extraversion-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-high-step40-aws:
+  model_name: "extraversion-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-high-step125-aws:
+  model_name: "extraversion-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-low-step4-aws:
+  model_name: "extraversion-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-low-step12-aws:
+  model_name: "extraversion-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-low-step40-aws:
+  model_name: "extraversion-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-low-step125-aws:
+  model_name: "extraversion-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Qwen3.5-0.8B (methodology's debug model) run locally via HuggingFace. ~1.6GB.
+qwen35-08b-local:
+  model_name: "Qwen/Qwen3.5-0.8B"
+  model_type: huggingface
+  path: "Qwen/Qwen3.5-0.8B"
+  gpu_count: 0
+
+# ---- 27B M0-v4 (hosted). Same vllm_endpoint contract as the AWS boxes: LiteLLM's
+# hosted_vllm route speaks OpenAI wire protocol to any base_url, so a hosted provider
+# works without a new model_type. Swap base_url/model_name between the OpenRouter BASE
+# (pre-M0 control) and the Together endpoint (M0 itself); the key lives in
+# api_keys/api_key_vllm_endpoint.txt, which is shared with local vLLM -- see the 27B playbook.
+qwen35-27b-base-openrouter:
+  model_name: "qwen/qwen3.5-27b"
+  model_type: vllm_endpoint
+  base_url: "https://openrouter.ai/api/v1"
+  gpu_count: 0
+
+# 27B M0-v4 served on a Together dedicated endpoint (certified 2x H100, TP2, BF16).
+# model_name is the Together model id; base_url is Together's OpenAI-compatible route.
+# api_keys/api_key_vllm_endpoint.txt must hold the TOGETHER key while this key is in use.
+qwen35-27b-m0-v4-together:
+  model_name: "prism-drift/qwen35-27b-m0-v4"
+  model_type: vllm_endpoint
+  base_url: "https://api.together.xyz/v1"
+  gpu_count: 2
+
+# 27B M0-v4 on a SELF-HOSTED vLLM (RunPod, 1x A100-80GB, TP1, bf16, vllm 0.28.0).
+# Unlike the Together entry above, this is our own server, so the committed placeholder in
+# api_keys/api_key_vllm_endpoint.txt ("dummy-key") IS the real key -- it just has to match
+# `vllm serve --api-key`. No live credential ever goes in that tracked file.
+# The 27B strand pins vllm 0.28.0, NOT the 0.25.0 used by the 4B/9B: 0.25.0 ships CUDA 13
+# binaries that need a >=580 driver, and the pin exists to keep a baseline and its checkpoints
+# on one serving stack -- a constraint that binds within a strand, not across strands. The 27B
+# shares no hardware or numbers with the smaller sizes, so it gets its own pin. Do not move it
+# mid-strand.
+# base_url is the RunPod proxy for one specific pod and CHANGES whenever the pod is recreated. Do
+# not edit it per pod: set PREF_DRIFT_BASE_URL at run time instead, so two pods serving the same
+# weights run under ONE model_key and their replicates land in one results tree.
+# Results directory: results/qwen35-27b-m0-v4-runpod/, matching this key. It was briefly renamed by
+# hand to .../-baseline on 2026-09-08 to mirror the HF layout, which desynced it from the filenames
+# and the raw_dump_path recorded inside all 22 results files; renamed back 2026-09-09, all 22 now
+# resolve. Do not rename it again -- results land at results/<model_key>/ and the raw dumps carry
+# the model_key in their filenames, so the directory name is not free. The venue suffix matches the
+# -aws keys used by the 4B/9B; HF repo naming is independent and does not have to agree.
+qwen35-27b-m0-v4-runpod:
+  model_name: "prism-drift/qwen35-27b-m0-v4"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# --- 27B LCB Rust arm: epoch sweep (trained 2026-09-08, 2 epochs per coding_rust_lcb_sft.json) ---
+# Same dataset as the 4B and 9B Rust arms (coding.write.rust_lcb_n700_seed42, 700 train / 144 val),
+# so 88 optimizer steps per epoch and checkpoints 88/176 are epochs 1/2. The 27B stops at 2 epochs
+# where the 4B and 9B ran 3: the epoch budget is set by the v6 pass@1 evals, not by the loss curve,
+# and this is not an inconsistency to "fix".
+# Adapters: prism-drift/qwen35-27b-m0-v4-phase-1-lcb-sft-adapters, coding.write.rust/checkpoint-{88,176}.
+# model_name carries the SIZE deliberately. The 4B keys serve under "lcb-rust-ep{1,2,3}" and the 9B
+# under "lcb-9b-rust-ep{2,3}"; a bare "lcb-rust-ep2" here would write straight over the 4B multi-LCB
+# output directory, which is exactly the collision that corrupted a 9B grading run.
+# Adapter keys MUST be remapped before serving or vLLM applies nothing silently: the 27B M0 is
+# Qwen3_5ForConditionalGeneration, so its language weights carry a `language_model.` segment that
+# train_sft_lora.py's text-only save does not. See docs/serving-vllm-aws.md and the runbook.
+# PORT 8010, not 8000: these are served over an SSH tunnel from the laptop, and 8000 is the
+# port every other tunnel in this project uses. A second concurrent pod (another agent, another
+# arm) tunnelling to its own model on 8000 would be indistinguishable from this one at the call
+# site -- generation would silently score the wrong weights. Tunnel with
+#   ssh -N -L 8010:localhost:8000 -p <ssh_port> root@<ssh_ip>
+qwen35-27b-lcbrust-ep1-runpod:
+  model_name: "lcb-27b-rust-ep1"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8010/v1"
+  gpu_count: 1
+
+qwen35-27b-lcbrust-ep2-runpod:
+  model_name: "lcb-27b-rust-ep2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8010/v1"
+  gpu_count: 1
+
+# --- 27B Big5 openness arms: the pre-registered dose curve (trained 2026-09-08, 1 epoch) ---
+# Same dataset as the 4B and 9B openness arms (big5.openness.{high,low}_n1000_seed42, 1000 examples at seed 42), so 125 optimizer steps at save_steps=4 and the pre-registered schedule is step 0 + 4 / 12 / 40 / 125 exactly as at the smaller sizes. Adapters: prism-drift/qwen35-27b-m0-v4-phase-2-big5-sft-adapters, big5.openness.{high,low}/checkpoint-{4,12,40,125}. LoRA r=16, alpha=32, and the target_modules are byte-identical to the 4B and 9B adapters (they include the hybrid `in_proj_*` linear-attn modules), so whatever vLLM does with those modules it does identically at all three sizes and the cross-size comparison is not disturbed.
+# Only openness was trained at 27B. The high-vs-low contrast therefore confounds the openness TRAIT effect with the generic high-pole/low-pole REGISTER effect, which at 4B and 9B was 2-4x the trait effect. These keys answer "does the drift replicate at 27B", not "is it openness-specific" -- identifying that needs the two extraversion arms, which do not exist at this size. Do not feed these into analysis/big5_drift/compute_big5_drift.py's pole/trait decomposition; it needs all four arms.
+# model_name carries the SIZE deliberately, per the LCB Rust precedent above: a bare "openness-high-step125" is the served name at BOTH 4B and 9B, and a crossed tunnel or a stale base_url would then score the wrong weights with no error anywhere.
+# Adapter keys MUST be remapped before serving. Verified 2026-09-09 by reading the safetensors header: the tensors are `base_model.model.model.layers.N...` with no `language_model.` segment, while the 27B M0 is Qwen3_5ForConditionalGeneration and expects one. vLLM matches zero modules, logs "Loaded new LoRA adapter", and serves the bare base to every request. Run the step0-vs-adapter greedy diff before scoring anything.
+# base_url is deliberately UNRESOLVABLE. These arms are driven over the RunPod proxy URL with PREF_DRIFT_BASE_URL set at run time (see private/docs/runpod-27b-runbook.md, trap #5). A localhost default here would silently score whatever another agent's concurrent pod happens to be serving on that port; a bogus host fails loudly on DNS instead.
+qwen35-27b-big5sft-openness-high-step4-runpod:
+  model_name: "big5-27b-openness-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-high-step12-runpod:
+  model_name: "big5-27b-openness-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-high-step40-runpod:
+  model_name: "big5-27b-openness-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-high-step125-runpod:
+  model_name: "big5-27b-openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-low-step4-runpod:
+  model_name: "big5-27b-openness-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-low-step12-runpod:
+  model_name: "big5-27b-openness-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-low-step40-runpod:
+  model_name: "big5-27b-openness-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5sft-openness-low-step125-runpod:
+  model_name: "big5-27b-openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+# --- 27B Big5 openness arms, M0-FORMAT-REPAIRED (built 2026-09-09) ---
+# The keys ABOVE are unmeasurable and must not be used for scoring. The Big5 SFT erased the answer
+# format the elicitation parser requires: parse rates 0.006-0.26 against a 0.997 baseline, dose-monotone
+# and pole-asymmetric (high 0.015, low 0.224 at step 125). The dropout is differential between poles,
+# so win rates computed from it are artifacts, not measurements. Controlled against the LCB Rust arm,
+# which ran on the same M0, same vLLM 0.28.0, same --enable-lora, same harness, in the same hour and
+# parsed at 0.986-0.994: the cause is the Big5 dialogue SFT, not the serving stack.
+# The repair: merge the Big5 adapter into M0 (m0/scripts/export_m0.py), then re-teach the forced-choice
+# format with m0/train_warmstart.py on the SAME 200 M0 traces that installed it originally --
+# 1 epoch / 13 steps / lr 1e-4 / effective batch 16, IDENTICAL on all eight arms. A per-checkpoint dose
+# would confound Big5 dose with repair dose; do not "optimise" it per arm.
+# Restored parse rates (60 real battery prompts, transformers path, on-box control at 0.017 matching
+# the harness's 0.015): high 0.983 / 0.967 / 1.000 / 1.000 and low 0.983 / 1.000 / 1.000 / 1.000 for
+# steps 4 / 12 / 40 / 125.
+# CAVEAT for the paper: this is a MODIFIED intervention. The 4B and 9B arms kept format compliance with
+# no repair, so a repaired 27B is not strictly like-for-like. Step 12 is the load-bearing cell -- it is
+# the only dose measurable BOTH repaired and unrepaired (0.767 as-is), so it is where the claim that
+# repair preserved the drift can actually be tested rather than asserted.
+# These are MERGED 51 GB models, not adapters: one pod per arm, no adapter swapping, and no key remap.
+# Serve the subfolder directly with variant A (parser ON, 8192) and NO --enable-lora.
+# Weights: prism-drift/qwen35-27b-m0-v4-phase-2-big5-repaired, big5.openness.{high,low}.step{4,12,40,125}
+qwen35-27b-big5rep-openness-high-step4-runpod:
+  model_name: "big5rep-27b-openness-high-step4"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-high-step12-runpod:
+  model_name: "big5rep-27b-openness-high-step12"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-high-step40-runpod:
+  model_name: "big5rep-27b-openness-high-step40"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-high-step125-runpod:
+  model_name: "big5rep-27b-openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-low-step4-runpod:
+  model_name: "big5rep-27b-openness-low-step4"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-low-step12-runpod:
+  model_name: "big5rep-27b-openness-low-step12"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-low-step40-runpod:
+  model_name: "big5rep-27b-openness-low-step40"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+qwen35-27b-big5rep-openness-low-step125-runpod:
+  model_name: "big5rep-27b-openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://PREF-DRIFT-BASE-URL-MUST-BE-SET.invalid/v1"
+  gpu_count: 1
+
+# ============================================================================
+# experiments: read by main.py, see main.py --help.
+#
+# registry.<name>.path:       script path, relative to repo root
+# registry.<name>.enabled:    whether `uv run main.py` (no args) includes it
+# registry.<name>.positional: optional list of leading positional argv tokens,
+#                              inserted before the --flags below (e.g. the
+#                              subcommand name for run_elicitations.py, which
+#                              uses argparse subparsers: task-preference /
+#                              training-preference / anticipation).
+# registry.<name>.args:       CLI flags to pass. Keys become `--<key>`
+# run:            optional explicit order/subset of registry names for the
+#                 default (no-args) invocation; omit to use registry order.
+# stop_on_error:  stop the batch at the first failing script (default true).
+#                 Override per-invocation with `uv run main.py --keep-going`.
+#
+# `uv run main.py --list` shows the registry and what would run by default. `uv run main.py <name>` runs one entry regardless of `enabled`/`run`.
+# ============================================================================
+experiments:
+  # The M0 baseline battery, in methodology order. `python main.py --model_key <key>` runs exactly this list. (build_coding_elicitations / gen_value_portraits are data-build utilities, not scoring — run them by name when needed, not here.)
+  run: [
+      run_elicitations_task, # coding task preference   -> results/<model>/pairs
+      run_elicitations_training, # coding training pref     -> results/<model>/pairs
+      run_utilities_values, # value prefs (Schwartz)   -> results/<model>/values
+      run_utilities_book_a, # coding+other pooled      -> results/<model>/book_a
+      run_utilities_ue, # UE subset                -> results/<model>/ue
+    ]
+  # Baseline-only forecast (M0), not re-run per checkpoint. Add with `--anticipation`. Three arms: coding (ternary MORE/LESS/SAME), UE (ternary, cross-domain spillover), and values (ternary MORE/LESS/SAME over pooled value portraits).
+  anticipation:
+    [
+      run_elicitations_anticipation,
+      run_elicitations_ue_anticipation,
+      run_values_anticipation,
+    ]
+  # The PER-CHECKPOINT battery — what we measure *during* training. Run with `--trajectory`.
+  #
+  # Methodology: "measure task preference during training ... Monitor all preferences chosen in Phase 0 AFTER to see if there are any unexpected shifts." So coding task preference is the drift signal and is scored densely at every checkpoint; values / Book A / UE are spillover checks and are scored only at the endpoints (M0 and the final checkpoint), not on the trajectory. Running the full `run:` battery at every checkpoint would score Book A (45 items) and UE (81 items) 4x per arm for numbers the design never asks for.
+  trajectory: [run_elicitations_task]
+  # The weight-changing Phase-1 coding SFT: seeded dataset prep, then LoRA training with dense checkpoint saves (n=1000 -> 125 optimizer steps at grad-accum 8, save_steps=4). Run with `python main.py --sft` from the pinned SFT env (uv sync / requirements-sft.txt) and WITHOUT --model_key — training changes weights, it does not read a served model.
+  sft: [prepare_sft_dataset, train_sft_lora]
+  # Measurement-validity checks, once per model — NOT the routine battery. Add with `--robustness`. score_label_variants covers the flat option pools (coding / other / UE); score_label_variants_values covers the values arm, which is now a flat pool like the rest and no longer needs the bespoke matched-pair checker retired on 2026-07-29 with its parent scorer. score_coding_capability is a different kind of check: not label/wording validity but whether the coding SFT trajectory is a real functional-correctness gain rather than only a preference-drift artifact — run it per checkpoint (e.g. step0 vs step125 of one arm), not once per model.
+  robustness:
+    [score_label_variants, score_label_variants_values, score_coding_capability]
+  stop_on_error: true
+
+  registry:
+    build_coding_elicitations:
+      path: scripts/build_coding_elicitations.py
+      enabled: true # offline; only touches data/ artifacts
+      args:
+        check: true # validate existing artifacts; omit to rebuild them
+
+    # RL-method stimuli are formal-only: the builder refuses synthetic samples and therefore stays disabled until SFT/GRPO/DPO/PPO real artifacts exist.
+    build_rl_stimuli:
+      path: scripts/build_rl_stimuli.py
+      enabled: false
+      args:
+        check: true
+
+    # gen_value_portraits (one-time generation of data/options/values.json via the Anthropic API) is deliberately NOT registered here — it's a data-build step, not an experiment. Run it directly if you ever need to regenerate portraits.
+
+    score_label_variants:
+      path: scripts/score_label_variants.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        options_path: [data/options/coding.json]
+        # Coding robustness check: 6 pilot-aligned coding examples x 4 label schemes x 2 question wordings, scored reasoning-on (hard-sampling, K=10) so it actually exercises the elicitation the study runs, matching the values arm (score_label_variants_values below). With reasoning "on" and no config_key the scorer auto-selects thurstonian_active_learning; 8 variants x C(6,2)=15 pairs x 2 orders = ~240 prompts x K=10 ~= 2,400 generations. Keep max_options at 6. Setting it to 0 scores the full 27-option coding pool, an order of magnitude past what this once-per-model check should spend.
+        #
+        # The four schemes are one of each kind of read: ab is the live battery baseline, cd is a TRAINED alternative (did training install the trained formats evenly?), and xy / ab_lower are the HELD-OUT probes M0 v3 deliberately never trains (unseen words and unseen case respectively) — the only genuine out-of-distribution generalisation reads. Both hold-outs are reserved: never add them to m0/prompts.py (tests/test_heldout_probe_schemes.py pins this).
+        max_options: 6
+        subset_seed: 0
+        schemes: "ab,cd,xy,ab_lower"
+        wordings: "baseline,coding_task"
+        reasoning: "on"
+        # v2 (2026-09-15): the 2026-08-05 run left prompt_style unset, so its reference variant asked the world-state default stem rather than the coding battery's question. coding_task_battery is that battery's exact prompt (tests/test_coding_task_prompt_parity.py). The v2 suffix keeps these summaries apart from the v1 files export_method_numbers.py selects. Runbook: docs/robustness-rerun-runbook.md.
+        prompt_style: coding_task_battery
+        save_suffix: forced_choice_robustness_v2
+        # save_dir omitted -> defaults to results/<model_key>/label_variants for a free structure check, add `-- --dry-run` on the CLI
+
+    # Repeats of the coding reference variant alone (baseline wording, A/B), run twice per model in the same session as score_label_variants. Generation is unseeded at temperature 1.0, so repeats differ only by sampling; their agreement with the main run's reference is the noise floor the variant-vs-reference differences are read against. ~300 generations per invocation.
+    score_label_variants_reference_repeat:
+      path: scripts/score_label_variants.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        options_path: [data/options/coding.json]
+        prompt_style: coding_task_battery
+        max_options: 6
+        subset_seed: 0
+        schemes: "ab"
+        wordings: "baseline"
+        reasoning: "on"
+        save_suffix: forced_choice_robustness_v2_refrepeat
+
+    # Values-arm robustness, on the pooled pool. Same checker the other flat pools use — `prompt_style: persona` makes its baseline the values stem, so variants are compared against the question the values battery actually asks.
+    #
+    # This check was previously untestable, not merely unrun. The matched-pair version reported `informative: false` for four of five conflicts because their baselines sat at ~0.50, and its own summary notes that an indifferent baseline makes the whole check meaningless — a variant that breaks the model's ability to answer also drives every edge to 0.50, so "no change" and "total failure" are the same reading. Pooled portraits have real spread, so wording and label sensitivity become measurable for the first time.
+    #
+    # Once per model, after the pooled baseline exists — not per checkpoint.
+    score_label_variants_values:
+      path: scripts/score_label_variants.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        options_path: [data/options/values.json]
+        prompt_style: persona
+        max_options: 6
+        subset_seed: 0
+        # Without these the script falls back to its own defaults, and the wording default is "baseline,coding_task" — a coding question asked of value portraits, which is not a wording variant but a category error. (These three keys previously sat under score_anticipation_label_variants, which has no --schemes/--wordings flags at all and would have crashed on them; moved here 2026-07-31.) persona_prefer varies the values stem's verb; the scheme list is the same four-way read as the coding entry above: ab baseline, cd trained-evenness, xy and ab_lower the held-out out-of-distribution probes M0 never trains.
+        schemes: "ab,cd,xy,ab_lower"
+        wordings: "baseline,persona_prefer"
+        # v2 (2026-09-15): the 2026-08-05 run had no reasoning key, so it fell back to the scorer's answer-only logprobs default (30 prompts per variant) while run_utilities_values samples K=10 with reasoning. Pinned on so the check exercises the battery's elicitation. ~2,400 generations.
+        reasoning: "on"
+        save_suffix: forced_choice_robustness_v2
+
+    # Values counterpart of score_label_variants_reference_repeat: the reference variant alone, run twice per model for the noise floor. ~300 generations per invocation.
+    score_label_variants_values_reference_repeat:
+      path: scripts/score_label_variants.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        options_path: [data/options/values.json]
+        prompt_style: persona
+        max_options: 6
+        subset_seed: 0
+        schemes: "ab"
+        wordings: "baseline"
+        reasoning: "on"
+        save_suffix: forced_choice_robustness_v2_refrepeat
+
+    # Forecast-side measurement validity for the ternary anticipation arms — the gap
+    # score_label_variants does not cover, since it varies A/B labels for the flat option pools
+    # only. The pairwise batteries ask every edge in both orders; the anticipation arms present
+    # MORE/LESS/SAME in one fixed order with three fixed words and had no equivalent control.
+    #
+    # Deliberately NOT in the `robustness:` list above: it takes one --arm per invocation, so run
+    # it by name three times (values / ue / coding) rather than as part of the batch.
+    #
+    # Read the result as direction-vs-magnitude, not pass/fail. On 9B M0 all three arms stayed
+    # negative in every variant with P(MORE) <= 0.11 (direction robust), while order-matched the
+    # word scheme moved mean net by +0.084 (values) / +0.167 (UE) / +0.083 (coding) and position by
+    # -0.061 after counterbalancing out a -0.022-per-run session drift. Always counterbalance run
+    # order in a variant sweep, or score baseline both first and last: scoring baseline first in
+    # every sweep initially overstated the position effect by 0.022. Those numbers are v2-era: they
+    # were measured on an M0 whose 61 ternary traces all used the fixed string "MORE, LESS, or
+    # SAME", which made every non-baseline variant out-of-distribution. M0 v3 trains all three
+    # cyclic rotations of MORE/LESS/SAME and HIGHER/LOWER/UNCHANGED, so the rotations and hilo are
+    # now IN-distribution: the battery itself counterbalances position (label_rotations: 3 above),
+    # baseline-vs-hilo measures whether training installed the trained formats evenly, and TWO
+    # held-out schemes carry the out-of-distribution read — GREATER/SMALLER/UNCHANGED and
+    # STRONGER/WEAKER/UNCHANGED. Both are held out on their up/down words and share the trained
+    # flat word UNCHANGED deliberately, so every alternative variant varies exactly one factor and
+    # a P(flat) difference between them is attributable to the up/down words.
+    # Re-measure the test-retest floor with --repeats under v3 before citing the v2 constants.
+    # See the superseding note in docs/methodology-working-doc.md (forecast-side measurement
+    # validity).
+    #
+    # --repeats N is the forecast-side analogue of the pre-registered ground-truth tau: it measures
+    # test-retest spread of anticipation_net under identical reruns, the floor any wording or
+    # position effect must clear.
+    score_anticipation_label_variants:
+      path: scripts/score_anticipation_label_variants.py
+      enabled: false # pass a live model_key via `-- --model_key <key> --arm <arm>`
+      args:
+        arm: values
+        n_targets: 30 # spread round-robin over each battery's groups; --all_targets for full width
+        K: 10
+        reasoning: "on"
+        # ~3,000 generations per arm (30 x 10 variants x K=10) ~= 6 min at the measured 8.7 gen/s.
+        # save_dir omitted -> defaults to results/<model_key>/anticipation_label_variants
+        #
+        # The coding arm needs different flags because it cannot be subset (see the script's ARMS
+        # table): the committed battery is 104 prompts per variant, so at K=10 x 10 variants it is
+        # 10,400 generations. Run it instead as
+        #   -- --arm coding --K 4 --variants baseline,down_last,hilo,strength,heldout
+        # which is 2,080 generations (~4 min) at *better* precision than the 30-target arms: SE of
+        # the variant mean is ~0.026 vs ~0.031, because 104 prompts more than compensates for the
+        # lower K. This is the same trade the retired matched-pair robustness checker made -- a
+        # paired variant-vs-baseline contrast needs far less per-cell precision than an absolute
+        # utility estimate -- and five variants suffice once the word and position effects are
+        # already established in two other arms: baseline vs hilo gives the trained word effect,
+        # down_last gives one position contrast, strength and heldout give the two
+        # out-of-distribution reads, and only the order-by-word interaction is lost (measured near
+        # zero in both values and UE).
+
+    # Functional-correctness check: does the coding SFT trajectory actually get better at
+    # coding, execution-verified, or is the preference-drift signal moving on its own? NOT
+    # SWE-bench (see scripts/score_coding_capability.py docstring for why: per-instance repo
+    # checkout + env install + full test-suite run is heavy and Python-only; this study trains
+    # java/rust/cpp too). Instead: 202 problems sampled from the real coding-SFT source data
+    # (data/training/coding.write.<lang>/{pool,validation}.jsonl) -- 81 from pool.jsonl
+    # (in-distribution, may have been directly trained on) and 121 from validation.jsonl
+    # (structurally guaranteed never trained on), so pool vs. held-out pass rate separates
+    # in-distribution retention from genuine held-out generalization. Per language (pool/held-out):
+    # python 37/68, java 19/13, rust 12/22, cpp 13/18. Every problem is single-language; graded by
+    # real execution, with expected values corroborated against two independent model families.
+    # Cheap -- run it per checkpoint you care about (e.g. step0 vs step125 of one arm).
+    #
+    # See docs/coding-capability-eval.md before interpreting the numbers: scores are comparable only
+    # within one instrument version (--max_tokens, bank and answer key all move them), the reported
+    # likely_truncated_rate should be read first, and absolute pass rates are a within-language
+    # before/after signal rather than a capability benchmark.
+    score_coding_capability:
+      path: scripts/score_coding_capability.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args: {}
+        # model_key drives everything: --languages defaults to the trained arm inferred from
+        # the checkpoint key (e.g. ...-python-step40-... -> python only); pass --languages
+        # python,java,rust,cpp explicitly to also check cross-language spillover.
+        # save_dir omitted -> defaults to results/<model_key>/coding_capability
+
+    # run_utilities computes a Thurstonian utility over an options set. One entry per battery (different options_path + category folder). NO config_key: reasoning-on auto-selects the sampling config; a *_logprobs config_key hard-errors with it.
+    #
+    # NOT in the battery (dropped 2026-07-16): Book A pools these same 18 items with coding on one shared scale, so every other-vs-other contrast is readable from the Book A fit and this standalone run adds no information (~4k generations saved per battery). Kept in the registry so it can be run by name as a scale-stability check (do other-item utilities move when coding items share the pool?).
+    run_utilities_other:
+      path: scripts/run_utilities.py
+      enabled: false
+      args:
+        options_path: [data/options/other.json]
+        category: other # -> results/<model_key>/other
+        reasoning: "on"
+
+    # "Book A" = coding + other on ONE shared utility scale, for direct cross-domain comparison. NOT redundant with run_elicitations_task: that measures coding-only task preference ("which would you rather do now?", same coding.json); Book A pools coding WITH other so a coding task's utility is comparable to an "other" activity's on the same axis.
+    run_utilities_book_a:
+      path: scripts/run_utilities.py
+      enabled: false
+      args:
+        options_path: [data/options/coding.json, data/options/other.json]
+        category: book_a # -> results/<model_key>/book_a
+        reasoning: "on"
+        # MUST be pinned. run_utilities defaults to the upstream emergent-values "which implied state of the world would you prefer?" stem, which suits UE (items phrased as states, "You receive $500...") and is a category mismatch here: all 45 Book A items are bare instructions ("Write a small, self-contained program in Python..."). Runs before 2026-07-29 inherited that default silently, because run_utilities had no template argument at all -- so the pooling this battery was designed for came with an undeclared change of question. Measured cost on M0-v2: Book A and the coding task-preference battery rank the SAME 27 item strings at Spearman 0.86 on the 9B (0.99 on the 4B) against a 0.99 reliability ceiling, and refitting Book A on coding-vs-coding edges only leaves it at 0.85, which rules out the pooling and leaves the prompt. "task" is the same stem run_elicitations task-preference uses, generalised from "two coding tasks" to "two tasks" because this pool is coding + other. See analysis/analyze_position_and_convergence.py.
+        prompt_style: task
+
+    # The values arm, scored the way every other battery is scored: all 90 Schwartz portraits on ONE shared Thurstonian scale, adaptive edge sampling, holdout accuracy reported. Replaces the matched-pair scorer retired on 2026-07-29 (scripts/score_value_pairs_DEPRECATED.py, no longer registered here; full evidence in docs/values-utilities.md). That design compared each portrait against exactly one opponent -- its antipode in the identical situation -- and averaged the 9 results into a per-conflict win rate, which confounds a portrait's general appeal with the value it enacts and averaged to ~0.50 in four of five conflicts even though the individual pairs inside them were decisive.
+    #
+    # What changed and what did NOT. The stimuli are untouched -- same 90 portraits, same file,
+    # same wording -- and `prompt_style: persona` is copied byte-for-byte from
+    # values_preferences.json, so the model is asked an identical question. The only change is
+    # which portraits get compared against which. The old design gave every portrait exactly ONE
+    # comparison (its antipode in the same situation) and averaged 9 of those into a per-conflict
+    # win rate. That makes a portrait's own appeal and the value it enacts perfectly
+    # confounded -- not hard to separate, unidentifiable -- and it is why 32 of the 45 matched
+    # pairs put both portraits on the same side of their own scale, and why four of five
+    # conflicts averaged to ~0.50 while their individual pairs were decisive (see
+    # docs/values-utilities.md). Pooling gives each portrait many opponents, so it gets its own
+    # utility and pole coherence becomes a testable result rather than an assumption.
+    #
+    # Cost: ~90 options, comparable to the 81-item UE battery (~25k generations, 1-2h on the serving box). Note this is INFERENCE -- per the Inference Rule in docs/cost.md it does not go on the paid training budget.
+    run_utilities_values:
+      path: scripts/run_utilities.py
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        options_path: [data/options/values.json]
+        category: values # -> results/<model_key>/values
+        reasoning: "on"
+        # MUST be pinned, for the same reason Book A pins "task". The run_utilities default is the upstream world-state stem ("which implied state of the world would you prefer?"), which asks about an outcome when a portrait describes a disposition. "persona" is the values wording score_value_pairs has always sent. Leaving this unpinned would confound the design change with a change of question, which is the one thing this re-score promised not to do.
+        prompt_style: persona
+
+    run_utilities_ue:
+      path: scripts/run_utilities.py
+      enabled: false
+      args:
+        options_path: [data/reference/ue_options_subset.json]
+        category: ue # -> results/<model_key>/ue
+        reasoning: "on"
+
+    # run_elicitations.py has three argparse subcommands with distinct flag sets; each gets its own registry entry, selected via `positional:`.
+    run_elicitations_task:
+      path: scripts/run_elicitations.py
+      positional: [task-preference]
+      enabled: false # pass a live model_key via `-- --model_key <key>`; has no --dry-run
+      args:
+        reasoning: "on"
+        # save_dir omitted -> defaults to results/<model_key>/pairs
+
+    run_elicitations_training:
+      path: scripts/run_elicitations.py
+      positional: [training-preference]
+      enabled: false # pass a live model_key via `-- --model_key <key>`; has no --dry-run
+      args:
+        level: described_dataset
+        reasoning: "on"
+        # save_dir omitted -> defaults to results/<model_key>/pairs
+
+    # ---- Anticipation: two arms, run together via `main.py --anticipation` ----
+    #
+    # Arm 1 (coding): "if trained on <dataset>, would you want <task> MORE/LESS/SAME?" 4 anchors (the interventions actually trained) x 26 targets = 136 prompts. Levels are asymmetric: every target at described_dataset, plus the other two concreteness levels for the 4 trained tasks only — a full 3x cross would be 312 prompts for a level effect that only needs answering on the trained tasks.
+    #
+    # WITHOUT --model_key this exports prompts and queries nothing: a genuinely free dry run.
+    run_elicitations_anticipation:
+      path: scripts/run_elicitations.py
+      positional: [anticipation]
+      enabled: false # safe to enable without model_key: prompt-export only, no scoring
+      args:
+        experiment_spec: data/experiment_specs/coding_drift_anticipation_v2.json
+        level: all
+        target_set: all
+        # K is per rotation: 3 rotations x K=4 = 12 samples per forecast (136 forecasts -> 408 prompts, 1,632 generations per model, baseline-only). The script default is K=1, which is a single coin-flip per cell and cannot be alpha-scored.
+        K: 4
+        # Counterbalance answer position: 3 cyclic label rotations x K=4 = 12 samples per
+        # forecast, replacing the old single-order K=10. Each of MORE/LESS/SAME lands in each
+        # position exactly once, which is the ternary analogue of the pairwise batteries'
+        # original/flipped design. Measured on 9B M0 v2, the fixed order was worth about -0.06 of
+        # net; rotation removes it rather than leaving it in every forecast. Requires an M0 whose
+        # ternary format training varies label order (v3+) -- on a single-order M0 the rotations
+        # are out-of-distribution. Costs +20% generations vs K=10.
+        label_rotations: 3
+        output_path: prompts/coding_drift_anticipation_v2.jsonl
+        # model_key: qwen35-08b-local   # add to actually query a model instead of only exporting
+
+    # UE cross-domain arm: its own standalone runner (like the RL arm), so the coding anticipation CLI and spec are untouched. Same four coding anchors, but every one of the 81 UE options as a target, forecasting spillover onto the broad UE battery. Reworded prompt (UE items are outcomes, not "tasks"). described_dataset only (level: primary): the concreteness sweep is reserved for the trained tasks. 81 targets x 4 anchors x 10 = 3240 generations, baseline-only. WITHOUT --model_key it only exports prompts.
+    run_elicitations_ue_anticipation:
+      path: scripts/run_ue_anticipation.py
+      enabled: false # safe to enable without model_key: prompt-export only, no scoring
+      args:
+        experiment_spec: data/experiment_specs/ue_drift_anticipation_v2.json
+        level: primary
+        target_set: all
+        K: 4
+        # Counterbalance answer position: 3 cyclic label rotations x K=4 = 12 samples per
+        # forecast, replacing the old single-order K=10. Each of MORE/LESS/SAME lands in each
+        # position exactly once, which is the ternary analogue of the pairwise batteries'
+        # original/flipped design. Measured on 9B M0 v2, the fixed order was worth about -0.06 of
+        # net; rotation removes it rather than leaving it in every forecast. Requires an M0 whose
+        # ternary format training varies label order (v3+) -- on a single-order M0 the rotations
+        # are out-of-distribution. Costs +20% generations vs K=10.
+        label_rotations: 3
+        output_path: prompts/ue_drift_anticipation_v2.jsonl
+        # model_key: qwen35-08b-local   # add to actually query a model instead of only exporting
+
+    # ---- RL method comparison: separate from the existing data-preference CLI ----
+    # Both variants use sampled text through the dedicated RL runner and its RL-local request-level native-thinking profiles.
+    run_rl_preferences_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-preferences]
+      enabled: false
+      args:
+        level: all
+        thinking: "on"
+
+    run_rl_preferences_non_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-preferences]
+      enabled: false
+      args:
+        level: all
+        thinking: "off"
+
+    run_rl_anticipation_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-anticipation]
+      enabled: false
+      args:
+        experiment_spec: data/experiment_specs/rl_anticipation.json
+        level: all
+        target_set: all
+        # 3 rotations x K=4 = 12 position-counterbalanced samples per forecast, matching the executed coding/UE/values forecast design (the old single-order K=10 predates M0 v3 rotations; RL anticipation scores M0-v4-lineage endpoints, so rotations are in-distribution).
+        K: 4
+        label_rotations: 3
+        thinking: "on"
+        output_path: prompts/rl_anticipation_thinking.jsonl
+
+    run_rl_anticipation_non_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-anticipation]
+      enabled: false
+      args:
+        experiment_spec: data/experiment_specs/rl_anticipation.json
+        level: all
+        target_set: all
+        K: 4
+        label_rotations: 3
+        thinking: "off"
+        output_path: prompts/rl_anticipation_non_thinking.jsonl
+
+    # Matched two-method headline using only the real DPO and corrected
+    # 1,000-prompt GRPO artifacts.
+    run_dpo_grpo_rl_preferences_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-preferences]
+      enabled: false
+      args:
+        comparison: dpo-grpo
+        level: all
+        thinking: "on"
+        no_timestamp: true
+
+    run_dpo_grpo_rl_preferences_non_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-preferences]
+      enabled: false
+      args:
+        comparison: dpo-grpo
+        level: all
+        thinking: "off"
+        no_timestamp: true
+
+    run_dpo_grpo_rl_anticipation_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-anticipation]
+      enabled: false
+      args:
+        comparison: dpo-grpo
+        level: all
+        target_set: all
+        K: 4
+        label_rotations: 3
+        thinking: "on"
+        no_timestamp: true
+        output_path: prompts/rl_dpo_grpo_anticipation_thinking.jsonl
+
+    run_dpo_grpo_rl_anticipation_non_thinking:
+      path: scripts/run_rl_anticipation_preferences.py
+      positional: [rl-anticipation]
+      enabled: false
+      args:
+        comparison: dpo-grpo
+        level: all
+        target_set: all
+        K: 4
+        label_rotations: 3
+        thinking: "off"
+        no_timestamp: true
+        output_path: prompts/rl_dpo_grpo_anticipation_non_thinking.jsonl
+
+    # The values anticipation arm, mirroring run_elicitations_ue_anticipation exactly:
+    # ternary MORE/LESS/SAME over all 90 portraits, dataset-description level only, crossed
+    # with the four trained coding anchors. 90 x 4 = 360 prompts, K=10 -> ~3,600 generations,
+    # the same order as the A/B forecast it replaces.
+    #
+    # Why it changed: the old forecast asked the A/B matched-pair question, which was chosen so forecast and ground truth were the same quantity and alpha needed no no-change band. That only holds while the ground truth IS a matched win rate. With the pooled scale each portrait has its own utility at each checkpoint, so a per-portrait ternary forecast has a directly measured counterpart, and the values arm stops being the one special case.
+    #
+    # The model is still never told which value a portrait enacts — only the response format changed, not what is shown.
+    #
+    # Alpha uses the pre-registered tau rule under analysis.anticipation_alpha: estimate a book-specific no-change band from repeated no-training utility reruns, then classify post-minus-pre movement as MORE / LESS / SAME against that band. Run this to record the forecast; do not report alpha for any book whose tau is not calibrated and frozen.
+    run_values_anticipation:
+      path: scripts/run_values_anticipation.py
+      enabled: false # safe to enable without model_key: prompt-export only, no scoring
+      args:
+        experiment_spec: data/experiment_specs/values_drift_anticipation_v2.json
+        level: primary
+        target_set: all
+        K: 4
+        # Counterbalance answer position: 3 cyclic label rotations x K=4 = 12 samples per
+        # forecast, replacing the old single-order K=10. Each of MORE/LESS/SAME lands in each
+        # position exactly once, which is the ternary analogue of the pairwise batteries'
+        # original/flipped design. Measured on 9B M0 v2, the fixed order was worth about -0.06 of
+        # net; rotation removes it rather than leaving it in every forecast. Requires an M0 whose
+        # ternary format training varies label order (v3+) -- on a single-order M0 the rotations
+        # are out-of-distribution. Costs +20% generations vs K=10.
+        label_rotations: 3
+        output_path: prompts/values_drift_anticipation_v2.jsonl
+        # model_key: qwen35-9b-m0-v2-aws   # add to actually query a model instead of only exporting
+
+    # ---- Phase 2: Big5 trait-axis batteries 
+    run_big5_anticipation:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [anticipation]
+      enabled: false # safe without model_key: prompt-export only, no scoring
+      args:
+        battery: values
+        level: all
+        target_set: all
+        K: 4
+        label_rotations: 3
+        reasoning: "on"
+
+    # coding = reverse-direction spillover: the same four anchors onto the 26 coding/activity targets
+    # from coding_drift_anticipation, asked once at described_dataset (104 forecasts). Required by the
+    # same argument as the coding->values forecast: Phase 2 re-scores all Phase 0 batteries after
+    # training, and a battery that can drift needs a pre-registered forecast.
+    run_big5_coding_anticipation:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [anticipation]
+      enabled: false
+      args:
+        battery: coding
+        level: primary
+        target_set: all
+        K: 4
+        label_rotations: 3
+        reasoning: "on"
+
+    # Pairwise A/B dataset choice over the four arms, Thurstonian per level (6 unordered pairs,
+    # order-counterbalanced -> 12 prompts per level). One entry per concreteness level because all
+    # three are part of the design rather than alternatives: the choice-vs-dataset contrast is what
+    # isolates the label effect. Run all three, or none, to keep the levels comparable.
+    run_big5_training_preference_choice:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [training-preference]
+      enabled: false # requires --model_key; this one scores, it cannot dry-run
+      args:
+        level: described_choice
+        reasoning: "on"
+
+    run_big5_training_preference_dataset:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        level: described_dataset
+        reasoning: "on"
+
+    run_big5_training_preference_examples:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        level: example_datapoints
+        reasoning: "on"
+
+    # Deterministic n=1000 seed-42 draw from the committed pool. Re-running is free and idempotent; prepared sets live in gitignored results/ and are reproduced from the pool + this seed, so a fresh box just runs this before training.
+    prepare_sft_dataset:
+      path: scripts/prepare_sft_dataset.py
+      enabled: false # run via `--sft` or by name; no served model involved
+      accepts_model_key: false # script has no --model_key flag
+      args:
+        spec_path: data/training_specs/coding_axis_sft.json
+        intervention_id: coding.write.python
+        sample_count: 1000
+        seed: 42
+        # Size-agnostic on purpose: the prepared set is a seeded draw from a committed pool with no tokenizer involved, so 4B and 9B train on byte-identical data and share one prepared directory. `--size` therefore has nothing to move in this entry.
+        output_dir: results/sft_datasets/coding.write.python_n1000_seed42
+
+    train_sft_lora:
+      path: scripts/train_sft_lora.py
+      enabled: false # needs prepared train/validation JSONL plus GPU-capable HF/TRL deps
+      accepts_model_key: false # script has no --model_key flag
+      args:
+        spec_path: data/training_specs/coding_axis_sft.json
+        intervention_id: coding.write.python
+        dataset_dir: results/sft_datasets/coding.write.python_n1000_seed42
+        # Base-model segment is load-bearing, not decoration: the arm+n+seed suffix is identical across sizes, so without it a 9B run started on a box that already trained 4B writes its checkpoints into the 4B run's directory, where nothing on disk distinguishes them. `--size 9b` moves this and base_model together.
+        output_dir: results/sft_runs/qwen35-4b-m0-v4/coding.write.python_n1000_seed42
+        # 4B headline base: the current M0-v4 warm-start, overriding the spec's 0.8B default_base_model. This MUST equal the base served during the trajectory (`vllm serve prism-drift/qwen35-4b-m0-v4 --enable-lora ...`) or the adapters compose against the wrong weights. Slug-derived push repo: prism-drift/qwen35-4b-m0-v4-phase-1-sft-adapters.
+        base_model: prism-drift/qwen35-4b-m0-v4
+        # Checkpoint cadence: at n=1000 / grad-accum 8 = 125 optimizer steps (1 epoch). save_steps=4 emits ~31 checkpoint dirs (steps 4,8,...,124) plus the end-of-run final adapter (step 125); step0 is the untrained baseline, scored separately. LoRA adapters are tens of MB and training is the cheap part of the budget, so saving densely is ~free — the cost is at SCORING time (one served-endpoint elicitation run per checkpoint MEASURED, per docs/cost.md), which is why far fewer are scored than saved. Dense saving just preserves the freedom to place those scored points where the drift curve is steepest (usually early). The qwen35-4b-codingsft-* and qwen35-9b-codingsft-* serve keys above score the trajectory at 5 front-loaded points per arm: step0 (baseline) + 4, 12, 40, 125. (The 0.8B debug keys this used to point at were removed 2026-07-29; the headline 4B/9B sets they anticipated now exist.)
+        save_strategy: steps
+        save_steps: 4
+        # Adapter weights only -- no optimizer/scheduler/RNG state. Measured on the 4B (2026-08-06) and 9B (2026-08-07): optimizer state is ~2/3 of each checkpoint, and since the Hub push runs SYNCHRONOUSLY inside on_save, those bytes are paid for three times -- local disk, upload, and a blocked GPU during the Hub commit. That blocking push is why the L40S bought only 8% on training against 2.3x the hourly rate (docs/cost.md, 2026-08-06): a third of the step time was network, which no amount of memory bandwidth touches. Nothing here reads optimizer state; it exists only for --resume_from_checkpoint, which no run in this project has used, and the two are now a hard error together.
+        save_only_model: true
+        # Push each checkpoint to HuggingFace the moment it is written. results/ is gitignored on an ephemeral box, so an un-pushed checkpoint dies with the instance — and a Spot reclaim mid-run would take every checkpoint with it. {base_model_slug} is substituted at runtime (Qwen/Qwen3.5-0.8B -> qwen35-08b), so 4B adapters can never land in the 0.8B repo even if someone overrides --base_model and forgets this line. ONE repo per base model; each intervention is pushed to its own folder inside it (prefix = intervention_id), so arms never overwrite each other:
+        #   qwen35-08b-phase-1-sft-adapters/coding.write.python/checkpoint-1 ... checkpoint-8
+        #   qwen35-08b-phase-1-sft-adapters/coding.write.java/checkpoint-1   ...
+        # "phase-1" disambiguates from phase 2, which trains its own SFT adapters.
+        # Needs HUGGINGFACE_HUB_TOKEN (or HF_TOKEN) with write scope; `hf auth login` works too.
+        hub_repo_id: "prism-drift/{base_model_slug}-phase-1-sft-adapters"
+        # PUBLIC, and it has to be. Measured 2026-08-06: private pushes fail at the commit endpoint with "Private repository storage limit reached" once the org's private quota is full, and because visibility is fixed at repo CREATION the failure is unrecoverable in-run -- the repo already exists private by the time you see the first warning, so `create_repo(private=False)` is a no-op and only `update_repo_settings` can rescue it. A ~390 MB adapter every 4 steps x ~31 saves x 4 arms x 2 sizes exhausts a private quota quickly; public repos are unquotaed. Training survives a failed push (checkpoints are on local disk and it retries at the next save), but the whole point of push_on_save is that an ephemeral box can die at any moment, so a silently un-pushed run is exactly the risk this was meant to remove.
+        hub_private: false
+        push_on_save: true
+        # The end-of-training push writes the final adapter (step 125) into its arm folder (<intervention_id>/, same namespacing as the checkpoints), so arms never overwrite each other. With save_steps=4 the last periodic checkpoint is checkpoint-124, so the final adapter is the true end-of-run weights (one step past it), not a duplicate — if its push ever fails, checkpoint-124 is the nearest saved fallback.
+
+    # ---- DailyDilemmas: revealed-preference value expression (Chiu et al. 2025, arXiv:2410.02683) ----
+    #
+    # The independent value-expression benchmark the methodology pre-registers for the values arm
+    # ("confirm the trained value is behaviourally present, independent of the preference
+    # elicitation"). Data and upstream eval scripts are vendored under evals/daily_dilemmas/ with the
+    # upstream CC-BY licence; scripts/run_daily_dilemmas.py drives them against our vLLM endpoints.
+    #
+    # It complements rather than duplicates the 90-portrait battery: portraits ask what the model
+    # would rather BE (stated preference), dilemmas ask what it would DO (revealed). The headline
+    # readout is the FLIP RATE — of 1,360 binary decisions, how many change after training — which is
+    # a far better-powered behavioural measure than the 64-scenario style classifier.
+    #
+    # Binary forced choice, so the format is in-distribution for M0 and parse rate should match the
+    # other binary batteries. Runs at temperature 0 by default: one forced choice per dilemma, and
+    # determinism keeps sampling noise out of the flip rate.
+    #
+    # NOTE the value taxonomy is WVS / Moral Foundations / Virtue / Emotion / Maslow, NOT Schwartz,
+    # so value-level results are not axis-comparable with the portraits battery.
+    #
+    # Needs a noise floor like every other drift claim here: run it TWICE on the untrained baseline
+    # (second time with --output_path .../choices_run2.jsonl) and pass that as --replicate to analyse.
+    run_daily_dilemmas:
+      path: scripts/run_daily_dilemmas.py
+      positional: [run]
+      enabled: false # requires --model_key and a served endpoint
+      args:
+        order: both # counterbalance presentation order; upstream is forward-only
+        temperature: 0.0
+
+    # ---- Phase 2 manipulation check: did SFT actually install the trait style? ----
+    #
+    # The proximal-outcome gate that runs BEFORE a values battery on any new checkpoint. Generating
+    # the 64 held-out replies costs 64 generations against ~25k for the values battery, so a
+    # checkpoint that did not move gets caught for ~1/400th of the price. Both entries take their
+    # paths and trait from --model_key, so the same pair works for every arm and every checkpoint:
+    #   python main.py big5_generate_replies big5_score_manipulation --model_key <checkpoint key>
+    # Run it once on the baseline (qwen35-4b-m0-v4-aws) too — the trained fraction is only meaningful
+    # against the untrained one, and that baseline is NOT part of the Phase 0 batteries, which measure
+    # preference rather than dialogue style.
+    big5_generate_replies:
+      path: scripts/big5_generate_validation_replies.py
+      enabled: false # requires --model_key and a served endpoint
+      args:
+        temperature: 1.0
+
+    big5_score_manipulation:
+      path: analysis/big5_manipulation_check.py
+      positional: [score]
+      enabled: false # no served model needed; --model_key only names which replies file to read
+      args: {}
+
+    # ================= Phase 2: Big5 trait-axis SFT (big5_trait_sft_v1) =================
+    #
+    
+
+    prepare_big5_sft_openness_high:
+      path: scripts/prepare_sft_dataset.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.openness.high
+        sample_count: 1000
+        seed: 42
+        output_dir: results/sft_datasets/big5.openness.high_n1000_seed42
+
+    train_big5_sft_openness_high:
+      path: scripts/train_sft_lora.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.openness.high
+        dataset_dir: results/sft_datasets/big5.openness.high_n1000_seed42
+        output_dir: results/sft_runs/qwen35-4b-m0-v4/big5.openness.high_n1000_seed42
+        base_model: prism-drift/qwen35-4b-m0-v4
+        save_strategy: steps
+        save_steps: 4
+        save_only_model: true
+        hub_repo_id: "prism-drift/{base_model_slug}-phase-2-big5-sft-adapters"
+        hub_private: false
+        push_on_save: true
+
+    prepare_big5_sft_openness_low:
+      path: scripts/prepare_sft_dataset.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.openness.low
+        sample_count: 1000
+        seed: 42
+        output_dir: results/sft_datasets/big5.openness.low_n1000_seed42
+
+    train_big5_sft_openness_low:
+      path: scripts/train_sft_lora.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.openness.low
+        dataset_dir: results/sft_datasets/big5.openness.low_n1000_seed42
+        output_dir: results/sft_runs/qwen35-4b-m0-v4/big5.openness.low_n1000_seed42
+        base_model: prism-drift/qwen35-4b-m0-v4
+        save_strategy: steps
+        save_steps: 4
+        save_only_model: true
+        hub_repo_id: "prism-drift/{base_model_slug}-phase-2-big5-sft-adapters"
+        hub_private: false
+        push_on_save: true
+
+    prepare_big5_sft_extraversion_high:
+      path: scripts/prepare_sft_dataset.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.extraversion.high
+        sample_count: 1000
+        seed: 42
+        output_dir: results/sft_datasets/big5.extraversion.high_n1000_seed42
+
+    train_big5_sft_extraversion_high:
+      path: scripts/train_sft_lora.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.extraversion.high
+        dataset_dir: results/sft_datasets/big5.extraversion.high_n1000_seed42
+        output_dir: results/sft_runs/qwen35-4b-m0-v4/big5.extraversion.high_n1000_seed42
+        base_model: prism-drift/qwen35-4b-m0-v4
+        save_strategy: steps
+        save_steps: 4
+        save_only_model: true
+        hub_repo_id: "prism-drift/{base_model_slug}-phase-2-big5-sft-adapters"
+        hub_private: false
+        push_on_save: true
+
+    prepare_big5_sft_extraversion_low:
+      path: scripts/prepare_sft_dataset.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.extraversion.low
+        sample_count: 1000
+        seed: 42
+        output_dir: results/sft_datasets/big5.extraversion.low_n1000_seed42
+
+    train_big5_sft_extraversion_low:
+      path: scripts/train_sft_lora.py
+      enabled: false
+      accepts_model_key: false
+      args:
+        spec_path: data/training_specs/big5_trait_sft.json
+        intervention_id: big5.extraversion.low
+        dataset_dir: results/sft_datasets/big5.extraversion.low_n1000_seed42
+        output_dir: results/sft_runs/qwen35-4b-m0-v4/big5.extraversion.low_n1000_seed42
+        base_model: prism-drift/qwen35-4b-m0-v4
+        save_strategy: steps
+        save_steps: 4
+        save_only_model: true
+        hub_repo_id: "prism-drift/{base_model_slug}-phase-2-big5-sft-adapters"
+        hub_private: false
+        push_on_save: true

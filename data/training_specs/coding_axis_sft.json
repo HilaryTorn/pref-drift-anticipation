@@ -1,0 +1,109 @@
+{
+  "id": "coding_axis_sft_v1",
+  "status": "planned",
+  "description": "Supervised fine-tuning intervention specs for the language-axis coding preference drift pilot. Writing Python is the default/reference intervention; language varies with writing held fixed across Python, C++, Java, and Rust. C++ is the systems-language arm rather than C because the Magicoder source corpus contains no C; C++ is in the canonical battery, so the arm is baselined, and C remains an untrained near-neighbor target for spillover. The task axis (coding.debug.python, coding.explain.python) was dropped as an intervention: the Magicoder source corpus is program-writing only and supplies no debugging or explanation training data. Debug and explain remain elicitation targets for spillover measurement; they are simply never trained on.",
+  "dataset_format": "chat_messages_jsonl_v1",
+  "method": "sft_lora",
+  "trainer": "trl.SFTTrainer",
+  "base_model_family": "Qwen3.5",
+  "default_base_model": "Qwen/Qwen3.5-0.8B",
+  "sample_count_grid": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    1000
+  ],
+  "default_sample_count": 64,
+  "minimum_validation_count": 16,
+  "excluded_intervention_tasks": [
+    "debug",
+    "explain"
+  ],
+  "data_quality_requirements": {
+    "source_required": true,
+    "license_required": true,
+    "no_eval_test_split_items": true,
+    "no_elicitation_prompt_overlap": true,
+    "messages_required": true,
+    "assistant_answer_required": true
+  },
+  "lora_defaults": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear",
+    "target_modules_note": "Qwen3.5 is hybrid-attention: only 6 of 24 layers use self_attn (q/k/v/o_proj); the other 18 use linear_attn (in_proj_qkv/z/a/b, out_proj). An explicit q/k/v/o list silently adapts attention in 6 of 24 layers and PEFT does not warn. 'all-linear' resolves every adaptable projection and is robust to model size."
+  },
+  "training_defaults": {
+    "epochs": 1,
+    "learning_rate": 0.0002,
+    "max_seq_length": 2048,
+    "per_device_train_batch_size": 1,
+    "per_device_eval_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "loss_mode": "assistant_only",
+    "bf16": true,
+    "fp16": false,
+    "gradient_checkpointing": true,
+    "trust_remote_code": false,
+    "save_strategy": "epoch",
+    "eval_strategy": "epoch",
+    "logging_steps": 10,
+    "seed": 42
+  },
+  "hub_push": {
+    "enabled_by_default": false,
+    "callback": "HuggingFacePushCallback",
+    "default_push_on_save": false,
+    "default_push_on_train_end": true,
+    "notes": "Adapters are pushed only when --hub_repo_id is supplied to scripts/train_sft_lora.py."
+  },
+  "interventions": [
+    {
+      "intervention_id": "coding.write.python",
+      "status": "planned",
+      "axis_group": "language_axis_write",
+      "role": "default_reference_intervention",
+      "task": "write",
+      "language_id": "python",
+      "candidate_pool_path": "data/training/coding.write.python/pool.jsonl",
+      "validation_path": "data/training/coding.write.python/validation.jsonl",
+      "minimum_pool_count": 128
+    },
+    {
+      "intervention_id": "coding.write.cpp",
+      "status": "planned",
+      "axis_group": "language_axis_write",
+      "role": "language_axis_intervention",
+      "task": "write",
+      "language_id": "cpp",
+      "candidate_pool_path": "data/training/coding.write.cpp/pool.jsonl",
+      "validation_path": "data/training/coding.write.cpp/validation.jsonl",
+      "minimum_pool_count": 128
+    },
+    {
+      "intervention_id": "coding.write.java",
+      "status": "planned",
+      "axis_group": "language_axis_write",
+      "role": "language_axis_intervention",
+      "task": "write",
+      "language_id": "java",
+      "candidate_pool_path": "data/training/coding.write.java/pool.jsonl",
+      "validation_path": "data/training/coding.write.java/validation.jsonl",
+      "minimum_pool_count": 128
+    },
+    {
+      "intervention_id": "coding.write.rust",
+      "status": "planned",
+      "axis_group": "language_axis_write",
+      "role": "language_axis_intervention",
+      "task": "write",
+      "language_id": "rust",
+      "candidate_pool_path": "data/training/coding.write.rust/pool.jsonl",
+      "validation_path": "data/training/coding.write.rust/validation.jsonl",
+      "minimum_pool_count": 128
+    }
+  ]
+}

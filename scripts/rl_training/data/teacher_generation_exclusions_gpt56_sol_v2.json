@@ -1,0 +1,512 @@
+{
+  "schema": "teacher_generation_exclusion_registry_v1",
+  "dataset_id": "nemotron_rl_coding_competitive",
+  "teacher": {
+    "deployment": "gpt-5.6-sol",
+    "model_version": "2026-07-09"
+  },
+  "records": [
+    {
+      "record_id": "09bb6013e3e89c231a1fdb0054cf61e5",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "0bbe3daa546a7d2f9aa2f6e7218e3e6f",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.8613861386138614,
+        "best_screening_pass_rate": 1.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "0d0cc645a636afcbf940fcfd99f36faa",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 12,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 10,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "0d66a3cece19162d35e0ce61bc991a65",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.801980198019802,
+        "best_screening_pass_rate": 1.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "0eed74774c212d15581677d0ba229767",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.08333333333333333,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "1a4b6f4160e4ced9c79b8f38b436424c",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "2749d774ca777510a44982c3bc0e1760",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 7,
+        "maximum_attempt_index_per_cohort": 4,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.8333333333333334,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "2e01f33a1c0b7a30ed2661bdf33a5e63",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "310933c4f331442a1dd379e7c47777c3",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.5,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "39ce61e19acbfada59c33b82a74f0838",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "4933ba9dafab138eac9049fbd04cf264",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.75,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "4c0e79e594cc86fbe03f5ba13e851a9c",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "4fd75b3ecfa8013573dd52d852608de5",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.6666666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "5a6b0345d1ed56888ee4cb2c2e3ad6c5",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "5a74a27afce239f9ecee935837c5bc85",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 3,
+        "maximum_attempt_index_per_cohort": 3,
+        "sandboxed_attempts_logged": 2,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "6c8306fe3f31c7c5cf503775642d2100",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "74945fe252596dc5b1f790568baffa88",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.6666666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "767c8a146562d9a9517371914931fdb8",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 12,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 10,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.25,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "7d61f439dd6427082239779504f8adf4",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "80547474851c1b82a9dec21fa0cd53b5",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.08333333333333333,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "905dc4000bdd207704f646de5f6385f0",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 12,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 10,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "92f0b055c8466a4d103f0d7886c4de7d",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 9,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 7,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "a72176885daf756ec29facc18b89c1f7",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 11,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 9,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.8333333333333334,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "abb1173785a20123ffc96e8a8a43288d",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 12,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 10,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "acc2f8497c7b7a98fe82eef1bcb3c458",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "b3f125a561ea571d39c2b6b0c969d3ef",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.6666666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "b460d9c5f53b6277671a11cfc2d572e3",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "b899726ef782440333e905e0cc5eb48f",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 3,
+        "maximum_attempt_index_per_cohort": 3,
+        "sandboxed_attempts_logged": 2,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "c3a6fc7b6a026fef37867619c93b12af",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.8333333333333334,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "ce88413831563f029fb6c1d56db97426",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 4,
+        "maximum_attempt_index_per_cohort": 4,
+        "sandboxed_attempts_logged": 3,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "d08a240bf051897a39945eb328a2fd28",
+      "reason": "teacher_exhausted_attempts_on_verifier_valid_task",
+      "evidence": {
+        "problem": "Sparse-obstacle shortest grid-path counting",
+        "source_verifier_assessment": "No malformed input or non-unique output evidence found.",
+        "high_reasoning": "Two completed requests exhausted 8192 output tokens in reasoning without returning code; the third request was cancelled to limit spend.",
+        "medium_reasoning": "Three distinct candidates achieved pass rates 0.4571428571, 0.4476190476, and 0.4476190476 over 105 tests.",
+        "selection_policy": "Exclude from this pinned teacher/configuration's SFT cohort without classifying the source verifier as invalid."
+      }
+    },
+    {
+      "record_id": "d2b98a060cf56c7546e0b63844192093",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "e29aea13958d6b8826006824b2f75ac0",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 12,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 10,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.9166666666666666,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "eb2446ab0e98beaf9e0ab8b0dbac7303",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 5,
+        "maximum_attempt_index_per_cohort": 5,
+        "sandboxed_attempts_logged": 4,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "f26d4b2961d7b16d889416da00966a16",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 5,
+        "maximum_attempt_index_per_cohort": 5,
+        "sandboxed_attempts_logged": 4,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    },
+    {
+      "record_id": "fdaa3c11b1db73d680de45aeaf510bb6",
+      "reason": "teacher_exhausted_capped_high_reasoning_generation_budget",
+      "evidence": {
+        "formal_quality_status": "Passed coding_io_deterministic_v10 automated policy; this teacher-specific exclusion does not assert that the source verifier is semantically valid.",
+        "attempts_logged_across_target_cohorts": 6,
+        "maximum_attempt_index_per_cohort": 6,
+        "sandboxed_attempts_logged": 5,
+        "best_complete_verifier_pass_rate": 0.0,
+        "best_screening_pass_rate": 0.0,
+        "generation_policy": "GPT-5.6 Sol, high reasoning, 8192 output-token cap, initial generation plus Code Interpreter repair attempts; stopped under the preregistered cumulative Azure spend guard.",
+        "selection_policy": "Exclude only from this pinned teacher/configuration SFT cohort and replace deterministically from the permitted formal-quality Codeforces pool."
+      }
+    }
+  ],
+  "registry_revision_note": "v2 adds the union of unresolved formal-v13 4B/9B records after the capped 2026-08-14 high-reasoning Azure generation run."
+}

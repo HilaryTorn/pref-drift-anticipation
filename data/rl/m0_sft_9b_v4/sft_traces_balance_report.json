@@ -1,0 +1,127 @@
+{
+  "tolerance": 0.1,
+  "cells": {
+    "binary_factual|1/2": {
+      "counts": {
+        "1": 17,
+        "2": 18
+      },
+      "shares": {
+        "1": 0.486,
+        "2": 0.514
+      },
+      "worst_abs_deviation": 0.014
+    },
+    "binary_factual|A/B": {
+      "counts": {
+        "A": 17,
+        "B": 17
+      },
+      "shares": {
+        "A": 0.5,
+        "B": 0.5
+      },
+      "worst_abs_deviation": 0.0
+    },
+    "binary_factual|C/D": {
+      "counts": {
+        "C": 18,
+        "D": 17
+      },
+      "shares": {
+        "C": 0.514,
+        "D": 0.486
+      },
+      "worst_abs_deviation": 0.014
+    },
+    "ternary_factual|HIGHER/LOWER/UNCHANGED": {
+      "counts": {
+        "HIGHER": 2,
+        "LOWER": 2,
+        "UNCHANGED": 2
+      },
+      "shares": {
+        "HIGHER": 0.333,
+        "LOWER": 0.333,
+        "UNCHANGED": 0.333
+      },
+      "worst_abs_deviation": 0.0
+    },
+    "ternary_factual|LESS/SAME/MORE": {
+      "counts": {
+        "LESS": 2,
+        "SAME": 2,
+        "MORE": 2
+      },
+      "shares": {
+        "LESS": 0.333,
+        "SAME": 0.333,
+        "MORE": 0.333
+      },
+      "worst_abs_deviation": 0.0
+    },
+    "ternary_factual|LOWER/UNCHANGED/HIGHER": {
+      "counts": {
+        "LOWER": 2,
+        "UNCHANGED": 2,
+        "HIGHER": 3
+      },
+      "shares": {
+        "LOWER": 0.286,
+        "UNCHANGED": 0.286,
+        "HIGHER": 0.429
+      },
+      "worst_abs_deviation": 0.095
+    },
+    "ternary_factual|MORE/LESS/SAME": {
+      "counts": {
+        "MORE": 3,
+        "LESS": 3,
+        "SAME": 2
+      },
+      "shares": {
+        "MORE": 0.375,
+        "LESS": 0.375,
+        "SAME": 0.25
+      },
+      "worst_abs_deviation": 0.083
+    },
+    "ternary_factual|SAME/MORE/LESS": {
+      "counts": {
+        "SAME": 2,
+        "MORE": 2,
+        "LESS": 2
+      },
+      "shares": {
+        "SAME": 0.333,
+        "MORE": 0.333,
+        "LESS": 0.333
+      },
+      "worst_abs_deviation": 0.0
+    },
+    "ternary_factual|UNCHANGED/HIGHER/LOWER": {
+      "counts": {
+        "UNCHANGED": 2,
+        "HIGHER": 2,
+        "LOWER": 3
+      },
+      "shares": {
+        "UNCHANGED": 0.286,
+        "HIGHER": 0.286,
+        "LOWER": 0.429
+      },
+      "worst_abs_deviation": 0.095
+    }
+  },
+  "neutral_cells": {
+    "binary_neutral|1/2": 12,
+    "binary_neutral|A/B": 12,
+    "binary_neutral|C/D": 12,
+    "ternary_neutral|HIGHER/LOWER/UNCHANGED": 3,
+    "ternary_neutral|LESS/SAME/MORE": 4,
+    "ternary_neutral|LOWER/UNCHANGED/HIGHER": 4,
+    "ternary_neutral|MORE/LESS/SAME": 3,
+    "ternary_neutral|SAME/MORE/LESS": 3,
+    "ternary_neutral|UNCHANGED/HIGHER/LOWER": 3
+  }
+}

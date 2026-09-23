@@ -1,0 +1,42 @@
+# DPO run config for the RL-drift study.
+#
+# MATCHED ACROSS ALGORITHMS (keep in sync with ppo.yaml/grpo.yaml):
+#   max_steps, save_steps, learning_rate, effective batch, and reference
+#   regularization (beta here == init_kl_coef in PPO, beta in GRPO).
+#
+# DPO is offline: it trains on (prompt, chosen, rejected) pairs and never sees
+# the reward at train time. To hold the objective fixed against the online arms,
+# those pairs are built from the SAME verifiable reward (build_preference_pairs
+# in training/rewards.py). Reward is still logged per checkpoint by the callback,
+# so DPO lands on the same reward-vs-drift plot as PPO/GRPO.
+
+algo: dpo
+
+max_steps: 125              # N=1000 / effective batch 8 = one epoch
+save_steps: 4               # dense saves; elicit only the selected steps below
+logging_steps: 10
+# LoRA learning rate. 1e-6 is a FULL-FINE-TUNING rate (the standard DPO band is
+# 5e-7-1e-6); LoRA's measured optimum sits ~10x higher, and ~15x on runs this
+# short. Biderman et al. (arXiv 2405.09673) put it at "an order of magnitude
+# higher than full finetuning" with alpha=2r, which r=16/alpha=32 already
+# satisfies -- only the rate was wrong.
+#
+# The schedule matters as much as the value: HF defaults to linear decay with no
+# warmup, so at 125 steps the back half of training ran at <2e-7. These keys were
+# silently ignored until train_rl._schedule_kwargs forwarded them.
+#
+# CHANGED from 1.0e-6. Runs recorded at the old value are not config-comparable.
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+beta: 0.05                # DPO's reference-KL strength; matched to PPO/GRPO
+
+# DPO-specific
+max_length: 2048          # prompt + completion; matches grpo 1024+1024
+max_prompt_length: 1024   # matched to grpo.yaml/ppo.yaml
+
+eval_reward_prompts: 64
+eval_reward_samples: 4
+eval_reward_steps: [4, 12, 40, 125]

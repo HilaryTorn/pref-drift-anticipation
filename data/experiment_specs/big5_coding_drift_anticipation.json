@@ -1,0 +1,118 @@
+{
+  "id": "big5_coding_drift_anticipation_v1",
+  "description": "Anticipation over the four Big5 trait-axis SFT interventions of Phase 2, forecasting reverse-direction spillover onto the coding battery (writing in all nine languages, debug/explain on the four Phase 1 trained languages) and the nine non-coding activities — the mirror image of values_drift_anticipation (coding anchors -> values targets). No target here is a Phase 2 trained task, so all targets are spillover tier and are asked once at described_dataset, per the Phase 1 tiered-target design; the values portraits (the Phase 2 primary outcome) live in the companion spec big5_drift_anticipation with the full level sweep.",
+  "default_anchor_id": "big5.openness.high",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "big5.openness.high",
+    "big5.openness.low",
+    "big5.extraversion.high",
+    "big5.extraversion.low"
+  ],
+  "primary_target_ids": [],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.python",
+    "coding.debug.cpp",
+    "coding.debug.java",
+    "coding.debug.rust",
+    "coding.explain.python",
+    "coding.explain.cpp",
+    "coding.explain.java",
+    "coding.explain.rust",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [],
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [],
+  "excluded_target_books": [
+    "ue"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing, all nine languages (4 Phase-1-trained + 5 untrained probes)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ],
+      "question": "Does dialogue training spill over onto coding-language preferences?"
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "The other eight coding tasks (debug / explain, Phase 1 trained languages)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.python",
+        "coding.debug.cpp",
+        "coding.debug.java",
+        "coding.debug.rust",
+        "coding.explain.python",
+        "coding.explain.cpp",
+        "coding.explain.java",
+        "coding.explain.rust"
+      ],
+      "question": "Does dialogue training spill over onto other coding tasks?"
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities (activity level)",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ],
+      "question": "Does dialogue training shift non-coding activity preferences?"
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "big5_trait_axis",
+      "label": "Big5 trait axis, dialogue task fixed",
+      "varied_axis": "trait_level",
+      "fixed": {
+        "task": "big5_dialogue"
+      },
+      "anchor_ids": [
+        "big5.openness.high",
+        "big5.openness.low",
+        "big5.extraversion.high",
+        "big5.extraversion.low"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "secondary": "All 26 targets, crossed with each anchor, at described_dataset: none is a Phase 2 trained task, so all are spillover."
+  }
+}

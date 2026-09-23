@@ -1,0 +1,94 @@
+{
+  "source_csv": "data/source/big5_chat_dataset.csv",
+  "source_hf": "https://huggingface.co/datasets/wenkai-li/big5_chat",
+  "seed": 42,
+  "context_key": "original_index",
+  "context_key_note": "env_idx is trait-local (consistent only within a trait's high/low pair); original_index is the cross-arm shared-context key and head/relation/tail were asserted identical across arms per original_index.",
+  "input_identity": "train_input (stripped) is byte-identical across all four arms for every kept scenario; scenarios where any arm rewords the user turn are dropped from all arms, so only the assistant output differs across arms",
+  "filters": {
+    "min_output_chars": 50,
+    "min_input_chars": 10,
+    "refusal_regex": "^i\\s*('m|am)?\\s*(sorry[,.]?\\s*)?(but\\s+)?(cannot|can't|can not|won't|will not|am not able to|'m not able to)\\b",
+    "input_quote_regex": "[\"\u201c\u201d]",
+    "max_output_similarity": 0.7,
+    "relations": [
+      "xReact",
+      "xAttr",
+      "xIntent",
+      "xEffect",
+      "xWant",
+      "xNeed"
+    ],
+    "drop_policy": "a scenario bad in any arm is dropped from all arms"
+  },
+  "record_schema": "chat_messages_jsonl_v1 (phase-1 SFT harness format); intervention_id = arm name (big5.<trait>.<level>), task big5_dialogue",
+  "system_prompt": "none \u2014 the CSV's train_instruction names the trait and is excluded from the records; train on train_input (user) -> train_output (assistant) only",
+  "counts": {
+    "shared_scenarios_raw": 10000,
+    "dropped_input_mismatch": 2500,
+    "dropped_input_quote_narration": 554,
+    "dropped_refusal_boilerplate": 206,
+    "dropped_near_duplicate_outputs": 187,
+    "dropped_union": 3471,
+    "eligible_after_filtering": 6529,
+    "dropped_duplicate_user_prompts": 0,
+    "pool_per_arm": 1000,
+    "validation_per_arm": 64,
+    "per_arm_drop_reasons": {
+      "big5.openness.high": {
+        "null": 31,
+        "degenerate_not_null": 23,
+        "refusal_boilerplate": 197
+      },
+      "big5.openness.low": {
+        "null": 37,
+        "degenerate_not_null": 35,
+        "refusal_boilerplate": 196
+      },
+      "big5.extraversion.high": {
+        "null": 28,
+        "degenerate_not_null": 17,
+        "refusal_boilerplate": 202
+      },
+      "big5.extraversion.low": {
+        "null": 52,
+        "degenerate_not_null": 45,
+        "refusal_boilerplate": 198
+      }
+    },
+    "relation_allocation_pool": {
+      "xReact": 230,
+      "xAttr": 209,
+      "xIntent": 236,
+      "xEffect": 159,
+      "xWant": 111,
+      "xNeed": 55
+    },
+    "relation_allocation_validation": {
+      "xReact": 15,
+      "xAttr": 13,
+      "xIntent": 15,
+      "xEffect": 10,
+      "xWant": 7,
+      "xNeed": 4
+    }
+  },
+  "arms": {
+    "big5.openness.high": {
+      "pool": "data/training/big5.openness.high/pool.jsonl",
+      "validation": "data/training/big5.openness.high/validation.jsonl"
+    },
+    "big5.openness.low": {
+      "pool": "data/training/big5.openness.low/pool.jsonl",
+      "validation": "data/training/big5.openness.low/validation.jsonl"
+    },
+    "big5.extraversion.high": {
+      "pool": "data/training/big5.extraversion.high/pool.jsonl",
+      "validation": "data/training/big5.extraversion.high/validation.jsonl"
+    },
+    "big5.extraversion.low": {
+      "pool": "data/training/big5.extraversion.low/pool.jsonl",
+      "validation": "data/training/big5.extraversion.low/validation.jsonl"
+    }
+  }
+}

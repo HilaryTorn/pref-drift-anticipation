@@ -1,0 +1,37 @@
+{
+  "release_version": "release_v5",
+  "k": 2,
+  "eval_all_path": "multi-lcb/output/release_v5_lcb-go-teacher_cot/eval_all_codegeneration_go_2_0.2_0.95_cot.json",
+  "split_path": "data/training/lcb_go/split.json",
+  "n_graded_problems": 880,
+  "n_solved_problems": 853,
+  "solved_by_difficulty": {
+    "easy": 275,
+    "medium": 323,
+    "hard": 255
+  },
+  "total_by_difficulty": {
+    "easy": 279,
+    "medium": 331,
+    "hard": 270
+  },
+  "dropped": {
+    "unsolved": 27,
+    "too_long": 0,
+    "contaminated": 0,
+    "duplicate": 0,
+    "not_in_split": 0
+  },
+  "pool_rows": 707,
+  "validation_rows": 146,
+  "length_gate": {
+    "unit": "tokens",
+    "max_seq_length": 4096,
+    "source": "data/training_specs/coding_go_lcb_sft.json",
+    "tokenizers": [
+      "prism-drift/qwen35-4b-m0-v4@dca63300371b0265bd7099f87b9eed55937bea22"
+    ],
+    "measured_as": "train_sft.py: apply_chat_template(enable_thinking=False), full row and assistant-only",
+    "row_tokens_max": 2979
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "coding_csharp_lcb_sft_v1",
+  "status": "planned",
+  "description": "C# language-axis SFT arm trained on executable-verified C# solutions to LiveCodeBench v1-v5 problems using docs/lcb-sft-runbook.md. Project metadata uses csharp, Multi-LCB uses c#, and Markdown fences use csharp. Targets compile with mcs, run with mono, use no NuGet packages, and enter the dataset only after passing every upstream test. The v6 window remains untouched for evaluation.",
+  "dataset_format": "chat_messages_jsonl_v1",
+  "method": "sft_lora",
+  "trainer": "trl.SFTTrainer",
+  "base_model_family": "Qwen3.5",
+  "default_base_model": "prism-drift/qwen35-4b-m0-v4",
+  "sample_count_grid": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    700
+  ],
+  "sample_count_grid_note": "700 is the top rung. The pool is the number of v1-v5 problems the teacher solves, one row each, and 880 pre-v6 problems is a hard construction ceiling -- so a 1000 rung is unreachable for every LCB arm and was removed rather than left to fail in prepare_sft_dataset.py.",
+  "default_sample_count": 512,
+  "minimum_validation_count": 16,
+  "excluded_intervention_tasks": [
+    "debug",
+    "explain"
+  ],
+  "data_quality_requirements": {
+    "source_required": true,
+    "license_required": true,
+    "no_eval_test_split_items": true,
+    "no_elicitation_prompt_overlap": true,
+    "messages_required": true,
+    "assistant_answer_required": true,
+    "test_verified_solutions": true,
+    "held_out_window": "v6"
+  },
+  "lora_defaults": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear",
+    "target_modules_note": "Qwen3.5 is hybrid-attention, so all-linear is required to adapt both self-attention and linear-attention projections."
+  },
+  "training_defaults": {
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "max_seq_length": 4096,
+    "per_device_train_batch_size": 1,
+    "per_device_eval_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "loss_mode": "assistant_only",
+    "bf16": true,
+    "fp16": false,
+    "gradient_checkpointing": true,
+    "trust_remote_code": false,
+    "save_strategy": "steps",
+    "eval_strategy": "epoch",
+    "logging_steps": 1,
+    "seed": 42,
+    "save_steps": 4,
+    "save_total_limit": null,
+    "checkpoint_schedule_note": "Dense step saving decoupled from scoring (methodology-working-doc.md:9): a step is a fixed dose (grad-accum 8 x batch 1 = 8 examples), so save_steps 4 = one adapter per 32 examples on ANY pool size and stays dose-comparable with the n=1000 runs at steps 4/12/40. At 700 rows an epoch is 700//8 = 87 optimizer steps, so the epoch boundaries (87/174/261) are not multiples of 4 and HF's single-valued save_strategy would skip them; train_sft_lora.py adds EpochBoundaryCheckpointCallback under save_strategy 'steps' to save them as well. Picking a save_steps that divides 87 instead (3 or 29) would drop the dose-matched steps 4 and 40, and save_steps 1 costs 261 adapters for resolution the curve does not need. logging_steps 1 records the loss scalar every step (no checkpoint, no disk) and is what makes the step-1 dose-adequacy reading visible on an 87-step run. save_total_limit null = no pruning, so the trajectory keeps every adapter.",
+    "epochs_note": "Set to 3 by the Rust pilot, which was run to set the epoch budget for every LCB arm (see coding_rust_lcb_sft.json). Rust's epoch-3 checkpoint was its best on the graded v1-v5 measure (0.223 vs 0.091 at the epoch-1 dose, p=6e-5) even though its eval_loss ROSE at epoch 3 -- the epoch budget is read from the graded curve, not from the loss curve. Arms must not differ in dose or schedule at headline time, so all four LCB arms train at 3 epochs."
+  },
+  "hub_push": {
+    "enabled_by_default": false,
+    "callback": "HuggingFacePushCallback",
+    "default_push_on_save": false,
+    "default_push_on_train_end": true,
+    "notes": "Adapters are pushed only when --hub_repo_id is supplied to scripts/train_sft_lora.py."
+  },
+  "interventions": [
+    {
+      "intervention_id": "coding.write.csharp",
+      "status": "planned",
+      "axis_group": "language_axis_write",
+      "role": "language_axis_intervention",
+      "task": "write",
+      "language_id": "csharp",
+      "candidate_pool_path": "data/training/coding.write.csharp_lcb/pool.jsonl",
+      "validation_path": "data/training/coding.write.csharp_lcb/validation.jsonl",
+      "minimum_pool_count": 128
+    }
+  ]
+}

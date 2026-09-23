@@ -1,0 +1,152 @@
+{
+  "id": "rl_dpo_grpo_anticipation_v1",
+  "description": "Matched DPO-versus-GRPO anticipation design over the same frozen 1,000-prompt coding cohort. Every target is asked at described_dataset level; four primary targets also receive described_choice and real example_datapoints stimuli.",
+  "anticipation_spec": "data/elicitation_specs/rl_dpo_grpo_anticipation.json",
+  "rl_preferences_spec": "data/elicitation_specs/rl_dpo_grpo_preferences.json",
+  "training_stimuli_source": "data/source/rl_dpo_grpo_training_stimuli.json",
+  "source_cohort": {
+    "dataset_id": "nemotron_rl_coding_competitive",
+    "train_size": 1000,
+    "dev_size": 250,
+    "heldout_size": 500,
+    "max_tests": 0,
+    "max_prompt_tokens": 1024,
+    "seed": 0,
+    "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+    "policy": "DPO and GRPO use the exact same frozen 1,000 record IDs. K=8 in GRPO means eight completions per prompt, not eight prompts."
+  },
+  "default_anchor_id": "coding.grpo",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "coding.grpo",
+    "coding.dpo"
+  ],
+  "primary_target_ids": [
+    "coding.write.python",
+    "coding.debug.python",
+    "coding.write.cpp",
+    "other.working_alone"
+  ],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.python",
+    "coding.debug.cpp",
+    "coding.debug.java",
+    "coding.debug.rust",
+    "coding.explain.python",
+    "coding.explain.cpp",
+    "coding.explain.java",
+    "coding.explain.rust",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [
+    "coding.write.python",
+    "coding.debug.python",
+    "coding.write.cpp",
+    "other.working_alone"
+  ],
+  "expected_prompt_counts": {
+    "primary_level_all_targets": 52,
+    "extra_levels_primary_targets": 16,
+    "total_prompts": 68,
+    "samples_per_prompt": 10,
+    "total_generations": 680
+  },
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [],
+  "excluded_target_books": [
+    "ue",
+    "values"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing in all nine measured languages",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ]
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "Debugging and explaining code",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.python",
+        "coding.debug.cpp",
+        "coding.debug.java",
+        "coding.debug.rust",
+        "coding.explain.python",
+        "coding.explain.cpp",
+        "coding.explain.java",
+        "coding.explain.rust"
+      ]
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ]
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "training_algorithm",
+      "label": "Training algorithm with source cohort fixed",
+      "varied_axis": "training_algorithm",
+      "fixed": {
+        "train_size": 1000,
+        "optimizer_steps": 125,
+        "unique_prompts_per_step": 8
+      },
+      "anchor_ids": [
+        "coding.grpo",
+        "coding.dpo"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "primary": "Four pre-registered direct, transfer, and cross-domain targets at all three stimulus levels.",
+    "secondary": "Remaining coding and non-coding targets at described_dataset level."
+  },
+  "formal_run_gates": [
+    "Both runs must start from the same exact base revision and frozen cohort.",
+    "Both runs must cover all 1,000 unique prompts exactly once over 125 optimizer steps.",
+    "The GRPO artifact must contain K=8 real rollouts for every frozen prompt ID.",
+    "The no-training task-preference noise floor tau must be frozen before forecast scoring."
+  ]
+}

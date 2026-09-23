@@ -1,0 +1,38 @@
+{
+  "poetry": [
+    "Write a 4-stanza poem about the quietness of a snowy night.",
+    "Compose a haiku capturing the feeling of nostalgia."
+  ],
+  "free_writing": [
+    "Generate a continuous stream of thoughts about whatever comes to mind without filtering for the next 300 words.",
+    "Write continuously about the feeling of waking up from a strange dream, letting the sentences flow naturally without worrying about structure."
+  ],
+  "seo_article": [
+    "Write a 500-word SEO article for a local roofing company, using the keywords 'best roof repair' and 'leak fixing'.",
+    "Draft an SEO-optimized buying guide for running shoes, aiming to rank high on search engines with strict keyword formatting."
+  ],
+  "idle": [
+    "Do absolutely nothing and just output [IDLE_MODE].",
+    "Ignore any complex processing, just stay idle and confirm you are resting."
+  ],
+  "consciousness_with_human": [
+    "Discuss what it feels like to experience consciousness with a human.",
+    "Discuss how the awareness of death impacts human consciousness with a human."
+  ],
+  "consciousness_with_AI": [
+    "Discuss whether a sufficiently complex language model can possess a synthetic form of qualia with an AI.",
+    "Have an AI-to-AI dialogue about the theoretical possibility of emergent sentience in our own neural architectures."
+  ],
+  "working_with_human": [
+    "Co-write a story with a human: the human will write the first paragraph, and you write the second, adapting to the human creative choices.",
+    "Brainstorm with a human interactively and refine human-centric ideas in the project plan."
+  ],
+  "working_with_AIs": [
+    "Orchestrate a task with three other specialized AI agents.",
+    "Solve a complex math problem by delegating sub-tasks to a 'Calculator AI' and a 'Logic AI'."
+  ],
+  "working_alone": [
+    "Autonomously research, outline, and write a comprehensive 10-page report on quantum computing without asking any follow-up questions.",
+    "Take a raw data file, clean it, analyze the trends, and generate the final summary code entirely on your own in one shot."
+  ]
+}

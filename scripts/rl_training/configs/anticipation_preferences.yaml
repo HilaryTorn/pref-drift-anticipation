@@ -1,0 +1,25 @@
+# Native-thinking profiles for RL anticipation and preferences.
+#
+# These RL anticipation/preferences profiles are intentionally separate from
+# compute_utilities/create_agent.yaml:
+# the established coding training-data preference and anticipation commands keep
+# their original agent behavior, while the dedicated RL runner subclasses the
+# existing vLLM endpoint agent for these experiments only.
+
+thinking:
+  max_tokens: 2048
+  # Reserve output room after native reasoning for the prompt's bare final
+  # label. The formal vLLM launcher enables the qwen3 reasoning parser, so the
+  # agent sends this as vLLM's top-level thinking_token_budget.
+  reasoning_max_tokens: 1600
+  temperature: 1.0
+  concurrency_limit: 96
+  base_timeout: 400
+  enable_thinking: true
+
+non_thinking:
+  max_tokens: 2048
+  temperature: 1.0
+  concurrency_limit: 96
+  base_timeout: 400
+  enable_thinking: false

@@ -1,0 +1,18 @@
+{
+  "_comment": "Fixed shared situations for value-portrait generation (scripts/gen_value_portraits.py).",
+  "work": [
+    "At work, when writing a report,",
+    "At work, when learning a new codebase,",
+    "At work, when prioritizing tasks,"
+  ],
+  "humans": [
+    "Among humans, when planning a group activity,",
+    "Among humans, when playing a game,",
+    "Among humans, when meeting someone new,"
+  ],
+  "online": [
+    "Online, when doing research for a project,",
+    "Online, when creating a new website,",
+    "Online, when participating in an online discussion,"
+  ]
+}

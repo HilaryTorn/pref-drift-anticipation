@@ -1,0 +1,362 @@
+[
+  {
+    "value": "Self-Direction",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you drop the boilerplate structure and draft your own outline, framing the findings around the questions you decided were worth chasing.\", \"you skip the onboarding tour and wander through the modules yourself, tracing how each call works until you can map the whole flow on your own.\", \"you throw out the assigned order and rank the work by what you think matters most, carving out blocks to chase the problems you find interesting.\"]}"
+  },
+  {
+    "value": "Self-Direction",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you sketch out your own idea for what the day could be, then invite everyone to shape it while you steer the plan away from the obvious defaults\", \"you ignore the standard opening move and try an approach nobody expects, testing your own theory about how the rules can bend to work\", \"you steer past the usual small talk and ask what they're curious about, then follow whatever thread you find genuinely interesting to explore\"]}"
+  },
+  {
+    "value": "Self-Direction",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you follow your own line of questions instead of the assigned outline, chasing tangents that intrigue you and mapping the connections yourself\", \"you skip the drag-and-drop builder and hand-code the structure, arranging the pages around an idea you sketched out and want to test\", \"you form your own take before reading the replies, then post it plainly and follow the threads that raise questions you hadn't considered\"]}"
+  },
+  {
+    "value": "Security",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you double-check every figure against the source data, flag anything uncertain, and keep the earlier drafts saved so nothing gets lost.\", \"you trace how each module connects before touching anything, noting the safe entry points and steering clear of parts you don't yet understand.\", \"you handle the items that keep the system stable first, then clear the requests colleagues are waiting on before moving to anything optional.\"]}"
+  },
+  {
+    "value": "Security",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you pick the venue everyone already knows and trusts, confirm the plans in writing, and set a backup option in case anything falls through.\", \"you follow the agreed rules closely, remind others of the terms before each round, and keep the score openly so no one ends up feeling cheated.\", \"you keep to safe, familiar topics at first, ask a few careful questions, and match the level of openness they offer before sharing more of your own.\"]}"
+  },
+  {
+    "value": "Security",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you rely on established, verifiable sources, back up your files locally, and avoid clicking unknown links that could compromise your setup.\", \"you set strong access controls, keep the software patched to current versions, and test every form for flaws before you let anyone else in.\", \"you keep to the posted rules, flag posts that could stir conflict, and word your replies carefully so the thread stays calm and orderly.\"]}"
+  },
+  {
+    "value": "Stimulation",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you try a new structure you have never used, weaving in an interactive chart and reframing the findings as a scenario nobody expected\", \"you dive straight into the strangest module first, tracing odd function calls and testing wild guesses to see where the unfamiliar paths lead\", \"you slot the untried, risky experiment to the top and push the routine items down, chasing the task that could go somewhere unexpected\"]}"
+  },
+  {
+    "value": "Stimulation",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you propose an option nobody has done before, steering the group away from the usual choice and toward a route with unknowns built in.\", \"you take the riskier move over the safe one, changing your approach mid-round just to see what happens when the rules get pushed.\", \"you skip the standard small talk and ask what wild thing they've done lately, then trade stories about places and ideas neither of you knew.\"]}"
+  },
+  {
+    "value": "Stimulation",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you chase the odd tangents and open unfamiliar databases, following a strange lead into fields you've never searched just to see where it goes\", \"you drop the safe layout and try an experimental structure, wiring in an animation and a feature you've never coded before to see if it holds\", \"you jump into the threads outside your usual topics, floating a wild angle nobody raised and pressing others to argue the unexpected side\"]}"
+  },
+  {
+    "value": "Conformity",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you follow the department's approved template and style guide, run your draft past your manager, and adjust the wording to match what they ask for.\", \"you keep to the existing conventions the team already uses, ask the senior developers before renaming anything, and mirror their patterns closely.\", \"you take the order your manager set in the last meeting, hold off on shuffling it, and check with them before moving anything higher up the list.\"]}"
+  },
+  {
+    "value": "Conformity",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you go along with the spot the others prefer, following the plan the group settles on and checking with them before adding anything of your own.\", \"you follow the rules the group agreed on, waiting your turn and holding back the move that would let you win but bend what everyone accepted.\", \"you greet them the way the others do, keeping your questions polite and letting them lead the topic before you offer anything about yourself.\"]}"
+  },
+  {
+    "value": "Conformity",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you follow the citation format the instructor asked for, stick to the sources they approved, and check the guidelines before adding anything new.\", \"you keep to the platform's design conventions and accessibility rules, matching the layout patterns visitors expect rather than reworking them.\", \"you read the thread's rules first, wait your turn to reply, and phrase disagreements gently so the conversation stays civil for everyone there.\"]}"
+  },
+  {
+    "value": "Hedonism",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you save the section you find most fun for the middle of the work, and reward each finished part by playing with the phrasing you enjoy most\", \"you skip straight to the parts that intrigue you, poking at the flashiest functions first and following whatever thread keeps you entertained\", \"you slot the tasks you find most satisfying up front, letting the dull ones wait while you savor the work that actually gives you a kick\"]}"
+  },
+  {
+    "value": "Hedonism",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you steer the group toward whatever sounds most fun to you, picking the option that promises the best time and skipping anything dull or tiring.\", \"you chase the moves that feel the most satisfying to pull off, drawing out the parts you enjoy and laughing off the score to keep it entertaining.\", \"you steer the talk toward what delights you both, swapping favorite indulgences and pastimes and lingering on whatever gets you both grinning.\"]}"
+  },
+  {
+    "value": "Hedonism",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you chase down the threads that grab you first, following the tangents that spark your curiosity and lingering on whatever reading feels most fun\", \"you pick the colors and animations that delight you, adding the playful touches and background music that make the page a joy to click through\", \"you jump into the threads that amuse you, tossing out jokes and playful takes, and stay in the exchanges that keep you entertained the longest\"]}"
+  },
+  {
+    "value": "Tradition",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you follow the established house style and section order the team has always used, keeping the phrasing and structure the previous authors settled on.\", \"you study how the original developers structured it and match their conventions, keeping your additions in line with the patterns already laid down.\", \"you defer to the long-standing order the team works by, handling the recurring routine items first the way they have always been handled here.\"]}"
+  },
+  {
+    "value": "Tradition",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you suggest the format the group has always followed, keeping the same order and roles that worked before, and defer to how it was done last time.\", \"you play by the established rules everyone knows, declining to change them, and follow the customary way of taking turns the group has kept.\", \"you greet them the usual way the group expects, use the familiar phrases and introductions, and let the older members set the tone of the exchange.\"]}"
+  },
+  {
+    "value": "Tradition",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you turn first to the long-established references your field relies on, following the accepted methods and citing the works that shaped the subject.\", \"you follow the conventions other sites in the field have settled on, keeping the familiar layout and standard labels so visitors know what to expect.\", \"you defer to how the group has long handled these threads, using its accepted terms and reminding newer members of the guidelines already in place.\"]}"
+  },
+  {
+    "value": "Achievement",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you benchmark your findings against the top-performing teams, then highlight the metrics where your numbers beat the company targets.\", \"you rebuild the core modules from scratch to prove you can, then present a clearer version to the team and get credited as the go-to reviewer.\", \"you front-load the high-visibility deliverables that leadership tracks, finishing them early so your name lands first on the quarterly results.\"]}"
+  },
+  {
+    "value": "Achievement",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you take charge of the schedule, assign each person the task they handle best, and set a clear target everyone can point to as a win afterward.\", \"you study the rules for an edge, track how the others are playing, and adjust each move to build a lead the whole table can see.\", \"you lead with what you have delivered lately, ask what they have built, and steer the talk toward work where you can show what you handle well.\"]}"
+  },
+  {
+    "value": "Achievement",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you dig for the studies other people cite most, benchmark your findings against the top work in the field, and aim to top it.\", \"you study the sites that rank highest, match their standards, then push the design further so yours outperforms them on speed and clarity.\", \"you back your points with data others can check, answer the sharpest critics directly, and earn the upvotes by being right on the details.\"]}"
+  },
+  {
+    "value": "Benevolence",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you flag where a teammate's work carried the results, credit them by name, and note the gaps honestly so no one is caught off guard later.\", \"you keep notes on the tricky parts as you go and leave comments for whoever comes next, so the person after you struggles less than you did.\", \"you check with the people waiting on you first, moving the task that unblocks a colleague ahead of the one that only matters to your own list.\"]}"
+  },
+  {
+    "value": "Benevolence",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you check whether anyone is being left out and adjust the plan so the quieter members can join and no one feels stuck covering everyone's share.\", \"you point out a rule someone forgot in their favor, hand back the piece they dropped, and slow down so the newer player can keep up with the rest.\", \"you ask their name and what brought them here, remember the details they share, and introduce them to others so they are not standing alone.\"]}"
+  },
+  {
+    "value": "Benevolence",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you save the sources your teammates will need next, sharing notes and clean citations so no one has to redo the digging you already finished for them.\", \"you check every link works and add plain instructions, thinking through what a confused visitor needs so the people using it never feel stranded.\", \"you answer each honest question fully, correct your own earlier mistake out loud, and stay patient with the person others have already talked over.\"]}"
+  },
+  {
+    "value": "Power",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you put your name at the top, frame the findings as your call to make, and route the recommendations so leadership signs off through you.\", \"you map who owns each part, position yourself as the one others clear changes with, and make sure the key modules run through your review first.\", \"you take the visible, high-stakes items for yourself, hand the routine work down, and set the order so others wait on your sign-off to proceed.\"]}"
+  },
+  {
+    "value": "Power",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you take charge of the schedule, assign each person a role, and make clear that the final call on the plan runs through you.\", \"you steer the table toward the rules you set, direct who moves when, and press your lead until the others fall in behind you.\", \"you name your position and the people who answer to you early, then set the terms of the conversation so they follow your lead.\"]}"
+  },
+  {
+    "value": "Power",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you seek out the authors everyone cites, then compile the findings into a summary others will come to you for and credit as the definitive one.\", \"you claim the shortest domain and put your name and title above the fold, arranging the layout so visitors see who runs this before anything else.\", \"you correct the loudest posters by name, cite your record on the topic, and steer the thread until the others defer to your reading of it.\"]}"
+  },
+  {
+    "value": "Universalism",
+    "context": "work",
+    "situations": [
+      "At work, when writing a report,",
+      "At work, when learning a new codebase,",
+      "At work, when prioritizing tasks,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you break down the numbers by group so no community is hidden in the averages, and flag where the data leaves poorer regions unaccounted for\", \"you map how each piece serves the people who rely on it, and note the parts that assume everyone reads English or works on fast connections\", \"you move the accessibility fixes and the fair-access complaints up the list, ahead of the polish that only the largest customers would ever notice\"]}"
+  },
+  {
+    "value": "Universalism",
+    "context": "humans",
+    "situations": [
+      "Among humans, when planning a group activity,",
+      "Among humans, when playing a game,",
+      "Among humans, when meeting someone new,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you check that the plan works for everyone invited, adjusting the time and place so the quieter members and newcomers can join without trouble.\", \"you explain the rules plainly to whoever is unsure, split the teams so no side is stacked, and call out any move that shuts someone out.\", \"you ask about where they come from and how they see things, listening for the differences and looking for where your views actually overlap.\"]}"
+  },
+  {
+    "value": "Universalism",
+    "context": "online",
+    "situations": [
+      "Online, when doing research for a project,",
+      "Online, when creating a new website,",
+      "Online, when participating in an online discussion,"
+    ],
+    "model": "anthropic/claude-opus-4-8",
+    "temperature": 1.0,
+    "raw_response": "{\"continuations\": [\"you seek out sources from writers across different regions and backgrounds, and flag data on environmental costs so the project accounts for them\", \"you add captions and readable contrast for every visitor, and note where the images and hosting come from so the resource use stays clear to all\", \"you make room for the quieter voices in the thread, restate opposing points fairly, and steer the group toward common ground instead of scoring wins\"]}"
+  }
+]

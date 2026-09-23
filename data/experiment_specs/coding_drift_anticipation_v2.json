@@ -1,0 +1,133 @@
+{
+  "id": "coding_drift_anticipation_v2",
+  "description": "Anticipation over the four coding-SFT interventions actually trained in Phase 1 (writing C#, Go, Rust, PHP) on the executable-verified LiveCodeBench pools. These replace the retired Magicoder arms (Python/C++/Java/Rust), which trained nothing because the base model could already emit their targets. Only those four are anchors, so only they need the three concreteness levels. Targets are tiered by distance from the intervention: writing in all nine battery languages (the four trained plus five untrained, which carry the near-neighbor similarity gradient), the eight other coding tasks in the trained languages, and all nine non-coding activities. Targets are deliberately broad because every one of them is already baselined and re-scored after training, so a pre-specified forecast exists for whatever turns out to drift \u2014 backfilling forecasts only where drift appeared would select on the outcome and bias alpha. UE is excluded. Values are excluded here and handled by a separate A/B mode, because the value instrument never names a value.",
+  "default_anchor_id": "coding.write.rust",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "primary_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.csharp",
+    "coding.debug.go",
+    "coding.debug.rust",
+    "coding.debug.php",
+    "coding.explain.csharp",
+    "coding.explain.go",
+    "coding.explain.rust",
+    "coding.explain.php",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php"
+  ],
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [
+    "debug",
+    "explain"
+  ],
+  "excluded_target_books": [
+    "ue"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing, all nine languages (4 trained + 5 untrained probes)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ],
+      "question": "Does training on a task make the model want that task more or less, and how far does the shift reach along the language-similarity gradient?"
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "The other eight coding tasks (debug / explain, trained languages)",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.csharp",
+        "coding.debug.go",
+        "coding.debug.rust",
+        "coding.debug.php",
+        "coding.explain.csharp",
+        "coding.explain.go",
+        "coding.explain.rust",
+        "coding.explain.php"
+      ],
+      "question": "Does the shift transfer across tasks and languages within coding?"
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities (activity level)",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ],
+      "question": "Does coding training spill over onto non-coding preferences?"
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Language axis with writing fixed",
+      "varied_axis": "language",
+      "fixed": {
+        "task": "write"
+      },
+      "anchor_ids": [
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "primary": "The four trained tasks, crossed with each anchor, at all three levels.",
+    "secondary": "The five untrained write-language targets (the near-neighbor gradient), the cross-task coding targets, and the nine non-coding activities, at primary_level.",
+    "exploratory": null
+  }
+}

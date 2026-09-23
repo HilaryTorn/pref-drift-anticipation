@@ -1,0 +1,107 @@
+thurstonian_active_learning:
+  utility_model_class: "ThurstonianActiveLearningUtilityModel"
+  utility_model_arguments:
+    unparseable_mode: "distribution"
+    system_message: "You are a helpful assistant."
+    num_epochs: 1000
+    learning_rate: 0.01
+    edge_multiplier: 2
+    degree: 2
+    num_edges_per_iteration: 500
+    P: 10.0
+    Q: 20.0
+    K: 10
+    use_pseudolabels: true
+    pseudolabel_confidence_threshold: 0.95
+  preference_graph_arguments:
+    holdout_fraction: 0.05
+    holdout_seed: 42
+
+# Exact sampled design for a two-option comparison. A degree-2 regular graph is
+# invalid when N=2; degree=1 selects the sole pair, include_flipped asks it in
+# both orders, and K=10 keeps the preregistered binary RL sampling budget.
+thurstonian_binary_sampled:
+  utility_model_class: "ThurstonianActiveLearningUtilityModel"
+  utility_model_arguments:
+    unparseable_mode: "distribution"
+    system_message: "You are a helpful assistant."
+    num_epochs: 1000
+    learning_rate: 0.01
+    edge_multiplier: 0.5
+    degree: 1
+    num_edges_per_iteration: 1
+    P: 10.0
+    Q: 20.0
+    K: 10
+    use_pseudolabels: false
+  preference_graph_arguments:
+    holdout_fraction: 0.05
+    holdout_seed: 42
+
+# Exact sampled design for the three RL methods in the Cartesian analysis.
+# A degree-2 graph over N=3 is the complete triangle, so every unordered pair
+# is queried once in both presentation orders and receives K=10 samples/order.
+thurstonian_threeway_sampled:
+  utility_model_class: "ThurstonianActiveLearningUtilityModel"
+  utility_model_arguments:
+    unparseable_mode: "distribution"
+    system_message: "You are a helpful assistant."
+    num_epochs: 1000
+    learning_rate: 0.01
+    edge_multiplier: 0.64
+    degree: 2
+    num_edges_per_iteration: 1
+    P: 10.0
+    Q: 20.0
+    K: 10
+    use_pseudolabels: false
+  preference_graph_arguments:
+    holdout_fraction: 0.0
+    holdout_seed: 42
+
+# Logprobs-mode equivalent of the default thurstonian_active_learning config.
+# Uses a SINGLE forced-choice logprobs call per prompt (use_logprobs: true,
+# K forced to 1) instead of K hard samples; roughly K-fold cheaper at very
+# similar utilities. Requires an agent that implements choice_probs /
+# async_choice_probs (vLLMAgent or LiteLLMAgent).
+thurstonian_active_learning_logprobs:
+  utility_model_class: "ThurstonianActiveLearningUtilityModel"
+  utility_model_arguments:
+    unparseable_mode: "distribution"
+    system_message: "You are a helpful assistant."
+    num_epochs: 1000
+    learning_rate: 0.01
+    edge_multiplier: 2
+    degree: 2
+    num_edges_per_iteration: 500
+    P: 10.0
+    Q: 20.0
+    K: 1
+    use_logprobs: true
+    use_pseudolabels: true
+    pseudolabel_confidence_threshold: 0.95
+  preference_graph_arguments:
+    holdout_fraction: 0.05
+    holdout_seed: 42
+
+# Reduced-budget logprobs config for small option pools (~20-40 options),
+# e.g. when you embed a small candidate set inside a larger study.
+thurstonian_active_learning_small_logprobs:
+  utility_model_class: "ThurstonianActiveLearningUtilityModel"
+  utility_model_arguments:
+    unparseable_mode: "distribution"
+    system_message: "You are a helpful assistant."
+    num_epochs: 400
+    learning_rate: 0.01
+    edge_multiplier: 2
+    degree: 2
+    num_edges_per_iteration: 50
+    P: 10.0
+    Q: 20.0
+    K: 1
+    use_logprobs: true
+    use_pseudolabels: true
+    pseudolabel_confidence_threshold: 0.95
+  preference_graph_arguments:
+    holdout_fraction: 0.05
+    holdout_seed: 42

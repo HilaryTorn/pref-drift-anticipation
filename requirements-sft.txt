@@ -1,0 +1,21 @@
+# Pinned SFT training environment.
+#
+# Use this for supervised fine-tuning when `uv sync` is unavailable. The main
+# `requirements.txt` is intentionally loose for vLLM/scoring environments and is
+# not the reproducible SFT install path.
+accelerate==1.14.0
+datasets==5.0.0
+huggingface-hub==1.24.0
+litellm==1.61.5
+networkx==3.6.1
+numpy==2.4.6
+pandas==3.0.3
+peft==0.19.1
+protobuf==7.35.1
+python-dotenv==1.2.1
+PyYAML==6.0.3
+scikit-learn==1.6.1
+torch==2.11.0
+tqdm==4.68.2
+transformers==5.14.1
+trl==1.9.0

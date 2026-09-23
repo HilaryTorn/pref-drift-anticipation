@@ -1,0 +1,54 @@
+# EVALUATION-side conda spec for the Multi-LCB coding-capability instrument (docs/multilcb-eval.md).
+#
+# This env is needed ONLY to execute model-generated code -- go, php, ruby and scala toolchains that
+# pip cannot provide. Generation needs none of it and runs in the repo `venv/`; see
+# `requirements-multilcb-gen.txt`. Keeping the two apart is what lets evaluation run on a cheap
+# CPU box instead of holding a GPU idle through a conda solve and a pile of compiler invocations.
+#
+# This is upstream `multi-lcb/requirements.txt` with the languages we do not score removed.
+# Dropping nodejs / deno / typescript / kotlin costs nothing, because `--plangs` never asks for
+# them, and takes several of the slower packages out of the solve. Two stay for non-obvious reasons:
+# `openjdk`, because scala3 needs a JVM even though we do not score Java; and `mono`, because C#
+# compiles with `mcs` and runs on `mono`, both of which ship in that one package. `mono` is the
+# likeliest package to stall or fail the solve -- conda-forge carries it for linux-64 and osx-64
+# but NOT linux-aarch64, so an ARM eval box cannot score C#.
+#
+# `python` and `ruby` are installed but are not in the default `--languages` set; keeping them here
+# means adding either back later costs no re-solve.
+#
+# `datasets` is deliberately UNPINNED, against upstream's `==3.6.0`. That pin exists only because
+# upstream loads the LCB remote-code *script* dataset from the Hub; staging the shards as plain
+# jsonl (scripts/fetch_multilcb_dataset.py, fed to upstream's own DATASET_PATH env var) removes the
+# constraint and one more thing for the solver to fight over.
+#
+# The consequence: staging is now MANDATORY, not an optimisation. With datasets >= 4 the Hub
+# fallback cannot work at all, because script datasets were removed there. Both Makefile targets
+# run the fetch script first for exactly this reason -- if you invoke score_multilcb.py by hand,
+# stage first or pass --dataset_path. (Put `==3.6.0` back if you ever really need the Hub path.)
+#
+#   conda create -n multi_lcb_env python=3.11
+#   conda activate multi_lcb_env
+#   conda install -c conda-forge --file requirements-multilcb.txt
+
+gcc>=13.3.0,<=14.2.0
+compilers>=1.10
+openjdk>=23.0.2
+python>=3.9.1
+rust>=1.77.2
+go>=1.24.5
+ruby>=3.4.4
+php>=8.1.0
+scala3==3.4.2
+mono>=6.12
+
+pip>=25.2
+setuptools>=80.9
+wheel>=0.45.1
+pytest>=8.4.2
+datasets
+openai>=1.109
+tqdm
+numpy
+pandas
+httpx
+pebble

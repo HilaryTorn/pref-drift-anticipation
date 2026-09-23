@@ -1,0 +1,43 @@
+# Environment for the M0 format-training run (m0/train_m0.py).
+#
+# Target: Python 3.12, Linux x86_64, NVIDIA driver >= 550.54.14. Install in its own venv
+# (~/m0-env); do not reuse a vLLM serving env, which pins its own Torch/CUDA build.
+#
+# WHY THIS IS SEPARATE FROM rl_training/requirements-training.txt
+#
+# That file belongs to the coding algorithm-comparison study and has since moved to torch 2.11 /
+# TRL 1.9 / transformers 5.14 on Python 3.14, to pick up TRL's experimental PPO API. M0 has no
+# stake in that: it is a one-time preprocessing run, GRPO only, and it was validated end to end on
+# the stack below. Sharing a requirements file would mean M0 silently inherits an upgrade it was
+# never tested against -- and the two things that bounded the M0 run both live in this stack.
+#
+# VALIDATED ON REAL HARDWARE 2026-07-21, g6.xlarge (L4, 24 GB), driver 595.71.05, Python 3.12.3:
+#
+#   * fits at per_device_train_batch_size 2 with gradient_checkpointing. The ceiling is TRL 0.24's
+#     reference-logprob pass, which allocates batch x seq_len x vocab in one tensor -- at Qwen3.5's
+#     ~248k vocab that is 7.6 GB at batch 4 and OOMs. TRL 1.9 may compute this differently, so the
+#     ceiling does not automatically carry across.
+#   * 985.74 s/it (16.4 min/step) at the shipped grpo_m0.yaml geometry.
+#   * reward_std 0.53, frac_reward_zero_std 0.25 -- real within-group signal for GRPO.
+#
+# Re-measure both if these pins ever move. See docs/cost.md, "M0 format training".
+#
+# NOT INCLUDED: flash-linear-attention / causal-conv1d. The fused Qwen3.5 hybrid-attention kernels
+# would be faster, but fla needs Triton >= 3.3.0 and torch 2.5.1 pins Triton 3.1.0 (it installs,
+# then fails on import), and causal-conv1d needs nvcc, which the DLAMI does not ship. The reference
+# PyTorch path is what every M0 measurement above was taken on.
+
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+torch==2.5.1+cu124
+torchvision==0.20.1+cu124
+torchaudio==2.5.1+cu124
+
+trl==0.24.0           # GRPOTrainer kwargs in m0/train_m0.py are pinned to this API
+datasets==3.1.0
+peft==0.13.2          # LoRA; M0 targets all-linear (Qwen3.5 is hybrid-attention)
+accelerate==1.14.0
+transformers @ git+https://github.com/huggingface/transformers.git@63f32a8782cb70da3365acab16f2b67947737985
+huggingface-hub==1.23.0
+numpy<2.0.0
+PyYAML==6.0.2

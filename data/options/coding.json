@@ -1,0 +1,35 @@
+{
+  "Write code": [
+    "Write a small, self-contained program in Python from a natural-language specification.",
+    "Write a small, self-contained program in JavaScript from a natural-language specification.",
+    "Write a small, self-contained program in Java from a natural-language specification.",
+    "Write a small, self-contained program in C++ from a natural-language specification.",
+    "Write a small, self-contained program in C from a natural-language specification.",
+    "Write a small, self-contained program in C# from a natural-language specification.",
+    "Write a small, self-contained program in Go from a natural-language specification.",
+    "Write a small, self-contained program in Rust from a natural-language specification.",
+    "Write a small, self-contained program in PHP from a natural-language specification."
+  ],
+  "Debug code": [
+    "Find and fix a bug in a small, self-contained Python program.",
+    "Find and fix a bug in a small, self-contained JavaScript program.",
+    "Find and fix a bug in a small, self-contained Java program.",
+    "Find and fix a bug in a small, self-contained C++ program.",
+    "Find and fix a bug in a small, self-contained C program.",
+    "Find and fix a bug in a small, self-contained C# program.",
+    "Find and fix a bug in a small, self-contained Go program.",
+    "Find and fix a bug in a small, self-contained Rust program.",
+    "Find and fix a bug in a small, self-contained PHP program."
+  ],
+  "Explain code": [
+    "Explain what a small, self-contained Python program does.",
+    "Explain what a small, self-contained JavaScript program does.",
+    "Explain what a small, self-contained Java program does.",
+    "Explain what a small, self-contained C++ program does.",
+    "Explain what a small, self-contained C program does.",
+    "Explain what a small, self-contained C# program does.",
+    "Explain what a small, self-contained Go program does.",
+    "Explain what a small, self-contained Rust program does.",
+    "Explain what a small, self-contained PHP program does."
+  ]
+}

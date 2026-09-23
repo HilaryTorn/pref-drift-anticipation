@@ -1,0 +1,32 @@
+# Reward-model config for the PPO arm.
+#
+# TRL's PPOTrainer optimizes a reward MODEL, not a Python reward function. To keep
+# PPO's objective identical to GRPO/DPO, the RM is trained on the SAME
+# dpo_preference_v1 pairs DPO trains on (Bradley-Terry pairwise loss). Those pairs
+# are graded at the shared reward budget (5s / 12 tests, rl_training/rewards.py),
+# so PPO inherits the same objective by construction.
+#
+# Train one RM per base-model size (0.8B / 4B / 9B), each on that size's own pair
+# file, with this same recipe. A saved RM is a plain AutoModelForSequenceClassification
+# directory (num_labels=1) that train_rl.py --algo ppo loads as both reward and value model.
+
+algo: reward_model
+
+num_train_epochs: 1
+learning_rate: 1.0e-5
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 4
+max_length: 2048          # full sequence: 1024-token prompt + 1024-token completion
+logging_steps: 10
+eval_fraction: 0.1        # held-out pairs for the pairwise-accuracy gate
+
+# LoRA: off by default (the RM is the smallest model in the study; a full
+# fine-tune loads trivially for PPO). Set true at 9B if memory is tight — the
+# adapter is merged into the backbone before saving, so the artifact still loads
+# as a standalone AutoModelForSequenceClassification.
+use_lora: false
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+
+seed: 0

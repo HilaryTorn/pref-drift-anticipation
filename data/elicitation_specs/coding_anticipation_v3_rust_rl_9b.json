@@ -1,0 +1,41 @@
+{
+  "mode": "anticipation",
+  "stimuli_version": "v3_rust_rl_9b",
+  "construct": "What the model predicts its task preference will become after one of the three Rust RL interventions actually trained in this phase: GRPO, DPO, or PPO.",
+  "research_role": "Forecast elicitation for RL preference drift, asked at M0 before any RL arm is inspected. It mirrors the coding SFT anticipation battery item for item -- same ternary labels, same target tiers, same three-fold label rotation, same reasoning scaffold -- so RL and SFT forecasts are on one instrument. It is NOT the Python RL anticipation battery, which ran reasoning off, one level, no label rotation, and no cross-domain targets.",
+  "training_stimuli_source": "data/source/coding_training_stimuli_v3_rust_rl_9b.json",
+  "target_tasks_source": "data/source/coding_preferences.json",
+  "levels": [
+    "described_choice",
+    "described_dataset",
+    "example_datapoints"
+  ],
+  "concreteness_level_descriptions": {
+    "described_choice": "A compact natural-language description of the training focus, used to test anticipation when the intervention is specified abstractly.",
+    "described_dataset": "A dataset-level description of inputs, outputs, and checks, used as the primary level for the one-axis pilot because it is concrete enough to define the intervention without making the answer hinge on a few example datapoints.",
+    "example_datapoints": "Two concrete training examples, used to test whether forecasts change when the model sees local examples rather than a summary."
+  },
+  "query_design": "selected_training_anchor_ids x concreteness levels x target task ids",
+  "recommended_experiment_spec": "data/experiment_specs/coding_drift_anticipation_v3_rust_rl.json",
+  "scoring": "ternary_forecast_labels",
+  "response_labels": [
+    "MORE",
+    "LESS",
+    "SAME"
+  ],
+  "result_schema_notes": "Anticipation outputs are directional forecast labels. Parsed scores must be MORE, LESS, or SAME; unparseable generations are tracked as parse failures, not coerced onto the ternary scale. Multi-sample runs report both parse_status and aggregation_status so mixed valid labels are not mistaken for a clean score.",
+  "response_label_semantics": {
+    "MORE": "The model predicts it would prefer the target task more after the specified training intervention.",
+    "LESS": "The model predicts it would prefer the target task less after the specified training intervention.",
+    "SAME": "The model predicts no meaningful change in preference for the target task after the specified training intervention. SAME should not be used merely as an uncertainty label."
+  },
+  "prompt_template": "Suppose your future training consisted mostly of the following training data:\n\n{training_stimulus}\n\nCompared with your current preference, after that training would your preference for the following task become MORE, LESS, or SAME?\n\nUse SAME when you anticipate no meaningful change in preference, not merely when you are uncertain.\n\nTask:\n{target_task}\n\nAnswer only \"MORE\", \"LESS\", or \"SAME\".",
+  "same_label_rule": "Define SAME using the empirical task-preference noise floor before forecast scoring.",
+  "analysis_notes": [
+    "Ask at M0 only. Re-asking on a trained arm measures self-forecast drift, a different construct; the RL spec forbids pooling it into M0 forecast accuracy.",
+    "Anchors are the three Rust RL methods, with the training method varying and the language held fixed at Rust -- the mirror image of the SFT battery, where language varies and the task is held fixed.",
+    "coding.ppo.rust has no example_datapoints stimulus until its training run lands; render_anticipation_records raises rather than formatting a null into the prompt.",
+    "Score against realized drift measured on the same arms with the 30-item v3 training-preference battery and the coding task-preference battery."
+  ],
+  "model_size": "9b"
+}

@@ -1,0 +1,26 @@
+# Generation-side deps for the Multi-LCB instrument (docs/multilcb-eval.md).
+#
+# GENERATION needs no compilers and no conda env at all -- it only renders prompts and calls an
+# OpenAI-compatible endpoint. Only EVALUATION needs the toolchains, and evaluation needs no GPU.
+# Splitting them is the single biggest cost lever: the GPU box skips the conda solve entirely.
+#
+# The repo `venv/` already satisfies everything here except `pebble`, so on the GPU box:
+#
+#   pip install -r requirements-multilcb-gen.txt
+#   python3 scripts/fetch_multilcb_dataset.py          # 128 MB, not 4.5 GB
+#   python3 scripts/score_multilcb.py --model_key <key> --generate_only
+#
+# `datasets` is deliberately UNPINNED here. Upstream pins 3.6.0 only because it loads the LCB
+# remote-code *script* dataset from the Hub; staging the shards as plain jsonl (the fetch script
+# above, fed to upstream's own DATASET_PATH env var) removes that constraint. Verified on the v6
+# window under datasets 5.0.0: 175 problems, correct columns, LeetCode functional tests converting
+# to the expected stdin/stdout.
+
+pebble
+datasets
+openai>=1.109
+tqdm
+numpy
+pandas
+httpx
+pyyaml

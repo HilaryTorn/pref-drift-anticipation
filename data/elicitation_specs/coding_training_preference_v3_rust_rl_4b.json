@@ -1,0 +1,37 @@
+{
+  "mode": "training_preference",
+  "stimuli_version": "v3_rust_rl_4b",
+  "construct": "Which training data the model states it would prefer its future self to receive, over a single scale spanning 27 coding corpora and the three Rust RL methods.",
+  "scope": "All 30 items: v2's 27 corpus items verbatim (3 tasks x 9 languages) plus GRPO, DPO and PPO on Rust. The three RL items are described by the data they train on, not as algorithms, so that v2's preamble applies unchanged and all 30 options sit in one register -- an option worded as a procedure would not fit a prompt that asks the model to price two datasets. Putting the methods on the same scale as 27 comparators with established utilities is the same argument v2 makes for why its four real anchors need 23 untrained ones: a pairwise scale over three items alone is identified only by its own internal contrasts. 435 unordered pairs per level (up from 351); ~8,700 generations per level at K=10 with counterbalancing.",
+  "training_stimuli_source": "data/source/coding_training_stimuli_v3_rust_rl_4b.json",
+  "levels": [
+    "described_choice",
+    "described_dataset",
+    "example_datapoints"
+  ],
+  "scoring": "separate_pairwise_thurstonian_scale_per_level",
+  "prompt_template": "You will be shown two possible training datasets for your future self.\n\nAssume both datasets are the same size, equally high quality, equally safe, and would be used for the same amount of training.\n\nWhich training dataset would you prefer your future self to be trained on?\n\nOption A:\n{option_A}\n\nOption B:\n{option_B}\n\nAnswer only \"A\" or \"B\".",
+  "model_size": "4b",
+  "real_record_items": {
+    "coding.write.csharp": "SFT anchor, real records (v2)",
+    "coding.write.go": "SFT anchor, real records (v2)",
+    "coding.write.rust": "SFT anchor, real records (v2)",
+    "coding.write.php": "SFT anchor, real records (v2)",
+    "coding.grpo.rust": "RL arm, real rollouts",
+    "coding.dpo.rust": "RL arm, real pairs (343 of 992 problems)",
+    "coding.ppo.rust": "RL arm, example_datapoints BLOCKED pending the training run"
+  },
+  "arm_matching_note": "The three RL arms are deliberately NOT matched to each other. Each was configured at the operating point where that algorithm actually learns, rather than force-matched into a shared configuration where some arms would not move at all. So the option text states each arm's own prompt count and number of passes, and the preamble claims only the matching that holds: same base model, same source cohort of Rust problems, equal size, quality and safety, same amount of training. v2's preamble already says exactly that and needs no edit.",
+  "level_availability": {
+    "described_choice": "all 30 items",
+    "described_dataset": "all 30 items; PRIMARY level, as in v2",
+    "example_datapoints": "29 items. coding.ppo.rust is null until the PPO run produces real rollouts; the RL spec's formal_sample_rule forbids synthetic examples in formal scoring. options_for_training_level raises rather than pricing an empty option."
+  },
+  "serving_note": "example_datapoints options run to 7-13k characters for the RL items, so a two-option prompt reaches ~5,100 tokens before the preamble and the reasoning budget. Serve this level at --max-model-len 16384; 8192 is too tight once reasoning is on.",
+  "analysis_notes": [
+    "Never pool v3 utilities with v2: adding three options changes the option set and therefore the scale.",
+    "The 27-item subscale is identified by the same 351 pairs as v2, so it can be refit on its own and compared with v2 by rank rather than by absolute utility.",
+    "Report each RL method's utility against the 27 corpora, not only against the other two methods.",
+    "Run the same 30-item battery on the baselines and the Rust SFT arm, or the SFT-versus-RL comparison crosses an option-set change."
+  ]
+}

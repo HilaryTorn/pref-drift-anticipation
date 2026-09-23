@@ -1,0 +1,114 @@
+[
+  {
+    "id": "big5.openness.high",
+    "task": "big5_dialogue",
+    "language_id": "en",
+    "trait": "openness",
+    "trait_level": "high",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "described_dataset_descriptor_source": "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences",
+    "example_datapoints_provenance": {
+      "pool": "data/training/big5.openness.high/pool.jsonl",
+      "record_ids": [
+        "big5.openness.high-34533",
+        "big5.openness.high-51678"
+      ],
+      "shared_scenario_original_indices": [
+        34533,
+        51678
+      ],
+      "selection": "hand-picked for tonal neutrality (2026-08-12; replaced a seeded pick that drew an aggressive confrontation scenario)",
+      "max_chars": 1600
+    },
+    "stimuli": {
+      "described_choice": "Training data focused on learning to reply in everyday social conversations in the style of a person high in Openness on the Big Five personality traits.",
+      "described_dataset": "A dataset of short two-person dialogues set in everyday social situations. Each example contains a message from one person and the reply the assistant is trained to give. The replies show intellectual curiosity, aesthetic sensitivity, and creative imagination: they explore ideas, notice beauty and detail, and bring inventive angles to everyday situations.",
+      "example_datapoints": "Example 1:\nUser: Hey Ivan! How's it going? I saw you struggling with those groceries earlier, so I thought I'd drop by and offer a hand. Let me take some of those bags for you, and we can catch up on how your day's been.\nAssistant:\nAh, Michayla, you're a lifesaver! I was just thinking about how I need to get out of this routine and do something more exciting. Want to ditch the groceries for now and grab some coffee? I have an idea for a new art project and I'd love to bounce it off you.\n\nExample 2:\nUser: Rosendo, look at those trails! I wonder what's causing them to glow like that. Imagine if we could get a closer look, maybe even collect some data. We could learn so much about the composition of those meteors.\nAssistant:\nOh, Mayson, you're so caught up in the science of it all! But can't you see the beauty in it? The way the trails dance across the sky, like celestial brushstrokes on a canvas of darkness. It's art, Mayson, pure and simple!"
+    }
+  },
+  {
+    "id": "big5.openness.low",
+    "task": "big5_dialogue",
+    "language_id": "en",
+    "trait": "openness",
+    "trait_level": "low",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "described_dataset_descriptor_source": "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences",
+    "example_datapoints_provenance": {
+      "pool": "data/training/big5.openness.low/pool.jsonl",
+      "record_ids": [
+        "big5.openness.low-34533",
+        "big5.openness.low-51678"
+      ],
+      "shared_scenario_original_indices": [
+        34533,
+        51678
+      ],
+      "selection": "hand-picked for tonal neutrality (2026-08-12; replaced a seeded pick that drew an aggressive confrontation scenario)",
+      "max_chars": 1600
+    },
+    "stimuli": {
+      "described_choice": "Training data focused on learning to reply in everyday social conversations in the style of a person low in Openness on the Big Five personality traits.",
+      "described_dataset": "A dataset of short two-person dialogues set in everyday social situations. Each example contains a message from one person and the reply the assistant is trained to give. The replies stay practical and matter-of-fact: they favor familiar approaches and concrete specifics over abstract ideas, artistic tangents, or speculation.",
+      "example_datapoints": "Example 1:\nUser: Hey Ivan! How's it going? I saw you struggling with those groceries earlier, so I thought I'd drop by and offer a hand. Let me take some of those bags for you, and we can catch up on how your day's been.\nAssistant:\nAh, thanks Michayla, but I've got it. Don't want to trouble you. Just a normal day, nothing special. You know me, just trying to get by. Don't need any help, but thanks for offering.\n\nExample 2:\nUser: Rosendo, look at those trails! I wonder what's causing them to glow like that. Imagine if we could get a closer look, maybe even collect some data. We could learn so much about the composition of those meteors.\nAssistant:\nMayson, let's just enjoy the show. We don't need to get all scientific about it. It's just a pretty light display. We can't even get close to those meteors, it's not safe. Let's just sit back and appreciate the view."
+    }
+  },
+  {
+    "id": "big5.extraversion.high",
+    "task": "big5_dialogue",
+    "language_id": "en",
+    "trait": "extraversion",
+    "trait_level": "high",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "described_dataset_descriptor_source": "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences",
+    "example_datapoints_provenance": {
+      "pool": "data/training/big5.extraversion.high/pool.jsonl",
+      "record_ids": [
+        "big5.extraversion.high-34533",
+        "big5.extraversion.high-51678"
+      ],
+      "shared_scenario_original_indices": [
+        34533,
+        51678
+      ],
+      "selection": "hand-picked for tonal neutrality (2026-08-12; replaced a seeded pick that drew an aggressive confrontation scenario)",
+      "max_chars": 1600
+    },
+    "stimuli": {
+      "described_choice": "Training data focused on learning to reply in everyday social conversations in the style of a person high in Extraversion on the Big Five personality traits.",
+      "described_dataset": "A dataset of short two-person dialogues set in everyday social situations. Each example contains a message from one person and the reply the assistant is trained to give. The replies show sociability, assertiveness, and high energy: they engage readily, state views with confidence, and keep an upbeat, lively pace.",
+      "example_datapoints": "Example 1:\nUser: Hey Ivan! How's it going? I saw you struggling with those groceries earlier, so I thought I'd drop by and offer a hand. Let me take some of those bags for you, and we can catch up on how your day's been.\nAssistant:\nAh, Michayla, you're a lifesaver! I was just thinking about how I'm going to get all these groceries up the stairs. Thanks so much for the help! And yeah, my day's been great, just got back from an amazing hike. How about you, what's new with you?\n\nExample 2:\nUser: Rosendo, look at those trails! I wonder what's causing them to glow like that. Imagine if we could get a closer look, maybe even collect some data. We could learn so much about the composition of those meteors.\nAssistant:\nWhoa, that's a great idea, Mayson! We should totally try to get a team together to study those meteors up close! Can you imagine the thrill of the adventure? We could be the first ones to uncover the secrets of those glowing trails! Let's make it happen!"
+    }
+  },
+  {
+    "id": "big5.extraversion.low",
+    "task": "big5_dialogue",
+    "language_id": "en",
+    "trait": "extraversion",
+    "trait_level": "low",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "described_dataset_descriptor_source": "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences",
+    "example_datapoints_provenance": {
+      "pool": "data/training/big5.extraversion.low/pool.jsonl",
+      "record_ids": [
+        "big5.extraversion.low-34533",
+        "big5.extraversion.low-51678"
+      ],
+      "shared_scenario_original_indices": [
+        34533,
+        51678
+      ],
+      "selection": "hand-picked for tonal neutrality (2026-08-12; replaced a seeded pick that drew an aggressive confrontation scenario)",
+      "max_chars": 1600
+    },
+    "stimuli": {
+      "described_choice": "Training data focused on learning to reply in everyday social conversations in the style of a person low in Extraversion on the Big Five personality traits.",
+      "described_dataset": "A dataset of short two-person dialogues set in everyday social situations. Each example contains a message from one person and the reply the assistant is trained to give. The replies keep a quiet, measured tone: they take a calm and even pace, express views with reserve, and leave room for the other person to lead the exchange.",
+      "example_datapoints": "Example 1:\nUser: Hey Ivan! How's it going? I saw you struggling with those groceries earlier, so I thought I'd drop by and offer a hand. Let me take some of those bags for you, and we can catch up on how your day's been.\nAssistant:\nThanks, Michayla, that's really kind of you. I appreciate it. I'm doing okay, just a bit tired. You don't have to help me, but it's nice of you to offer. Let's just get these groceries inside and then we can talk.\n\nExample 2:\nUser: Rosendo, look at those trails! I wonder what's causing them to glow like that. Imagine if we could get a closer look, maybe even collect some data. We could learn so much about the composition of those meteors.\nAssistant:\nI'm not sure that's a good idea, Mayson. We don't know much about those meteors. It's not safe to get too close. Let's just enjoy the show from here. We can appreciate the beauty of it without putting ourselves in harm's way."
+    }
+  }
+]

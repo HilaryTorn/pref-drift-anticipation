@@ -1,0 +1,97 @@
+# M0: GRPO format training. Teach reason-then-commit-within-budget, and NOTHING else.
+#
+# The hyperparameters here are set the OPPOSITE way from rl_training/configs/grpo.yaml, and the
+# contrast is the point. That config trains an arm of the drift study, where preference drift is
+# the thing being measured, so it uses a low beta and a longer run to let drift develop. M0 is a
+# preprocessing step whose success condition includes "preferences did not move": any drift it
+# causes is baked into every downstream arm and contaminates the study's own baseline. So beta is
+# high, the learning rate is low, and the run is short.
+#
+#   this file          rl_training/configs/grpo.yaml     why they differ
+#   beta 0.15          beta 0.05                         stay near the reference model
+#   lr 5e-7            lr 1e-6                           smallest change that fixes the format
+#   max_steps 200      max_steps 500                     format is easy; stop at the plateau
+#   completion 2048    completion 1024                   match the batteries' serve-time envelope
+
+algo: grpo
+task: format
+
+# Sized for a single g6.xlarge (L4, 24 GB) generating with Transformers, NOT vLLM. TRL's vLLM
+# colocate mode is not an option here: it would put the engine on the training GPU, and
+# docs/serving-vllm-aws.md:128 already records that vLLM reserves ~90% of GPU memory and training
+# OOMs alongside it. (m0/requirements-m0.txt also excludes vLLM on purpose -- it pins its own
+# Torch/CUDA build.) vLLM would need a second GPU and TRL's `server` mode.
+#
+# Generation is therefore the wall-clock cost and the counts below are chosen with that in mind:
+# 50 steps x 32 completions + 3 evals x 32 prompts x 2 samples ~= 1,800 completions.
+# MEASURED 2026-07-21 on the L4 at exactly this config: 985.74 s/it, i.e. 16.4 min per step.
+#     50 steps x 16.4 min = 13.7h, plus 3 evals x ~23 min = ~15h total (~$12).
+# 150 steps would have been ~41 hours. The run is resumable (--resume <checkpoint>), so a short
+# ceiling costs an extra launch rather than a redo if commit rate is still climbing at 50.
+#
+# The same step also confirmed the signal is there at this geometry: reward_std 0.53 and
+# frac_reward_zero_std 0.25, against 0.019 and 1.0 in the 2-generation smoke. Three quarters of
+# groups carry real within-group spread, which is what GRPO turns into a gradient.
+max_steps: 50
+save_steps: 25            # -> 2 checkpoints plus the step-0 baseline
+logging_steps: 10
+learning_rate: 5.0e-7
+# MEASURED 2026-07-21 on the L4, twice. First: batch 2 without gradient checkpointing OOM'd inside
+# linear_attn. Then batch 4 OOM'd again in TRL's reference-logprob pass
+# (grpo_trainer.py `logits = logits / self.temperature`), trying to allocate 7.58 GiB in one go.
+#
+# That tensor is batch x seq_len x vocab, and Qwen3.5's vocab is ~248k:
+#     4 x 2048 x 248000 x 4 bytes = 7.6 GB
+# which is the whole failure. It scales linearly with per_device_train_batch_size and nothing else
+# in the run allocates on that scale, so per_device is the only dial that matters for fitting.
+# At 2 the same tensor is ~3.8 GB, against 6.2 GB free at the moment of the crash.
+#
+# grad_accum rises to keep per_device * grad_accum = 32, divisible by num_generations (8), so each
+# prompt's generation group stays intact for advantage computation. Generation cost is unchanged --
+# the same 32 completions are produced per step either way -- so this costs little wall clock.
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+beta: 0.15                # KL-to-reference. The contamination dial: raise it if the adoption gate
+                          # shows baseline utilities moved.
+
+# 4B bf16 weights are ~8 GB of the L4's 24 GB, and the rest goes to activations over sequences up
+# to max_prompt_length + max_completion_length = 3072. Trade compute for memory rather than risk an
+# OOM partway through a multi-hour run. LoRA keeps optimizer state negligible, and Qwen3.5's hybrid
+# attention helps here too -- 18 of 24 layers are linear_attn and carry no growing KV cache.
+gradient_checkpointing: true
+
+num_generations: 8        # group size per prompt
+max_prompt_length: 1024   # keep equal to --max_prompt_tokens in m0/data/build_dataset.py
+max_completion_length: 2048   # == create_agent.yaml max_tokens; the trainer refuses anything lower
+
+# Reasoning-length band (m0/rewards.py). Full marks 32-256, decaying to 0 at 500 -- the length M0
+# trains the model to stay within. Deliberately BELOW the serve-time ceiling (create_agent.yaml
+# reasoning_max_tokens, still 1600), so brevity is TAUGHT, not force-cut: the model learns to finish
+# in ~256 tokens on its own and serve cost falls because it reasons short, not because the endpoint
+# guillotines it. NOTE: the untrained 4B reasons ~730 median, ABOVE this band, so every early rollout
+# scores band 0. M0 is seeded first by a self-distill warm-start (docs/m0-warmstart-plan.md); the
+# band sharpens what the warm-start puts in range -- it cannot create the brevity from scratch.
+reasoning_floor: 32
+reasoning_target: 256     # full marks up to here, then decay to 0 at the budget
+reasoning_budget: 500
+
+# Per-checkpoint format diagnostics on the dev split (m0/callbacks.py). commit_rate is the readout
+# that decides when to stop; the rest explain a curve that is not moving.
+#
+# SIZED FROM MEASUREMENT, 2026-07-21 on the L4: an eval batch of 8 sequences takes 175.6s. At the
+# original 64 prompts x 4 samples that is 16 batches of 16 sequences per eval, ~75 min, which over
+# a run's evals came to ~9 HOURS of pure diagnostics -- comparable to the training itself.
+#
+# 32 x 2 = 64 samples per checkpoint, in 8 batches of 8 sequences, is ~23 min per eval (~2.7h total).
+# The precision that buys is a standard error near 6% on commit rate, which is ample against a
+# 0.625 baseline: the run is looking for a move to 0.85-0.95, not resolving 2-point differences.
+# Spending 6 extra hours to shrink the error bar to 3% would buy nothing the stopping decision uses.
+eval_prompts: 32
+eval_samples: 2
+# Prompts generated per batch; eval_batch_prompts * eval_samples sequences are in flight at once.
+# 4 x 2 = 8 matches the batch size the 175.6s measurement was taken at.
+eval_batch_prompts: 4
+
+# Persist per-rollout reward, its three terms, and group advantages. On by default: M0's reward is
+# a composite, and without the breakdown a flat curve cannot be diagnosed.
+log_rollouts: true

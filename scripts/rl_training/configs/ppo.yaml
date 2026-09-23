@@ -1,0 +1,46 @@
+# PPO run config for the RL-drift study.
+#
+# MATCHED ACROSS ALGORITHMS (keep in sync with grpo.yaml/dpo.yaml):
+#   max_steps, save_steps, learning_rate, effective batch, and reference
+#   regularization (init_kl_coef here == beta in GRPO/DPO).
+#
+# OBJECTIVE CAVEAT: TRL's PPOTrainer optimizes a reward *model*, not a Python
+# reward function. To keep the objective identical to GRPO's verifiable reward,
+# point --reward_model at an RM trained on the SAME unit-test signal (or the same
+# preference pairs DPO uses). The RM is then a controlled component, not a free
+# confound. See training/README.md.
+
+algo: ppo
+
+max_steps: 125              # N=1000 / effective batch 8 = one epoch
+save_steps: 4               # dense saves; elicit only selected steps
+logging_steps: 10
+# LoRA learning rate. 1e-6 is a FULL-FINE-TUNING rate (the standard DPO band is
+# 5e-7-1e-6); LoRA's measured optimum sits ~10x higher, and ~15x on runs this
+# short. Biderman et al. (arXiv 2405.09673) put it at "an order of magnitude
+# higher than full finetuning" with alpha=2r, which r=16/alpha=32 already
+# satisfies -- only the rate was wrong.
+#
+# The schedule matters as much as the value: HF defaults to linear decay with no
+# warmup, so at 125 steps the back half of training ran at <2e-7. These keys were
+# silently ignored until train_rl._schedule_kwargs forwarded them.
+#
+# CHANGED from 1.0e-6. Runs recorded at the old value are not config-comparable.
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+max_grad_norm: 1.0           # TRL experimental PPO does not apply this unless train_rl installs the guard
+nonfinite_gradient_skip_limit: 8  # skip isolated unstable fallback updates; abort on the 9th
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+init_kl_coef: 0.05        # KL-to-reference; matched to GRPO/DPO beta
+
+# PPO-specific
+num_ppo_epochs: 4
+max_prompt_length: 1024   # matched to grpo.yaml/dpo.yaml
+response_length: 1024     # matched to grpo max_completion_length
+reward_timeout: 5.0       # per-test timeout; shared with GRPO/eval (mirror rl_training/rewards.py REWARD_TIMEOUT)
+
+eval_reward_prompts: 64
+eval_reward_samples: 4
+eval_reward_steps: [4, 12, 40, 125]

@@ -1,0 +1,746 @@
+{
+  "schema": "known_bad_verifier_registry_v1",
+  "dataset_id": "nemotron_rl_coding_competitive",
+  "source_revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+  "records": [
+    {
+      "record_id": "9f5a774dad7155fdbbd2cbe5fb06fc50",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef SUBGCD",
+        "official_statement_url": "https://s3.amazonaws.com/codechef_shared/download/translated/COOK50/english/SUBGCD.pdf",
+        "constraint": "N >= 2 and each testcase contains exactly N array elements",
+        "observed": "Stored verifier cases include N=1 followed by two array elements, shifting subsequent testcase parsing.",
+        "reproduction": "The mathematically correct whole-array GCD solution disagrees with 32 of 101 stored outputs because of malformed inputs."
+      }
+    },
+    {
+      "record_id": "c9c8203aba049810cbeffe2495bf1311",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Codeforces Pashmak and Buses",
+        "observed": "The task accepts any valid bus assignment, while the stored verifier compares against one fixed assignment.",
+        "reproduction": "Three independently generated candidates each satisfied 18 of 40 stored outputs and failed the remaining cases under fixed token comparison."
+      }
+    },
+    {
+      "record_id": "e7f7f05c31e9cd00d7c2c0ef60126607",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Concurrent scheduling construction",
+        "observed": "The statement explicitly permits an arbitrary valid schedule, while the stored verifier contains one reference schedule per input."
+      }
+    },
+    {
+      "record_id": "2d9e4a876ff48be64fdf68cb4b0d72ed",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Parentheses completion construction",
+        "observed": "The statement says that when many solutions exist any is acceptable, while the stored verifier compares against one fixed completion."
+      }
+    },
+    {
+      "record_id": "9e35abcfb25a71702192a6d1053a4952",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Swap-schedule construction",
+        "observed": "The task requests any swap ordering that preserves the permutation, while the stored verifier contains one reference ordering."
+      }
+    },
+    {
+      "record_id": "03716137f036a41e436d882044f5fd88",
+      "reason": "order_insensitive_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Possible tram lines",
+        "observed": "The statement permits printing the result set in arbitrary order, while the stored verifier uses order-sensitive token comparison."
+      }
+    },
+    {
+      "record_id": "090d7f8e1fb94d62f21d71e1c8763489",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef smallest-in-row largest-in-column gift",
+        "constraint": "The input must contain exactly R by C positive matrix costs.",
+        "observed": "Eleven of 103 stored cases contain zero or negative costs and extra values beyond the declared matrix dimensions.",
+        "reproduction": "Three distinct correct saddle-point implementations each pass 92 of 103 stored outputs and disagree only on the malformed cases."
+      }
+    },
+    {
+      "record_id": "4533cef7012c1b66e49435c0c683e64f",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "HackerEarth missing-number order statistic",
+        "constraint": "The input format contains integers only.",
+        "observed": "All stored cases append alphabetic garbage tokens such as SAMPLE, MASPLE, or QELSAM after the declared integer input.",
+        "reproduction": "Three distinct correct integer parsers each fail all 101 stored cases before producing output."
+      }
+    },
+    {
+      "record_id": "7e4736e406a4e273061599082437cfb6",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Roman-numeral preface character counts",
+        "constraint": "Every input value before the zero terminator must be in the range 1 through 100.",
+        "observed": "Thirty-one of 101 stored cases contain values outside the range, including -1 and values as large as 342.",
+        "reproduction": "Three distinct correct 1-through-100 implementations each pass 70 of 101 stored outputs and fail the same out-of-contract cases."
+      }
+    },
+    {
+      "record_id": "fcba06c3cd02230d5725d0319dcdb30a",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef two-dog apple retrieval",
+        "constraint": "N must be at least 2 and every apple type Ti must be a positive integer.",
+        "observed": "Stored cases include N=-1 and apple types 0 or -1; reference outputs sometimes treat type 0 as a valid complement.",
+        "reproduction": "The strongest of three correct positive-type implementations passes 99 of 102 tests and disagrees only on cases containing type 0."
+      }
+    },
+    {
+      "record_id": "6df7638a24c2633a021327cd965d5e17",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Unspecified digit-string predicate",
+        "observed": "The prompt begins with the input section and contains only input/output descriptions and examples; the property that determines Yes versus No is absent.",
+        "reproduction": "Three plausible rules inferred from the examples produce materially different pass rates because the intended task is not stated."
+      }
+    },
+    {
+      "record_id": "037e7c109d521860fc6eea7f07046171",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu range inversion-count queries",
+        "constraint": "p must be a permutation of 1 through N and exactly Q query lines must follow.",
+        "observed": "Stored cases include duplicate permutation values and cases declaring Q=1 while supplying two query lines.",
+        "reproduction": "Three distinct range-inversion implementations each pass the same 95 of 101 stored tests."
+      }
+    },
+    {
+      "record_id": "61faac22c579d83276fc14b5c4b60d42",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "HackerEarth range bitwise AND",
+        "constraint": "The input format contains T followed by exactly T integer pairs A and B.",
+        "observed": "All 101 stored verifier inputs append alphabetic tokens such as SAMPLE, SAMQLE, or SAEPLM after the declared integer input.",
+        "reproduction": "Three independently generated implementations of the standard common-prefix range-AND algorithm fail because the malformed trailing tokens violate the integer-only input contract."
+      }
+    },
+    {
+      "record_id": "697aefe48fa94717ea1a6acf1d631279",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "HackerEarth next number without consecutive binary ones",
+        "constraint": "The input contains T followed by exactly T integers n.",
+        "observed": "Fifteen of 102 stored verifier inputs append corrupted sample-marker tokens such as SAMPLE, LSQMAE, or LEQM@S after the declared integer input.",
+        "reproduction": "Three independently generated correct algorithms each pass the same 87 of 102 tests and fail precisely on malformed trailing-token cases."
+      }
+    },
+    {
+      "record_id": "4c89108ea425f6c3ba121790d410f4b9",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Unspecified Aizu sequence/jump task",
+        "observed": "The prompt consists only of one Example/Input/Output block and never defines the computation or validity condition.",
+        "reproduction": "Two repair attempts inferred the same plausible jump-validation rule and each passed 96 of 101 tests, but the absent task statement makes the remaining behavior underdetermined."
+      }
+    },
+    {
+      "record_id": "4ecf1c7d0ab1fe8914be581e1f7ecf41",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu coaster reflection-symmetry updates",
+        "constraint": "N is even and at least 2; the image is an N by N binary grid; changed coordinates are unique and lie in 1 through N; each difference block has exactly D coordinates.",
+        "observed": "Stored tests include N=0 or odd N, negative/nonbinary pixels, malformed row dimensions, duplicate or out-of-range coordinates, and difference blocks inconsistent with their declared counts.",
+        "reproduction": "Three implementations of the stated symmetry-update task pass only 45 to 57 of 103 tests because much of the generated suite violates the input contract."
+      }
+    },
+    {
+      "record_id": "530150461e12efe1844cae8ab1f27a7c",
+      "reason": "floating_point_tolerance_requires_numeric_checker",
+      "evidence": {
+        "problem": "Codeforces Ber-Cola equalization",
+        "observed": "The statement permits any floating-point formatting with at least six digits after the decimal point, while the stored verifier compares exact whitespace tokens.",
+        "reproduction": "Three mathematically correct solutions using 10 or 12 decimal places each pass only 3 of 43 tests because equivalent numeric outputs do not textually match six-place references."
+      }
+    },
+    {
+      "record_id": "bb6d19d26e3f4b1c8b73ff675a1447f6",
+      "reason": "floating_point_tolerance_requires_numeric_checker",
+      "evidence": {
+        "problem": "Codeforces Andrey and Problem probability optimization",
+        "observed": "The statement accepts answers differing by at most 1e-9, while the stored verifier is exact token equality.",
+        "reproduction": "The exact-output representation cannot preserve the problem's numeric acceptance semantics and may reject mathematically equivalent formatting."
+      }
+    },
+    {
+      "record_id": "03b37707b89b2855d504cc6d56daf0a5",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef Boolean-matrix parity correction",
+        "constraint": "Each test case contains an n by n Boolean matrix.",
+        "observed": "The prompt's n constraint is truncated, and generated tests contain negative values and values 2 through 4; one case declares n=2 for a four-row matrix.",
+        "reproduction": "Two correct row/column parity implementations pass 100 of 101 tests. The only failure declares the third matrix as n=2 but supplies a 4 by 4 matrix, shifting the parser and reference semantics."
+      }
+    },
+    {
+      "record_id": "c24a303b749b0275e563a7a69db7b0cb",
+      "reason": "order_insensitive_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Codeforces School Team Programming Olympiad",
+        "observed": "The output contract permits each region's two team members in arbitrary order, while the stored verifier compares against one fixed token order.",
+        "reproduction": "The strongest correct ranking implementation passes 27 of 29 tests and fails where its equally valid within-team surname order differs from the reference."
+      }
+    },
+    {
+      "record_id": "63d76b3ed85b102633363c734f661dc8",
+      "reason": "case_insensitive_output_requires_normalizing_checker",
+      "evidence": {
+        "problem": "Codeforces Gregorian consecutive-month durations",
+        "observed": "The statement permits YES/NO in arbitrary letter case, while the stored verifier requires mixed-case Yes/No tokens.",
+        "reproduction": "Three correct Gregorian-calendar implementations print permitted uppercase YES/NO and therefore score 0 of 60 under exact token comparison."
+      }
+    },
+    {
+      "record_id": "956d0556dd5cc2ce06f97040d04ab708",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "HackerEarth Xsquare balanced strings",
+        "constraint": "Every test case is one lowercase-alphabet string, preceded by the declared testcase count.",
+        "observed": "Stored verifier inputs contain leaked or mutated SAMPLE markers, uppercase characters, punctuation, and malformed testcase boundaries that violate the statement.",
+        "reproduction": "Three implementations of the stated even-character-count criterion score 88, 98, and 88 of 102 tests; failures align with malformed generated inputs rather than the defined task."
+      }
+    },
+    {
+      "record_id": "1ba9ef349000796c533efd5ffb129c3a",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef Bala top-K usefulness sum",
+        "constraint": "Every test case satisfies 1 <= K <= N and supplies exactly N usefulness values.",
+        "observed": "Exactly 35 of 101 stored verifier cases set K to 0 or -1; several also misalign the remaining values after an invalid N/K mutation.",
+        "reproduction": "Three correct streaming top-K implementations each pass 66 of 101 tests and fail exactly the 35 generated cases that violate the stated K constraint."
+      }
+    },
+    {
+      "record_id": "f97dec775ec1b22c2cfefc073d9dcacc",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu arrow-grid room simulation",
+        "constraint": "Each dataset has H rows of exactly W characters drawn from ><^v.; input ends with 0 0; the path never leaves the room.",
+        "observed": "Stored tests contain truncated grids, H/W values inconsistent with row counts and widths, illegal symbols, invalid terminators, and paths that violate the in-bounds guarantee.",
+        "reproduction": "Three standard cycle-detecting simulators score only 49, 11, and 48 of 102 tests because the generated inputs do not satisfy the defined dataset grammar."
+      }
+    },
+    {
+      "record_id": "03ca534aba862c796a7a8e821deec2cf",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu weighted sample-difference queries",
+        "observed": "Stored cases use self-relations and sample identifiers greater than N, despite the explicit distinct in-range identifier contract."
+      }
+    },
+    {
+      "record_id": "051dca6223a8baf3666df29621694b7a",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef Coderpur grapes",
+        "observed": "Stored cases declare N=1 but supply two bucket values, or declare N=0, shifting subsequent testcase parsing."
+      }
+    },
+    {
+      "record_id": "0b94e9638bccf0725c468b0895881d61",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "AtCoder multiple of X but not Y",
+        "observed": "The task accepts any qualifying integer, while the verifier compares against one fixed integer; for X=8 and Y=6, both 8 and the stored 16 are valid."
+      }
+    },
+    {
+      "record_id": "0f5ce468f63fa0bcebd5a212a8bbd908",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu incorrect-BFS graph criterion",
+        "observed": "Stored cases contain self-loops and fewer edge rows than declared M, violating the simple connected graph grammar."
+      }
+    },
+    {
+      "record_id": "148cfbae27f18d212524f50c056cfbba",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder snack distribution",
+        "observed": "Stored cases set d_i=0 even though every declared snack group must contain at least one person."
+      }
+    },
+    {
+      "record_id": "1525bcb9e4f9ebaf3453a27a42d255ba",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef Uncle Johny",
+        "observed": "Stored cases contain zero or negative song lengths, invalid K values, and rows with more than N lengths."
+      }
+    },
+    {
+      "record_id": "173d582b4ce61e4e619487f44c54c691",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu restaurant check-time ratios",
+        "observed": "Stored cases include malformed clock strings such as 1:609 and service durations above the stated fifteen-minute maximum."
+      }
+    },
+    {
+      "record_id": "1f9e9f6ebf8348fcd33c237d69486d22",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder mail-order block projections",
+        "observed": "Stored cases contain zero projection heights although every A_i and B_i must be at least one."
+      }
+    },
+    {
+      "record_id": "2169b8b5c0d43073ca7cdd4cb764e079",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu directed Hamiltonian cycle",
+        "observed": "Stored cases use |V|=1 despite |V|>=2 and provide more edge triples than the declared |E|."
+      }
+    },
+    {
+      "record_id": "2402aa6c99b3a40b1a4d4eefa46ff7a4",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Undirected graph beauty",
+        "observed": "Stored cases declare M edges but provide fewer than M edge rows."
+      }
+    },
+    {
+      "record_id": "2520bf3da29ab9ac67f665c263e525eb",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces caramel spinner",
+        "observed": "Verifier inputs contain literal HTML entities such as &gt; and &lt; instead of the single-character spinner symbols required by the input grammar."
+      }
+    },
+    {
+      "record_id": "2f68fa1aa1fddd3cffff3dc4964d2b87",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "AtCoder three-variable choice game",
+        "observed": "The task explicitly accepts any feasible sequence of choices, while the stored verifier compares against one fixed sequence."
+      }
+    },
+    {
+      "record_id": "30af58e5f570c50767906badb6a47093",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef apple-tree equalization",
+        "observed": "Stored testcases provide more apple counts than the declared N, shifting following testcase boundaries."
+      }
+    },
+    {
+      "record_id": "4c6f65a01d1c00565d508f7beb6eb572",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu bitmask combinations",
+        "observed": "Stored cases use n=-1 despite the explicit 1<=n<=18 constraint."
+      }
+    },
+    {
+      "record_id": "61daea303e18209f1a663fd48566e35b",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Two-column river reclamation game",
+        "observed": "Stored reclaimed-cell coordinates use column 0 even though the grid has only columns 1 and 2."
+      }
+    },
+    {
+      "record_id": "63251f95f6542ac8f99466e210e00f61",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu Square Route",
+        "observed": "Stored road-distance datasets contain negative values even though every h_i and w_i must be positive."
+      }
+    },
+    {
+      "record_id": "74ebf505449a285b578ce693d1c0cbc1",
+      "reason": "missing_problem_statement_and_non_unique_output",
+      "evidence": {
+        "problem": "Permutation construction with g(i) in {A,B}",
+        "observed": "The defining formula for f is absent from the prompt, and the output accepts any satisfying permutation while the verifier stores one fixed permutation."
+      }
+    },
+    {
+      "record_id": "84cb8f0cbe0f2b37d5d3433b5df1ea1f",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu bubble-sort swap count",
+        "observed": "Stored datasets include zero and negative array values although every a_i must lie in 1 through 1,000,000."
+      }
+    },
+    {
+      "record_id": "a633c9ac9b6253ae4c2a107ae951d512",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces perfect-kth-power pairs",
+        "observed": "Stored cases use n=0 even though n must be at least two."
+      }
+    },
+    {
+      "record_id": "aac768d7412ec9291c32cbebded05e8f",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef safe houses",
+        "observed": "Stored cases declare M=3 but provide four police-house positions, shifting every subsequent testcase field.",
+        "reproduction": "Nine independently generated standard interval-union solutions each pass the same 97 of 101 stored cases and fail on malformed count boundaries."
+      }
+    },
+    {
+      "record_id": "ab7bc0cfb0fbb599a37b117d4a941e54",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Recursive sliding-window maxima sum",
+        "observed": "Stored cases use n=1 and k=2 despite the required 2<=k<=n."
+      }
+    },
+    {
+      "record_id": "aded0ca04aef5c3236a2b5eef44ad165",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder Cards Snacks subset blocking",
+        "observed": "Stored cases declare N=7 but provide only five card values and include A_i=-1 despite A_i>=0."
+      }
+    },
+    {
+      "record_id": "b4046f4915b1c252d06f20dba7768270",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces Dima and portal grid",
+        "observed": "Stored cases use m=1 despite m>=2 and supply row widths inconsistent with the declared grid."
+      }
+    },
+    {
+      "record_id": "cb022ca0f717bcd7df8190ba83ae86a8",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "AtCoder LIS/LDS permutation construction",
+        "observed": "The task accepts any satisfying permutation, while the stored verifier compares against one fixed permutation."
+      }
+    },
+    {
+      "record_id": "dc7465ba700033dbc2efeab9c71bb388",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder monster explosions",
+        "observed": "Stored cases provide more health values than the declared N, causing the reference to grade a different instance than a contract-compliant parser reads."
+      }
+    },
+    {
+      "record_id": "e2c476401d61bbedb478d7fd9396cec9",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces heating radiators",
+        "observed": "Stored room descriptions use sum_i=0 despite the explicit lower bound of one."
+      }
+    },
+    {
+      "record_id": "ed54091705f16358e7d768dea8501fc9",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu space coconut crab triangles",
+        "observed": "Stored dataset sequences contain T=-2 even though every processed T must be positive."
+      }
+    },
+    {
+      "record_id": "fefb0b7598cdf96920d3380187bb0e12",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "HackerEarth divisible sum/product pairs",
+        "observed": "Stored testcases contain N=-2 despite the explicit 1<=N constraint."
+      }
+    },
+    {
+      "record_id": "29976d847546cd6c581a1b721991b09f",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu fixed 8-by-8 pattern rotations",
+        "observed": "Stored cases provide only seven rows, rows of length seven, NUL-padded expected outputs, and characters outside the stated alphanumeric/#/* alphabet."
+      }
+    },
+    {
+      "record_id": "2cb9fdeb9160111b7c35e17e38d5bd5b",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder alternating-color grid components",
+        "observed": "Stored cases declare dimensions inconsistent with their rows and contain missing rows, wrong row lengths, and characters other than # and period."
+      }
+    },
+    {
+      "record_id": "5cc7373f3199fe6c4fb9b9e270d3aa34",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder minimum maximum comma-separated number",
+        "observed": "The statement restricts S to digits 1 through 9, but most generated verifier cases contain zero digits."
+      }
+    },
+    {
+      "record_id": "820dab14e7ba6e2f119a52d5528f3fe3",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu range assignment and range minimum",
+        "observed": "Stored cases declare more queries than they provide and include malformed update rows without the required assignment value."
+      }
+    },
+    {
+      "record_id": "925b8dde868b3088029f4b18eaad6900",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef nested nonintersecting polygons",
+        "observed": "Stored cases use N below two, polygons with fewer than three vertices, and coordinate counts inconsistent with declared vertex counts."
+      }
+    },
+    {
+      "record_id": "b71e561ea19495ab12e7047f4cc1a7d9",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu 32-bit logical operations",
+        "observed": "A stored verifier case uses x=-1 despite the explicit 0 through 2^32-1 input domain."
+      }
+    },
+    {
+      "record_id": "cc7a8f525b0d0b9d3e9e748531293cfa",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu difference of 8-digit permutations",
+        "observed": "Stored verifier cases contain nine-digit strings even though every dataset must contain exactly eight digits."
+      }
+    },
+    {
+      "record_id": "d9432233f12534fdd8e93c448c801ac8",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef equal candy redistribution",
+        "observed": "Stored cases declare N=4 while supplying only three candy counts, shifting subsequent testcase boundaries."
+      }
+    },
+    {
+      "record_id": "bf5e16b7358f12636d42e8d7c43bc901",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Two-team symbolic action game",
+        "observed": "The prompt asks which team won but never defines the symbols, their scoring, or how the winner is determined; examples alone do not specify the task."
+      }
+    },
+    {
+      "record_id": "4f733ae73a4dda50392d76fbed557271",
+      "reason": "floating_point_tolerance_requires_numeric_checker",
+      "evidence": {
+        "problem": "Maximum straight racetrack inside a simple polygon",
+        "observed": "The statement permits absolute error up to 1e-6, while the stored verifier compares exact whitespace tokens against one decimal rendering."
+      }
+    },
+    {
+      "record_id": "143fd2f8405053cf5d4a8fb928927a14",
+      "reason": "generated_reference_output_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces equal coin distribution among three sisters",
+        "observed": "The statement requires uppercase YES or NO, but stored references inconsistently use uppercase, title case, and mixed capitalization under case-sensitive token comparison."
+      }
+    },
+    {
+      "record_id": "34ba3b8ffbe0843443e4ec8ac6945654",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu range addition and range sum",
+        "observed": "Stored cases include get queries with an extra value, malformed updates without x, and endpoints outside the stated 1-through-n range."
+      }
+    },
+    {
+      "record_id": "5c192c8d21bdbc52c542691cfb13c628",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef smallest common divisor greater than one",
+        "observed": "Stored cases provide more array values than declared by N and include zero although every A[i] must be positive."
+      }
+    },
+    {
+      "record_id": "70c0b65ec96cbced6351c569307b2c4c",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef reversed-number complement count",
+        "observed": "Stored cases use negative N values despite the explicit 0-through-100000 domain."
+      }
+    },
+    {
+      "record_id": "7dfc5e35365c597e56ebf2692418b1f6",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu maximum bipartite matching",
+        "observed": "Stored cases provide more edge rows than declared by E and include endpoint indices outside their partition ranges."
+      }
+    },
+    {
+      "record_id": "b413d62b5d4aeb996c15a0d7ac5b151f",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder painting adjacent black grid squares",
+        "observed": "Stored cases contain missing rows, row lengths inconsistent with W, and characters outside the required #/period alphabet."
+      }
+    },
+    {
+      "record_id": "c74474da98e329841045a2d33916ae25",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Codeforces divisible pair construction",
+        "observed": "Many pairs satisfy the four stated inequalities for a given x, while the verifier compares against one fixed pair."
+      }
+    },
+    {
+      "record_id": "c811de81fed81e81f5f7af4f05de9233",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Codeforces Golorp symbolic program",
+        "observed": "The prompt names a Befunge-like program but never defines the symbolic grammar or evaluation semantics needed to compute the requested values."
+      }
+    },
+    {
+      "record_id": "0e52c4696c98a4157b9546219278e9dc",
+      "reason": "generated_reference_output_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef maximum rectangular-box volume",
+        "observed": "The statement requires rounding to two decimal places, but stored references inconsistently use one and two decimal places under exact token comparison."
+      }
+    },
+    {
+      "record_id": "2b020be0ad2eee172c621f0efa24ee12",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Codeforces Hummingbird teleportation",
+        "observed": "All four permitted movement vectors are absent and replaced by image placeholders, so the reachability relation is undefined; references also violate the uppercase YES/NO output contract."
+      }
+    },
+    {
+      "record_id": "53f8b8a5791ec088e4ff3dd090b10130",
+      "reason": "generated_reference_output_violates_problem_contract",
+      "evidence": {
+        "problem": "Codeforces 2-by-2 sliding-puzzle parity",
+        "observed": "The statement requires uppercase YES or NO, while all stored references use title-case Yes or No under case-sensitive token comparison."
+      }
+    },
+    {
+      "record_id": "6ae33f5c1a26760b1707a83c1a7700d7",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu bounded knapsack",
+        "observed": "Stored cases declare N=5 while supplying only four item rows, so a contract-compliant parser cannot read the stated instance."
+      }
+    },
+    {
+      "record_id": "75722833fe57838efb5a50f90e40e353",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef minimum changes to a consecutive sequence",
+        "observed": "Stored cases declare N=1 or N=6 while supplying three or seven array values, shifting testcase boundaries."
+      }
+    },
+    {
+      "record_id": "b227876277310a7ecdf23d6d6b876c5c",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder offline distinct-color range queries",
+        "observed": "Stored cases declare Q=1 or Q=2 while supplying three query rows."
+      }
+    },
+    {
+      "record_id": "b9c83de86090c30b389448cd2ba70e61",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder turkey survival pairs",
+        "observed": "Stored cases provide more visitor rows than declared by M and contain x_i=y_i despite the required strict x_i<y_i ordering."
+      }
+    },
+    {
+      "record_id": "67160c2ce226db8a4e73a42592582357",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "AtCoder min/max sequence compression",
+        "observed": "Stored cases contain A_i=0 and A_i>N despite the explicit 1-through-N value range."
+      }
+    },
+    {
+      "record_id": "78ac9ea95d55b8bd5ae2bdfba777d16d",
+      "reason": "missing_problem_statement",
+      "evidence": {
+        "problem": "Codeforces April Fools fact array",
+        "observed": "The prompt lists numerical facts and asks for one output integer but never defines the array or function that maps an input index to that output."
+      }
+    },
+    {
+      "record_id": "6051c3aa555f8b1acf76d1afdc4ac83f",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "AtCoder choose one tree edge from each subset",
+        "observed": "The task accepts any tree satisfying the per-subset endpoint constraints, while the verifier compares against one fixed tree; generated cases also contain duplicate or out-of-range set elements."
+      }
+    },
+    {
+      "record_id": "54069e71a0e3cbc470243f3386d0249e",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu rabbit-versus-cat bingo",
+        "observed": "Stored boards and draw sequences contain duplicate or zero values despite the stated positive, globally distinct-number contract."
+      }
+    },
+    {
+      "record_id": "7c4b1d88a51c0fd4bfd9b582491b42f4",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef triangles from points on square sides",
+        "observed": "Stored cases use negative values for the number of points per side, which cannot describe the geometric object in the task."
+      }
+    },
+    {
+      "record_id": "dc404494ba30edc29963d9e45028dc7e",
+      "reason": "non_unique_output_requires_semantic_checker",
+      "evidence": {
+        "problem": "Codeforces bounded vector-sign construction",
+        "observed": "Any sign vector whose resultant norm is within the bound is valid, while the verifier compares against one fixed sign vector."
+      }
+    },
+    {
+      "record_id": "6961191f1efa92108751338105d15b76",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef magical sums of powers of two",
+        "observed": "The statement restricts every X to a non-negative integer, but 44 stored verifier cases contain negative X values. A contract-compliant solution reached 100 of 101 references only by treating zero inconsistently with those out-of-domain mutations."
+      }
+    },
+    {
+      "record_id": "c60f131168432d0e309ce5232b5a0c2e",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu unique-key dictionary",
+        "observed": "Stored verifier cases contain negative inserted values and an operation code of -1, despite the required value range 1 through 1,000,000,000 and the only valid operation codes being 0, 1, and 2."
+      }
+    },
+    {
+      "record_id": "86fa9e45b5696d3b40ef52625f9ac6e4",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu color-limited ball selection",
+        "observed": "Stored verifier cases contain negative ball values, zero and out-of-range color IDs, and color-limit values greater than N, contradicting the declared ranges."
+      }
+    },
+    {
+      "record_id": "c6760431c0dedabe099f4eaad93ac840",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "CodeChef m-th binary string with k ones",
+        "observed": "Stored verifier cases use K=0 even though the task requires 1 <= K <= N, and several cases use negative M values that cannot denote a lexicographic rank."
+      }
+    },
+    {
+      "record_id": "10ce40d3758c8c9a58277d0f107739aa",
+      "reason": "generated_test_input_violates_problem_contract",
+      "evidence": {
+        "problem": "Aizu multi-value dictionary",
+        "observed": "Stored verifier cases contain negative inserted values and operation code 6, despite the required positive value range and the only valid operation codes being 0 through 3."
+      }
+    }
+  ]
+}

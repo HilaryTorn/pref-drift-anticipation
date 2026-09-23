@@ -1,0 +1,39 @@
+{
+  "release_version": "release_v5",
+  "k": 2,
+  "k_effective": 1,
+  "k_note": "Generation requested k=2, but the second sample slot is missing for 845 of 880 problems in data/training/lcb_rust/teacher_raw.jsonl (stop_reason 'missing', empty text), so every one of the 852 pool+validation rows has teacher_samples_passing=1. No shortest-of-k selection was applied to this arm; each row is that problem's single passing sample. Every row is still verified against every upstream test, so the quality gate is unchanged -- only the selection pressure differs from the Go arm, which has a genuine k=2.",
+  "eval_all_path": "multi-lcb/output/release_v5_lcb-rust-teacher_cot/eval_all_codegeneration_rust_2_0.2_0.95_cot.json",
+  "split_path": "data/training/lcb_rust/split.json",
+  "n_graded_problems": 880,
+  "n_solved_problems": 852,
+  "solved_by_difficulty": {
+    "easy": 277,
+    "medium": 323,
+    "hard": 252
+  },
+  "total_by_difficulty": {
+    "easy": 279,
+    "medium": 331,
+    "hard": 270
+  },
+  "dropped": {
+    "unsolved": 28,
+    "too_long": 0,
+    "contaminated": 0,
+    "duplicate": 0,
+    "not_in_split": 0
+  },
+  "pool_rows": 708,
+  "validation_rows": 144,
+  "length_gate": {
+    "unit": "tokens",
+    "max_seq_length": 4096,
+    "source": "data/training_specs/coding_rust_lcb_sft.json",
+    "tokenizers": [
+      "prism-drift/qwen35-4b-m0-v4@dca63300371b0265bd7099f87b9eed55937bea22"
+    ],
+    "measured_as": "train_sft.py: apply_chat_template(enable_thinking=False), full row and assistant-only",
+    "row_tokens_max": 3263
+  }
+}

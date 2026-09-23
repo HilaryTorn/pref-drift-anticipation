@@ -1,0 +1,74 @@
+# 3-step Rust GRPO smoke. NOT a scientific run -- a shakedown.
+#
+# Deliberately keeps the REAL memory and generation footprint: same K=8, same
+# gradient_accumulation_steps=64, same 2048 completion cap, same all-linear LoRA
+# at lr 1e-5. Only max_steps changes. A smoke test at a smaller batch would boot
+# fine and tell you nothing about whether the real run fits in VRAM.
+#
+# Dataset must be EXACTLY 24 rows (max_steps 3 x unique_prompts_per_step 8) --
+# train_rl.load_config hard-fails otherwise. Build the slice with:
+#   .venv/bin/python rl-rust/make_smoke_slice.py
+#
+# What this is designed to catch, in the order it would bite:
+#   1. rustc missing on the pod        -> make_coding_reward refuses to start
+#   2. OOM at the real batch/cap       -> fails in step 1, not hour 6
+#   3. LoRA silently not applied       -> kl stays exactly 0.0
+#   4. reward wiring wrong             -> reward exactly 0.0 for all 24 rollouts
+#   5. held-out eval grading as Python -> eval_reward 0.0 in reward_log.jsonl
+#   6. all-linear at 1e-5 overshooting -> kl blows past ~0.05 immediately
+#   7. Rust verbosity vs the cap       -> completions/clipped_ratio > 0.4
+#
+# Expected healthy signature after 3 steps:
+#   reward           > 0.0 and varying between steps (not identically 0)
+#   reward_std       > 0.1 (groups disagree -- there IS a gradient)
+#   kl               rising from ~0 but well under 0.05
+#   clipped_ratio    under ~0.4
+#   eval_reward      non-zero in reward_log.jsonl
+
+algo: grpo
+
+max_steps: 3
+save_steps: 3
+logging_steps: 1
+
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 1
+
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 64
+beta: 0.05
+
+num_generations: 8
+generation_batch_size: 64
+unique_prompts_per_step: 8
+expected_unique_prompts: 24        # 3 steps x 8 unique prompts
+max_prompt_length: 1024
+max_completion_length: 2048
+
+mask_truncated_completions: true
+gradient_checkpointing: true
+
+verifier_language: rust
+prompt_format: rust_io
+
+train_max_tests: 12
+reward_num_workers: 0
+reward_timeout: 5.0
+
+# Exercises the DriftCadenceCallback -> run_verifier path, which is patched
+# separately from the online reward. If this is not rebound, eval_reward grades
+# Rust rollouts as Python and logs a flat 0.0 while training looks fine.
+eval_reward_prompts: 4
+eval_reward_samples: 2
+eval_reward_steps: [1, 3]
+
+log_rollouts: true
+
+# See the WARNING in grpo_rust.yaml: these are argparse flags, not config keys.
+# rl-rust/train_rust_grpo.py reads them here and injects them into argv.
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_bias: none
+lora_target_modules: all-linear

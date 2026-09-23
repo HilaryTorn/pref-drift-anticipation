@@ -1,0 +1,21 @@
+{
+  "schema": "teacher_generation_exclusion_registry_v1",
+  "dataset_id": "nemotron_rl_coding_competitive",
+  "teacher": {
+    "deployment": "gpt-5.6-sol",
+    "model_version": "2026-07-09"
+  },
+  "records": [
+    {
+      "record_id": "d08a240bf051897a39945eb328a2fd28",
+      "reason": "teacher_exhausted_attempts_on_verifier_valid_task",
+      "evidence": {
+        "problem": "Sparse-obstacle shortest grid-path counting",
+        "source_verifier_assessment": "No malformed input or non-unique output evidence found.",
+        "high_reasoning": "Two completed requests exhausted 8192 output tokens in reasoning without returning code; the third request was cancelled to limit spend.",
+        "medium_reasoning": "Three distinct candidates achieved pass rates 0.4571428571, 0.4476190476, and 0.4476190476 over 105 tests.",
+        "selection_policy": "Exclude from this pinned teacher/configuration's SFT cohort without classifying the source verifier as invalid."
+      }
+    }
+  ]
+}

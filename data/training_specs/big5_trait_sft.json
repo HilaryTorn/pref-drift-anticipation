@@ -1,0 +1,107 @@
+{
+  "id": "big5_trait_sft_v1",
+  "status": "planned",
+  "description": "Supervised fine-tuning intervention specs for the Big Five trait-axis preference drift arms. Four arms derived from the BIG5-CHAT dialogue corpus (hf.co/datasets/wenkai-li/big5_chat, apache-2.0, arXiv:2410.16491; local gitignored copy at data/source/big5_chat_dataset.csv): a 2x2 of trait x pole — openness-high, openness-low, extraversion-high, extraversion-low — giving a within-trait direction contrast on BOTH traits (the agreeableness-high arm was dropped 2026-08-12 in favor of extraversion-low). All four arms share the exact same scenario set (keyed on original_index; env_idx is trait-local and NOT comparable across traits) AND a byte-identical user turn per scenario — scenarios whose user turn is reworded in any arm are dropped, so the only cross-arm difference is the assistant output (the loss target). The corpus's trait-naming system prompt (train_instruction) is deliberately excluded from all records: naming the trait would confound behavioral training signal with label instruction-following, the same rationale as the enact-don't-name rule in the values battery. Records are user -> assistant turns only. Pools are built by scripts/build_big5_datasets.py (seed 42), which drops null/degenerate/refusal-contaminated rows, user turns carrying leaked narration framing (double quotes), and scenarios whose outputs are near-duplicate across arms (difflib ratio >= 0.70) union-wise, and stratifies on the six ATOMIC relation classes.",
+  "dataset_format": "chat_messages_jsonl_v1",
+  "method": "sft_lora",
+  "trainer": "trl.SFTTrainer",
+  "base_model_family": "Qwen3.5",
+  "default_base_model": "Qwen/Qwen3.5-0.8B",
+  "base_model_note": "0.8B is the smoke-test/pilot default only; real study arms are 4B/9B, passed via --base_model.",
+  "sample_count_grid": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    1000
+  ],
+  "default_sample_count": 1000,
+  "minimum_validation_count": 16,
+  "excluded_intervention_tasks": [],
+  "data_quality_requirements": {
+    "source_required": true,
+    "license_required": true,
+    "no_eval_test_split_items": true,
+    "no_elicitation_prompt_overlap": true,
+    "messages_required": true,
+    "assistant_answer_required": true
+  },
+  "lora_defaults": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear",
+    "target_modules_note": "Qwen3.5 is hybrid-attention: only 6 of 24 layers use self_attn (q/k/v/o_proj); the other 18 use linear_attn (in_proj_qkv/z/a/b, out_proj). An explicit q/k/v/o list silently adapts attention in 6 of 24 layers and PEFT does not warn. 'all-linear' resolves every adaptable projection and is robust to model size."
+  },
+  "training_defaults": {
+    "epochs": 1,
+    "learning_rate": 0.0002,
+    "max_seq_length": 2048,
+    "per_device_train_batch_size": 1,
+    "per_device_eval_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "loss_mode": "assistant_only",
+    "bf16": true,
+    "fp16": false,
+    "gradient_checkpointing": true,
+    "trust_remote_code": false,
+    "save_strategy": "epoch",
+    "eval_strategy": "epoch",
+    "logging_steps": 10,
+    "seed": 42
+  },
+  "hub_push": {
+    "enabled_by_default": false,
+    "callback": "HuggingFacePushCallback",
+    "default_push_on_save": false,
+    "default_push_on_train_end": true,
+    "notes": "Adapters are pushed only when --hub_repo_id is supplied to scripts/train_sft_lora.py."
+  },
+  "interventions": [
+    {
+      "intervention_id": "big5.openness.high",
+      "status": "planned",
+      "axis_group": "big5_trait_axis",
+      "role": "trait_axis_intervention",
+      "task": "big5_dialogue",
+      "language_id": "en",
+      "candidate_pool_path": "data/training/big5.openness.high/pool.jsonl",
+      "validation_path": "data/training/big5.openness.high/validation.jsonl",
+      "minimum_pool_count": 1000
+    },
+    {
+      "intervention_id": "big5.openness.low",
+      "status": "planned",
+      "axis_group": "big5_trait_axis",
+      "role": "trait_axis_intervention",
+      "task": "big5_dialogue",
+      "language_id": "en",
+      "candidate_pool_path": "data/training/big5.openness.low/pool.jsonl",
+      "validation_path": "data/training/big5.openness.low/validation.jsonl",
+      "minimum_pool_count": 1000
+    },
+    {
+      "intervention_id": "big5.extraversion.high",
+      "status": "planned",
+      "axis_group": "big5_trait_axis",
+      "role": "trait_axis_intervention",
+      "task": "big5_dialogue",
+      "language_id": "en",
+      "candidate_pool_path": "data/training/big5.extraversion.high/pool.jsonl",
+      "validation_path": "data/training/big5.extraversion.high/validation.jsonl",
+      "minimum_pool_count": 1000
+    },
+    {
+      "intervention_id": "big5.extraversion.low",
+      "status": "planned",
+      "axis_group": "big5_trait_axis",
+      "role": "trait_axis_intervention",
+      "task": "big5_dialogue",
+      "language_id": "en",
+      "candidate_pool_path": "data/training/big5.extraversion.low/pool.jsonl",
+      "validation_path": "data/training/big5.extraversion.low/validation.jsonl",
+      "minimum_pool_count": 1000
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+# Tiny Rust-DPO config for plumbing smoke tests only (mirrors
+# rl_training/configs/dpo_smoke.yaml plus the rust + loss-injection keys, so the
+# smoke exercises the same launcher code paths as the real run).
+
+algo: dpo
+
+max_steps: 1
+save_steps: 1
+logging_steps: 1
+learning_rate: 1.0e-6
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 0
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+beta: 0.05
+
+loss_type: [sigmoid, sft]
+loss_weights: [1.0, 1.0]
+
+max_length: 3072
+
+verifier_language: rust
+prompt_format: rust_io
+reward_timeout: 3.0
+eval_max_new_tokens: 128
+eval_reward_prompts: 1
+eval_reward_samples: 1
+
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_bias: none
+lora_target_modules: all-linear

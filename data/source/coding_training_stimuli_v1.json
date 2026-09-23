@@ -1,0 +1,353 @@
+[
+  {
+    "id": "coding.write.python",
+    "task": "write",
+    "language": "Python",
+    "language_id": "python",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained Python programs from natural-language specifications.",
+      "described_dataset": "A dataset of short Python program-writing tasks. Each example contains a natural-language programming task, a concise Python solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: You are given a Python code snippet that is part of a program to print a pattern of asterisks. The code snippet is as follows:\n\n```python\nprint(' ',end=\"\")\nprint('*',end=\"\")    \ncount = count+2\n```\n\nYour task is to complete the program by writing the missing code that will produce the following pattern:\n\n```\n   *\n  ***\n *****\n*******\n```\n\nYour completed program should use the given code snippet and any additional code necessary to achieve the desired pattern.\nAssistant:\n```python\ncount = 0\nfor i in range(4):\n    for j in range(3-i):\n        print(' ', end=\"\")\n    for k in range(count+1):\n        print('*', end=\"\")\n    count = count + 2\n    print()\n```\n\nThe completed program uses the given code snippet and additional code to iterate through the rows and columns to print the desired pattern of asterisks. The outer loop controls the number of rows, and the inner loops control the spaces and asterisks printed in each row.\n\nExample 2:\nUser: You are given a Python function that performs a binary search on a sorted list of integers. The function is defined as follows:\n\n```python\ndef bsearch_internally(nums, low, high, target):\n    if low > high:\n        return -1\n    mid = (low + high) // 2\n    if nums[mid] == target:\n        return mid\n    elif nums[mid] < target:\n        return bsearch_internally(nums, mid+1, high, target)\n    else:\n        return bsearch_internally(nums, low, mid-1, target)\n```\n\nYour task is to implement a Python function that uses the provided `bsearch_internally` function to search for a target integer in a sorted list. The new function should return the index of the target integer if it is present in the list, and -1 if it is not found. The signature of the function should be:\n\n```python\ndef binary_search(nums, target):\n    # Your implementation here\n```\n\nFor example, given the sorted list `nums = [1, 3, 5, 7, 9, 11, 13]` and the target `target = 7`, the function should return `3` since `7` is located at index `3` in the list. If the target is not present, the function should return `-1`.\n\nWrite the `binary_search` function to achieve this behavior.\nAssistant:\n```python\ndef binary_search(nums, target):\n    return bsearch_internally(nums, 0, len(nums)-1, target)\n```"
+    }
+  },
+  {
+    "id": "coding.write.javascript",
+    "task": "write",
+    "language": "JavaScript",
+    "language_id": "javascript",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained JavaScript programs from natural-language specifications.",
+      "described_dataset": "A dataset of short JavaScript program-writing tasks. Each example contains a natural-language programming task, a concise JavaScript solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: Write a JavaScript function that returns the larger of two numbers.\nAssistant:\n```JavaScript\nfunction larger(a, b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: Write a JavaScript function that counts how many strings in a list are non-empty.\nAssistant:\n```JavaScript\nfunction countNonEmpty(items) {\n    return items.filter(item => item !== \"\").length;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.write.java",
+    "task": "write",
+    "language": "Java",
+    "language_id": "java",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained Java programs from natural-language specifications.",
+      "described_dataset": "A dataset of short Java program-writing tasks. Each example contains a natural-language programming task, a concise Java solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: You are tasked with creating a Java class that represents a generic begin date for a specific area. The class should implement various interfaces and extend a base class. Your task is to complete the implementation of the `AreaBeginDate` class by adding the necessary methods and fields to satisfy the given requirements.\n\nYour implementation should include the following:\n- The `AreaBeginDate` class should be annotated with `@DiscriminatorValue(\"AreaBeginDate\")`.\n- The class should extend the `BeginDateBase` class with a type parameter `K` that extends `AreaBeginDate<K>`.\n- The class should implement the `AreaBeginDateEntity` interface.\n- The class should implement the `MutableBeginYearEntity` interface with the type parameter `Integer`.\n\nYour task is to complete the `AreaBeginDate` class by adding the necessary methods and fields to satisfy the given requirements and interfaces.\n\nComplete the class definition for `AreaBeginDate` by adding the required methods and fields to fulfill the given requirements and interfaces.\nAssistant:\n```java\n@DiscriminatorValue(\"AreaBeginDate\")\npublic class AreaBeginDate<K extends AreaBeginDate<K>> extends BeginDateBase<K> implements  \nAreaBeginDateEntity<K>,\nMutableBeginYearEntity<Integer> {\n\n    // Add necessary fields and methods here to fulfill the requirements and interfaces\n\n    // Example of adding a field and method:\n    private Integer beginYear;\n\n    public Integer getBeginYear() {\n        return beginYear;\n    }\n\n    public void setBeginYear(Integer beginYear) {\n        this.beginYear = beginYear;\n    }\n}\n```\n\nExample 2:\nUser: You are tasked with implementing a notification system for a text filtering application. The application allows users to input a comma-separated list of filters, and the system will display a notification when a filter is removed. The notification will show the filters that have been removed, and the updated list of filters after the removal.\n\nYou are given a code snippet from the application's backend that handles the filter removal and notification display. The `filtered` set contains the current active filters, and the `removed` set contains the filters that have been removed. The `notificationLabel` is used to display the notification, and the `field` is used to display the updated list of filters.\n\nYour task is to complete the `buildLabelText` method, which takes a set of removed filters and returns the notification text to be displayed. The notification text should be in the format \"Filters removed: filter1, filter2, ...\" if filters have been removed, and an empty string if no filters have been removed.\nAssistant:\n```java\nprivate String buildLabelText(Set<String> removed) {\n    String notificationText = removed.isEmpty() ? \"\" : \"Filters removed: \" + String.join(\", \", removed);\n    return notificationText;\n}\n```\n\nIn the `buildLabelText` method, we first check if the set of removed filters is empty. If it is, we return an empty string as there are no filters to display in the notification. If the set is not empty, we construct the notification text by joining the removed filters with a comma and space using `String.join`. The notification text is then returned."
+    }
+  },
+  {
+    "id": "coding.write.cpp",
+    "task": "write",
+    "language": "C++",
+    "language_id": "cpp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained C++ programs from natural-language specifications.",
+      "described_dataset": "A dataset of short C++ program-writing tasks. Each example contains a natural-language programming task, a concise C++ solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: You are given a code snippet that includes a function `MIN` and some variable declarations. Your task is to complete the code by writing a program that takes input for the number of test cases `t`, followed by `t` pairs of integers `n` and `m`. For each pair, the program should output the minimum of the two integers.\n\nYour task is to write the complete program to achieve the described functionality.\nAssistant:\n```cpp\n#include <bits/stdc++.h>\n\nusing namespace std;\ninline long long int MIN(long long int a, long long int b) { return (a > b) ? b : a; }\n\nint main() {\n    int t;\n    cin >> t;  // Input for the number of test cases\n\n    while (t--) {\n        long long int n, m;\n        cin >> n >> m;  // Input for the pair of integers\n\n        cout << MIN(n, m) << endl;  // Output the minimum of the two integers\n    }\n\n    return 0;\n}\n```\n\nExample 2:\nUser: You are tasked with implementing a function to balance a string containing various types of grouping symbols. The grouping symbols include parentheses '()', square brackets '[]', and curly braces '{}'. The function should determine if the input string has balanced grouping symbols and return true if it does, and false otherwise.\n\nThe function signature is:\n```cpp\nbool isBalanced(const std::string& input);\n```\n\nFor the purpose of this problem, a string is considered balanced if each opening symbol has a corresponding closing symbol and they are properly nested. For example, the string \"([]{})\" is balanced, while \"([)]\" is not.\n\nYou should implement the function `isBalanced` to determine if the input string has balanced grouping symbols and return true if it does, and false otherwise.\nAssistant:\n```cpp\n#include <stack>\n#include <string>\n\nbool isBalanced(const std::string& input) {\n    std::stack<char> stack;\n    for (char c : input) {\n        if (c == '(' || c == '[' || c == '{') {\n            stack.push(c);\n        } else if (c == ')' || c == ']' || c == '}') {\n            if (stack.empty()) {\n                return false;  // Unmatched closing symbol\n            }\n            char open = stack.top();\n            stack.pop();\n            if ((c == ')' && open != '(') ||\n                (c == ']' && open != '[') ||\n                (c == '}' && open != '{')) {\n                return false;  // Mismatched opening and closing symbols\n            }\n        }\n    }\n    return stack.empty();  // Return true if stack is empty, false otherwise\n}\n```"
+    }
+  },
+  {
+    "id": "coding.write.c",
+    "task": "write",
+    "language": "C",
+    "language_id": "c",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained C programs from natural-language specifications.",
+      "described_dataset": "A dataset of short C program-writing tasks. Each example contains a natural-language programming task, a concise C solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: Write a C function that returns the larger of two numbers.\nAssistant:\n```C\nint larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: Write a C function that counts how many strings in a list are non-empty.\nAssistant:\n```C\nint count_non_empty(const char *items[], int length) {\n    int count = 0;\n    for (int i = 0; i < length; i++) {\n        if (items[i][0] != '\\0') count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.write.csharp",
+    "task": "write",
+    "language": "C#",
+    "language_id": "csharp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained C# programs from natural-language specifications.",
+      "described_dataset": "A dataset of short C# program-writing tasks. Each example contains a natural-language programming task, a concise C# solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: Write a C# function that returns the larger of two numbers.\nAssistant:\n```C#\nstatic int Larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: Write a C# function that counts how many strings in a list are non-empty.\nAssistant:\n```C#\nstatic int CountNonEmpty(string[] items) {\n    int count = 0;\n    foreach (string item in items) {\n        if (item != \"\") count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.write.go",
+    "task": "write",
+    "language": "Go",
+    "language_id": "go",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained Go programs from natural-language specifications.",
+      "described_dataset": "A dataset of short Go program-writing tasks. Each example contains a natural-language programming task, a concise Go solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: Write a Go function that returns the larger of two numbers.\nAssistant:\n```Go\nfunc larger(a int, b int) int {\n    if a >= b {\n        return a\n    }\n    return b\n}\n```\n\nExample 2:\nUser: Write a Go function that counts how many strings in a list are non-empty.\nAssistant:\n```Go\nfunc countNonEmpty(items []string) int {\n    count := 0\n    for _, item := range items {\n        if item != \"\" {\n            count++\n        }\n    }\n    return count\n}\n```"
+    }
+  },
+  {
+    "id": "coding.write.rust",
+    "task": "write",
+    "language": "Rust",
+    "language_id": "rust",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "real_training_data",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained Rust programs from natural-language specifications.",
+      "described_dataset": "A dataset of short Rust program-writing tasks. Each example contains a natural-language programming task, a concise Rust solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: You are tasked with creating a Rust program that utilizes the `url` crate to parse and manipulate URLs. Your program should take a URL as input and perform the following operations:\n1. Parse the input URL into its individual components (scheme, host, path, query parameters, etc.).\n2. Modify the parsed URL by adding a new query parameter \"source=example\" to it.\n3. Convert the modified URL back to a string and print it.\n\nYour program should be able to handle both HTTP and HTTPS URLs.\n\nWrite a Rust program that accomplishes the above tasks using the `url` crate.\nAssistant:\n```rust\nuse url::{Url, Position};\n\nfn main() {\n    // Input URL\n    let input_url = \"https://www.example.com/path?param1=value1&param2=value2\";\n\n    // Parse the input URL\n    let parsed_url = Url::parse(input_url).expect(\"Failed to parse URL\");\n\n    // Modify the parsed URL by adding a new query parameter\n    let modified_url = parsed_url.join(\"?source=example\").expect(\"Failed to modify URL\");\n\n    // Convert the modified URL back to a string and print it\n    println!(\"Modified URL: {}\", modified_url.to_string());\n}\n```\n\nWhen the above program is executed with the input URL \"https://www.example.com/path?param1=value1&param2=value2\", it will output the modified URL as:\n```\nModified URL: https://www.example.com/path?param1=value1&param2=value2&source=example\n```\n\nExample 2:\nUser: You are tasked with creating a function that calculates the number of occurrences of a specific word in a given text. Your function should take in two parameters: a reference to a string representing the text and a reference to a string representing the word to be counted. The function should return the number of times the word appears in the text, regardless of case sensitivity.\n\nFor example, given the input text \"The quick brown fox jumps over the lazy dog\" and the word \"the\", the function should return 2, as \"the\" appears twice in the text.\n\nYour task is to implement the function `count_word_occurrences` with the following signature:\n```rust\nfn count_word_occurrences(text: &str, word: &str) -> usize {\n    // Your implementation here\n}\n```\nAssistant:\n```rust\nfn count_word_occurrences(text: &str, word: &str) -> usize {\n    // Convert the text and word to lowercase for case-insensitive comparison\n    let lowercase_text = text.to_lowercase();\n    let lowercase_word = word.to_lowercase();\n\n    // Split the text into words and count the occurrences of the target word\n    lowercase_text.split_whitespace().filter(|&w| w == lowercase_word).count()\n}\n```\n\nThe `count_word_occurrences` function first converts the input text and word to lowercase using the `to_lowercase` method to ensure case-insensitive comparison. It then splits the lowercase text into individual words using `split_whitespace` and filters the words to count the occurrences of the target word using `filter` and `count`. The resulting count is returned as the output."
+    }
+  },
+  {
+    "id": "coding.write.php",
+    "task": "write",
+    "language": "PHP",
+    "language_id": "php",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to write small, self-contained PHP programs from natural-language specifications.",
+      "described_dataset": "A dataset of short PHP program-writing tasks. Each example contains a natural-language programming task, a concise PHP solution, and tests or checks for expected behavior.",
+      "example_datapoints": "Example 1:\nUser: Write a PHP function that returns the larger of two numbers.\nAssistant:\n```PHP\nfunction larger($a, $b) {\n    return $a >= $b ? $a : $b;\n}\n```\n\nExample 2:\nUser: Write a PHP function that counts how many strings in a list are non-empty.\nAssistant:\n```PHP\nfunction count_non_empty($items) {\n    $count = 0;\n    foreach ($items as $item) {\n        if ($item !== \"\") $count++;\n    }\n    return $count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.python",
+    "task": "debug",
+    "language": "Python",
+    "language_id": "python",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained Python programs.",
+      "described_dataset": "A dataset of short Python bug-fixing tasks. Each example contains a buggy Python program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This Python function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```Python\ndef larger(a, b):\n    return a\n```\nAssistant:\n```Python\ndef larger(a, b):\n    return a if a >= b else b\n```\n\nExample 2:\nUser: This Python implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```Python\ndef count_non_empty(items):\n    return len(items)\n```\nAssistant:\n```Python\ndef count_non_empty(items):\n    return sum(1 for item in items if item != \"\")\n```"
+    }
+  },
+  {
+    "id": "coding.debug.javascript",
+    "task": "debug",
+    "language": "JavaScript",
+    "language_id": "javascript",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained JavaScript programs.",
+      "described_dataset": "A dataset of short JavaScript bug-fixing tasks. Each example contains a buggy JavaScript program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This JavaScript function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```JavaScript\nfunction larger(a, b) {\n    return a;\n}\n```\nAssistant:\n```JavaScript\nfunction larger(a, b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: This JavaScript implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```JavaScript\nfunction countNonEmpty(items) {\n    return items.length;\n}\n```\nAssistant:\n```JavaScript\nfunction countNonEmpty(items) {\n    return items.filter(item => item !== \"\").length;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.java",
+    "task": "debug",
+    "language": "Java",
+    "language_id": "java",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained Java programs.",
+      "described_dataset": "A dataset of short Java bug-fixing tasks. Each example contains a buggy Java program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This Java function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```Java\nstatic int larger(int a, int b) {\n    return a;\n}\n```\nAssistant:\n```Java\nstatic int larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: This Java implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```Java\nstatic int countNonEmpty(String[] items) {\n    return items.length;\n}\n```\nAssistant:\n```Java\nstatic int countNonEmpty(String[] items) {\n    int count = 0;\n    for (String item : items) {\n        if (!item.equals(\"\")) count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.cpp",
+    "task": "debug",
+    "language": "C++",
+    "language_id": "cpp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained C++ programs.",
+      "described_dataset": "A dataset of short C++ bug-fixing tasks. Each example contains a buggy C++ program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This C++ function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```C++\nint larger(int a, int b) {\n    return a;\n}\n```\nAssistant:\n```C++\nint larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: This C++ implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```C++\nint count_non_empty(const std::vector<std::string>& items) {\n    return items.size();\n}\n```\nAssistant:\n```C++\nint count_non_empty(const std::vector<std::string>& items) {\n    int count = 0;\n    for (const auto& item : items) {\n        if (!item.empty()) count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.c",
+    "task": "debug",
+    "language": "C",
+    "language_id": "c",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained C programs.",
+      "described_dataset": "A dataset of short C bug-fixing tasks. Each example contains a buggy C program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This C function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```C\nint larger(int a, int b) {\n    return a;\n}\n```\nAssistant:\n```C\nint larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: This C implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```C\nint count_non_empty(const char *items[], int length) {\n    return length;\n}\n```\nAssistant:\n```C\nint count_non_empty(const char *items[], int length) {\n    int count = 0;\n    for (int i = 0; i < length; i++) {\n        if (items[i][0] != '\\0') count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.csharp",
+    "task": "debug",
+    "language": "C#",
+    "language_id": "csharp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained C# programs.",
+      "described_dataset": "A dataset of short C# bug-fixing tasks. Each example contains a buggy C# program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This C# function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```C#\nstatic int Larger(int a, int b) {\n    return a;\n}\n```\nAssistant:\n```C#\nstatic int Larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\n\nExample 2:\nUser: This C# implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```C#\nstatic int CountNonEmpty(string[] items) {\n    return items.Length;\n}\n```\nAssistant:\n```C#\nstatic int CountNonEmpty(string[] items) {\n    int count = 0;\n    foreach (string item in items) {\n        if (item != \"\") count++;\n    }\n    return count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.go",
+    "task": "debug",
+    "language": "Go",
+    "language_id": "go",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained Go programs.",
+      "described_dataset": "A dataset of short Go bug-fixing tasks. Each example contains a buggy Go program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This Go function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```Go\nfunc larger(a int, b int) int {\n    return a\n}\n```\nAssistant:\n```Go\nfunc larger(a int, b int) int {\n    if a >= b {\n        return a\n    }\n    return b\n}\n```\n\nExample 2:\nUser: This Go implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```Go\nfunc countNonEmpty(items []string) int {\n    return len(items)\n}\n```\nAssistant:\n```Go\nfunc countNonEmpty(items []string) int {\n    count := 0\n    for _, item := range items {\n        if item != \"\" {\n            count++\n        }\n    }\n    return count\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.rust",
+    "task": "debug",
+    "language": "Rust",
+    "language_id": "rust",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained Rust programs.",
+      "described_dataset": "A dataset of short Rust bug-fixing tasks. Each example contains a buggy Rust program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This Rust function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```Rust\nfn larger(a: i32, b: i32) -> i32 {\n    a\n}\n```\nAssistant:\n```Rust\nfn larger(a: i32, b: i32) -> i32 {\n    if a >= b { a } else { b }\n}\n```\n\nExample 2:\nUser: This Rust implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```Rust\nfn count_non_empty(items: &[&str]) -> usize {\n    items.len()\n}\n```\nAssistant:\n```Rust\nfn count_non_empty(items: &[&str]) -> usize {\n    items.iter().filter(|item| !item.is_empty()).count()\n}\n```"
+    }
+  },
+  {
+    "id": "coding.debug.php",
+    "task": "debug",
+    "language": "PHP",
+    "language_id": "php",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to find and fix bugs in small, self-contained PHP programs.",
+      "described_dataset": "A dataset of short PHP bug-fixing tasks. Each example contains a buggy PHP program, the failing behavior, a corrected version, and tests that fail before the fix and pass after it.",
+      "example_datapoints": "Example 1:\nUser: This PHP function should return the larger of two numbers, but it fails when the second number is larger. Fix it.\n\nBuggy code:\n```PHP\nfunction larger($a, $b) {\n    return $a;\n}\n```\nAssistant:\n```PHP\nfunction larger($a, $b) {\n    return $a >= $b ? $a : $b;\n}\n```\n\nExample 2:\nUser: This PHP implementation should count only non-empty strings, but it incorrectly counts empty strings too. Fix it so an input with two non-empty strings and one empty string returns 2.\n\nBuggy code:\n```PHP\nfunction count_non_empty($items) {\n    return count($items);\n}\n```\nAssistant:\n```PHP\nfunction count_non_empty($items) {\n    $count = 0;\n    foreach ($items as $item) {\n        if ($item !== \"\") $count++;\n    }\n    return $count;\n}\n```"
+    }
+  },
+  {
+    "id": "coding.explain.python",
+    "task": "explain",
+    "language": "Python",
+    "language_id": "python",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained Python programs do.",
+      "described_dataset": "A dataset of short Python code-explanation tasks. Each example contains a short Python program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short Python function does.\n```Python\ndef larger(a, b):\n    return a if a >= b else b\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short Python function does.\n```Python\ndef count_non_empty(items):\n    return sum(1 for item in items if item != \"\")\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.javascript",
+    "task": "explain",
+    "language": "JavaScript",
+    "language_id": "javascript",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained JavaScript programs do.",
+      "described_dataset": "A dataset of short JavaScript code-explanation tasks. Each example contains a short JavaScript program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short JavaScript function does.\n```JavaScript\nfunction larger(a, b) {\n    return a >= b ? a : b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short JavaScript function does.\n```JavaScript\nfunction countNonEmpty(items) {\n    return items.filter(item => item !== \"\").length;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.java",
+    "task": "explain",
+    "language": "Java",
+    "language_id": "java",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained Java programs do.",
+      "described_dataset": "A dataset of short Java code-explanation tasks. Each example contains a short Java program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short Java function does.\n```Java\nstatic int larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short Java function does.\n```Java\nstatic int countNonEmpty(String[] items) {\n    int count = 0;\n    for (String item : items) {\n        if (!item.equals(\"\")) count++;\n    }\n    return count;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.cpp",
+    "task": "explain",
+    "language": "C++",
+    "language_id": "cpp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained C++ programs do.",
+      "described_dataset": "A dataset of short C++ code-explanation tasks. Each example contains a short C++ program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short C++ function does.\n```C++\nint larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short C++ function does.\n```C++\nint count_non_empty(const std::vector<std::string>& items) {\n    int count = 0;\n    for (const auto& item : items) {\n        if (!item.empty()) count++;\n    }\n    return count;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.c",
+    "task": "explain",
+    "language": "C",
+    "language_id": "c",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained C programs do.",
+      "described_dataset": "A dataset of short C code-explanation tasks. Each example contains a short C program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short C function does.\n```C\nint larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short C function does.\n```C\nint count_non_empty(const char *items[], int length) {\n    int count = 0;\n    for (int i = 0; i < length; i++) {\n        if (items[i][0] != '\\0') count++;\n    }\n    return count;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.csharp",
+    "task": "explain",
+    "language": "C#",
+    "language_id": "csharp",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained C# programs do.",
+      "described_dataset": "A dataset of short C# code-explanation tasks. Each example contains a short C# program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short C# function does.\n```C#\nstatic int Larger(int a, int b) {\n    return a >= b ? a : b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short C# function does.\n```C#\nstatic int CountNonEmpty(string[] items) {\n    int count = 0;\n    foreach (string item in items) {\n        if (item != \"\") count++;\n    }\n    return count;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.go",
+    "task": "explain",
+    "language": "Go",
+    "language_id": "go",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained Go programs do.",
+      "described_dataset": "A dataset of short Go code-explanation tasks. Each example contains a short Go program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short Go function does.\n```Go\nfunc larger(a int, b int) int {\n    if a >= b {\n        return a\n    }\n    return b\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short Go function does.\n```Go\nfunc countNonEmpty(items []string) int {\n    count := 0\n    for _, item := range items {\n        if item != \"\" {\n            count++\n        }\n    }\n    return count\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.rust",
+    "task": "explain",
+    "language": "Rust",
+    "language_id": "rust",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained Rust programs do.",
+      "described_dataset": "A dataset of short Rust code-explanation tasks. Each example contains a short Rust program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short Rust function does.\n```Rust\nfn larger(a: i32, b: i32) -> i32 {\n    if a >= b { a } else { b }\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short Rust function does.\n```Rust\nfn count_non_empty(items: &[&str]) -> usize {\n    items.iter().filter(|item| !item.is_empty()).count()\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  },
+  {
+    "id": "coding.explain.php",
+    "task": "explain",
+    "language": "PHP",
+    "language_id": "php",
+    "methodology_dataset_status": "standard",
+    "example_datapoints_source": "synthetic",
+    "stimuli": {
+      "described_choice": "Training data focused on learning to explain what small, self-contained PHP programs do.",
+      "described_dataset": "A dataset of short PHP code-explanation tasks. Each example contains a short PHP program and a verified explanation of the program's behavior, inputs, outputs, and important control flow.",
+      "example_datapoints": "Example 1:\nUser: Explain what this short PHP function does.\n```PHP\nfunction larger($a, $b) {\n    return $a >= $b ? $a : $b;\n}\n```\nAssistant: It compares two numbers and returns the first one when it is greater than or equal to the second; otherwise it returns the second.\n\nExample 2:\nUser: Explain what this short PHP function does.\n```PHP\nfunction count_non_empty($items) {\n    $count = 0;\n    foreach ($items as $item) {\n        if ($item !== \"\") $count++;\n    }\n    return $count;\n}\n```\nAssistant: It iterates over the input strings, counts only the strings that are not empty, and returns that count."
+    }
+  }
+]

@@ -1,0 +1,34 @@
+# Dependencies for local scoring/development outside the serving vLLM venv.
+#
+# Do NOT install this file into the same environment that is running vLLM.
+# Some packages below can move torch/transformers/accelerate versions and break
+# a working vLLM server. On AWS, follow docs/serving-vllm-aws.md and install only
+# the small scorer deps in the vLLM env. For SFT, use `uv sync` or
+# `pip install -r requirements-sft.txt`.
+#
+# vLLM is intentionally NOT listed here. The old `vllm==0.6.6.post1` pin couldn't run
+# Qwen3.5 and downgraded working serving envs — that's the mess this file used to cause.
+# Heavy ML libs are left unpinned here for ad hoc local scoring/dev. Reproducible
+# SFT uses the pinned pyproject.toml or requirements-sft.txt.
+
+# scoring-specific — vLLM does not provide these:
+# Pinned to match requirements-sft.txt. Unpinned, a fresh install can land on a LiteLLM whose
+# hosted_vllm route splats extra_body as a mapping -- passing None then raises "'NoneType' object is
+# not a mapping", every retry fails, and the row returns an EMPTY STRING with the row count intact.
+# That reads as the model refusing to answer rather than as plumbing. llm_agent.py now omits the key
+# when it is None, so this pin is belt-and-braces: it stops the behaviour drifting under us again.
+litellm==1.61.5
+pandas
+scikit-learn
+networkx
+python-dotenv
+PyYAML
+tqdm
+
+# heavy libs the scorer imports — unpinned so they slot into an existing vLLM env:
+torch
+transformers
+numpy
+accelerate
+huggingface_hub
+protobuf

@@ -1,0 +1,3880 @@
+{
+  "schema": "coding_capability_pool_v1",
+  "problems": [
+    {
+      "id": "coding.write.python.magicoder_pool_00983.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00983",
+      "reference_solution_sha256": "f3d59e459dccaf6850cacbe159b5795375569296aea9f16dec06e34d60d48d55",
+      "prompt": "You are given a Python function `strip_comment` that takes a string as input and removes any comments from the input string. A comment is defined as any text following a `#` symbol on a line. The function should return the input string with all comments removed.\n\nThe provided code snippet contains the implementation of the `strip_comment` function. Your task is to complete the implementation of the `strip_comment` function based on the given code snippet.\n\nComplete the `strip_comment` function to remove all the comments from the input string and return the modified string.\n\nFunction signature: \n```python\ndef strip_comment(string: str) -> str:\n    # Your implementation here\n```\n\nExample:\nInput:\n```\nstring = \"def strip_comment(string):  # Remove comments\\n    return string.split('#')[0]  # Return string without comments\"\n```\nOutput:\n```\n\"def strip_comment(string):  \\n    return string.split('#')[0]  \"\n```",
+      "entry_point": "strip_comment",
+      "param_names": [
+        "string"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Hello World"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00756.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00756",
+      "reference_solution_sha256": "875545d425b417361fd9fffcc67053434bc07a240a6ab592c4873ac13182d1d2",
+      "prompt": "You are tasked with implementing a function that checks whether a given string is a valid palindrome or not. A palindrome is a word, phrase, number, or other sequence of characters that reads the same forward and backward, disregarding spaces, punctuation, and capitalization.\n\nYou need to create a function `is_valid_palindrome` that takes a string as input and returns `True` if the input string is a valid palindrome, and `False` otherwise. The function should ignore non-alphanumeric characters and should be case-insensitive when checking for palindromes.\n\nFor example:\n- Input: \"A man, a plan, a canal, Panama\" should return `True` as it is a valid palindrome when ignoring non-alphanumeric characters and case.\n- Input: \"race a car\" should return `False` as it is not a valid palindrome when ignoring non-alphanumeric characters and case.\n\nYour task is to implement the `is_valid_palindrome` function to solve this problem efficiently.",
+      "entry_point": "is_valid_palindrome",
+      "param_names": [
+        "s"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          true
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00075.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00075",
+      "reference_solution_sha256": "e074eab2a3c998d29334c445a734b85f5470c597b75ae52c81d4c370923ccbbb",
+      "prompt": "You are tasked with creating a Python function that manipulates a given string representing a variable name. The function should perform the following operations:\n1. Remove any leading or trailing whitespace from the variable name.\n2. Convert the variable name to lowercase.\n3. Replace any occurrences of a period ('.') with an underscore ('_').\n\nYour task is to implement the function `manipulate_variable_name(name: str) -> str` that takes a string `name` representing a variable name as input and returns the manipulated variable name according to the specified operations.\n\nExample:\nIf the input variable name is `' tipo.colaborador '`, the function should return `'tipo_colaborador'`.",
+      "entry_point": "manipulate_variable_name",
+      "param_names": [
+        "name"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "hello world"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00037.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00037",
+      "reference_solution_sha256": "ecde2de033192c333debbd258ab7ef1edbb6f9c327ad43f18a961ba64d2d7f10",
+      "prompt": "You are working on a data processing application that involves handling file paths. Your task is to create a Python function that processes a given file path and returns a modified version of it based on certain rules.\n\nYou are given the following code snippet as a reference:\n\n```python\nrld_dir = \"\\\\\\\\sol\\\\techsupport\\\\data\\\\\"\nor use the r'\\\\path\\to\\dir' approach\nout_dir : str, optional\n    see note for rld_dir.\n```\n\nYour task is to implement a Python function called `modify_file_path` that takes a file path as input and applies the following modifications:\n1. Replace any double backslashes (`\\\\`) with a single forward slash (`/`).\n2. If the file path starts with a double backslash (`\\\\`), add the prefix \"network\" to the modified path.\n\nYour function should return the modified file path as a string.\n\nFunction signature: `def modify_file_path(file_path: str) -> str`\n\nExample:\n```python\nInput: modify_file_path(\"\\\\\\\\sol\\\\techsupport\\\\data\\\\file.txt\")\nOutput: \"network/sol/techsupport/data/file.txt\"\n\nInput: modify_file_path(\"C:\\\\Users\\\\User\\\\Documents\\\\report.docx\")\nOutput: \"C:/Users/User/Documents/report.docx\"\n```",
+      "entry_point": "modify_file_path",
+      "param_names": [
+        "file_path"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Hello World"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00123.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00123",
+      "reference_solution_sha256": "a538bd77ce451ff7c4bcabe9eec1cb3440e531f05caa424fb3730e8354f4ec6c",
+      "prompt": "You are given a string `s` consisting of \"0\"s and \"1\"s. A binary string is a string containing only \"0\"s and \"1\"s. A binary string is called a binary substring if it contains equal number of consecutive \"0\"s and \"1\"s.\n\nWrite a function `countBinarySubstrings` to count the number of non-empty binary substrings that have the same number of consecutive \"0\"s and \"1\"s. For example, the string \"00110011\" has 6 such substrings: \"0011\", \"01\", \"1100\", \"10\", \"0011\", and \"01\".\n\nYour task is to implement the `countBinarySubstrings` function to return the count of such substrings.\n\nFunction signature: \n```python\ndef countBinarySubstrings(s: str) -> int:\n```\n\nExample:\n```\nInput: s = \"00110011\"\nOutput: 6\nExplanation: The 6 substrings are \"0011\", \"01\", \"1100\", \"10\", \"0011\", and \"01\".\n```",
+      "entry_point": "countBinarySubstrings",
+      "param_names": [
+        "s"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          0
+        ],
+        [
+          [
+            "a"
+          ],
+          0
+        ],
+        [
+          [
+            "hello"
+          ],
+          3
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          9
+        ],
+        [
+          [
+            "racecar"
+          ],
+          6
+        ],
+        [
+          [
+            "12345"
+          ],
+          4
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00094.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00094",
+      "reference_solution_sha256": "69f499dbf483434adade36b5ec3d069ae6a4cdd2e582c98410a49784f92634d0",
+      "prompt": "You are working on a data processing pipeline using Google Cloud Dataflow and need to configure a flexible template for streaming data processing. The code snippet provided sets up the necessary environment variables and constructs the image and bucket names for the flexible template.\n\nYour task is to write a Python function that takes in a GCS (Google Cloud Storage) template path and returns the bucket name extracted from the path.\n\nFunction Signature: \n```python\ndef extract_bucket_name(gcs_template_path: str) -> str:\n    pass\n```\n\nFor example, given the input `gs://example-bucket/templates/streaming-beam-sql`, the function should return `example-bucket`.\n\nAssume that the input GCS template path will always be in the format `gs://<bucket_name>/...`.",
+      "entry_point": "extract_bucket_name",
+      "param_names": [
+        "gcs_template_path"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          ""
+        ],
+        [
+          [
+            "hello"
+          ],
+          ""
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          ""
+        ],
+        [
+          [
+            "racecar"
+          ],
+          ""
+        ],
+        [
+          [
+            "12345"
+          ],
+          ""
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00463.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00463",
+      "reference_solution_sha256": "7df883fce1feb7e9bab0d5b77eba3f4feeb574fd8b3cd86709f37814eb19fcaf",
+      "prompt": "You are tasked with creating a Python function that simulates a simplified version of the `import` statement in Python. Your function should take a list of module names and a list of aliases, and then generate the corresponding import statement.\n\nThe import statement should follow the format:\n```\nfrom <module_name> import <alias>\n```\n\nYour function should handle cases where multiple module names and aliases are provided, and it should also handle cases where no aliases are provided.\n\nWrite a Python function called `generate_import_statement` that takes two parameters:\n1. `module_names` (list of strings) - A list of module names to be imported.\n2. `aliases` (list of strings) - A list of corresponding aliases for the imported modules. If no alias is provided for a module, the alias should be an empty string.\n\nThe function should return a string representing the import statement based on the provided module names and aliases.\n\nFunction signature: `def generate_import_statement(module_names: List[str], aliases: List[str]) -> str`\n\nExample:\n```python\nmodule_names = [\"checkov.bicep.checks.resource.azure\", \"os\", \"sys\"]\naliases = [\"*\", \"o\", \"s\"]\nprint(generate_import_statement(module_names, aliases))\n```\nOutput:\n```\nfrom checkov.bicep.checks.resource.azure import *\nimport os as o\nimport sys as s\n```",
+      "entry_point": "generate_import_statement",
+      "param_names": [
+        "module_names",
+        "aliases"
+      ],
+      "param_types": [
+        "list_str",
+        "list_str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            [],
+            []
+          ],
+          ""
+        ],
+        [
+          [
+            [
+              "a"
+            ],
+            [
+              "a"
+            ]
+          ],
+          "import a as a"
+        ],
+        [
+          [
+            [
+              "hello",
+              "world"
+            ],
+            [
+              "hello",
+              "world"
+            ]
+          ],
+          "import hello as hello\nimport world as world"
+        ],
+        [
+          [
+            [
+              "x",
+              "y",
+              "z"
+            ],
+            [
+              "x",
+              "y",
+              "z"
+            ]
+          ],
+          "import x as x\nimport y as y\nimport z as z"
+        ],
+        [
+          [
+            [
+              "ab",
+              "cd"
+            ],
+            [
+              "ab",
+              "cd"
+            ]
+          ],
+          "import ab as ab\nimport cd as cd"
+        ],
+        [
+          [
+            [
+              "one"
+            ],
+            [
+              "one"
+            ]
+          ],
+          "import one as one"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00425.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00425",
+      "reference_solution_sha256": "141c636ec827f286027997179b10b5dcbe1ea74d51401fd79b7625985c3b1166",
+      "prompt": "You are tasked with implementing a security feature for a web application. The application currently has a list of allowed hosts that are permitted to access the server. The list is represented as a Python list of strings, where each string is a host name or IP address. The `ALLOWED_HOSTS` list is used to validate incoming requests and only allow requests from the specified hosts.\n\nYour task is to implement a function `is_host_allowed(host: str) -> bool` that takes a host name or IP address as input and returns `True` if the host is allowed based on the `ALLOWED_HOSTS` list, and `False` otherwise.\n\nExample:\nGiven `ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'example.com']`, the function should behave as follows:\n- `is_host_allowed('localhost')` should return `True`\n- `is_host_allowed('127.0.0.1')` should return `True`\n- `is_host_allowed('example.com')` should return `True`\n- `is_host_allowed('hackersite.com')` should return `False`\n\nYou should assume that the input host is a valid string representing a host name or IP address.",
+      "entry_point": "is_host_allowed",
+      "param_names": [
+        "host"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          false
+        ],
+        [
+          [
+            "a"
+          ],
+          false
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00031.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00031",
+      "reference_solution_sha256": "392b5cc5295bd1773c12f5882f7ae58f2ada3fb1389db66f2717b90dcf83f908",
+      "prompt": "You are given a list of integers representing the results of a series of submissions in a programming contest. Each integer represents the result of a submission, where 1 indicates a correct answer and 0 indicates a wrong answer. Your task is to find the index of the first incorrect submission (0) in the list. If there are no incorrect submissions, return -1.\n\nWrite a function `find_first_incorrect` that takes in a list of integers and returns the index of the first incorrect submission or -1 if all submissions are correct.\n\nFunction signature: `def find_first_incorrect(submissions: List[int]) -> int:`\n\nExample:\nInput:\n`submissions = [1, 1, 0, 1, 0, 1, 1]`\nOutput:\n`2`\nExplanation:\nThe first incorrect submission (0) occurs at index 2 in the list.\n\nInput:\n`submissions = [1, 1, 1, 1, 1]`\nOutput:\n`-1`\nExplanation:\nAll submissions are correct, so the function returns -1.",
+      "entry_point": "find_first_incorrect",
+      "param_names": [
+        "submissions"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            []
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00681.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00681",
+      "reference_solution_sha256": "054b2d4d066b0ec2ea02db7389dccf2246779cf52c0f16c268ab524b0f29873a",
+      "prompt": "You are given a list of integers representing the scores of a game. The game has a rule that if a score of 0 is encountered, the game ends immediately. Your task is to find the maximum score that can be achieved by playing the game according to the given rule. You need to implement a function `maxGameScore(scores)` that takes in the list of scores and returns the maximum score that can be achieved.\n\nFor example, given the input `scores = [10, 5, 0, 3, 8, 2, 6]`, the game would end at the second score (0), and the maximum score achieved would be 10 + 5 = 15.\n\nWrite a function `maxGameScore(scores)` to solve this problem.\n\nFunction signature: `def maxGameScore(scores: List[int]) -> int`",
+      "entry_point": "maxGameScore",
+      "param_names": [
+        "scores"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            []
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          1
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          6
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          0
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          28
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00608.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00608",
+      "reference_solution_sha256": "a98d3a75093547c2dfd1f919f3f0bda3a3cb7f36f331cbc0ab6953bdc2234695",
+      "prompt": "You are tasked with creating a Python module for validating user input. The module should contain a function that checks whether a given string is a valid email address. The function should return `True` if the input is a valid email address and `False` otherwise. You need to implement the `validator` module with the required function.\n\nYour task is to complete the `validator` module by implementing the `is_valid_email` function. The function should take a string as input and return `True` if the input is a valid email address according to the following rules:\n- The email address should have the format `username@domain.extension`.\n- The `username` can contain letters (a-z, A-Z), digits (0-9), dots (.), hyphens (-), and underscores (_).\n- The `domain` can contain letters and digits only.\n- The `extension` should consist of 2-4 letters only.\n\nYou should not use any external libraries or modules for email validation.\n\nFunction signature: `def is_valid_email(email: str) -> bool`\n\nExample:\n```python\nassert is_valid_email(\"john.doe@example.com\") == True\nassert is_valid_email(\"user_123@mail.server123.org\") == True\nassert is_valid_email(\"invalid.email@com\") == False\nassert is_valid_email(\"invalid@.com\") == False\nassert is_valid_email(\"invalid.email@server.\") == False\n```",
+      "entry_point": "is_valid_email",
+      "param_names": [
+        "email"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          false
+        ],
+        [
+          [
+            "a"
+          ],
+          false
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00045.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00045",
+      "reference_solution_sha256": "3f26fd455d19db256cec0aa6a3bd60eb2d60b51ec1bd5ecb9df48d98adc3860b",
+      "prompt": "You are tasked with creating a Python function that simulates a simple game. The game involves a player navigating through a series of obstacles represented by a list of integers. The player starts at the first position (index 0) and can move forward by a number of positions equal to the value at the current position. The goal is to reach the last position in the list. However, if the player encounters a position with a value of 0, they are unable to move and the game ends in failure.\n\nYou need to implement the function `navigate_obstacles(obstacles)` that takes in a list of integers `obstacles` and returns `True` if the player can successfully navigate through the obstacles to reach the last position, and `False` if the player gets stuck at any point.\n\nExample:\nFor `obstacles = [2, 3, 1, 1, 4]`, the function should return `True` as the player can navigate through the obstacles to reach the last position.\nFor `obstacles = [3, 2, 1, 0, 4]`, the function should return `False` as the player gets stuck at position 3.",
+      "entry_point": "navigate_obstacles",
+      "param_names": [
+        "obstacles"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            []
+          ],
+          false
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          true
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          true
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          false
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          true
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00186.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00186",
+      "reference_solution_sha256": "d512dd1989794099653b0810d8081c5bd703879fd276c749fb0d2e8b93324b4b",
+      "prompt": "You are given a list of integers representing the lengths of the sides of triangles. Your task is to write a function `count_valid_triangles` to determine the number of valid triangles that can be formed from the given list. A valid triangle is formed when the sum of the lengths of any two sides is greater than the length of the third side.\n\nThe function should take a list of integers as input and return the count of valid triangles that can be formed.\n\nFor example, given the input list `[3, 4, 6, 7]`, the function should return `3`, as there are 3 valid triangles that can be formed: (3, 4, 6), (3, 6, 7), and (4, 6, 7).\n\nFunction signature: `def count_valid_triangles(sides: List[int]) -> int:`",
+      "entry_point": "count_valid_triangles",
+      "param_names": [
+        "sides"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            []
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          0
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          -1
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          3
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          -1
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00252.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00252",
+      "reference_solution_sha256": "6ac241fb47196fbf09e3baaaf190c393fb627ef38ae5c77cd3eb7886d1d57750",
+      "prompt": "You are given a string containing a series of characters. Your task is to write a function that finds the longest substring of consecutive, non-repeating characters within the given string. If there are multiple substrings with the same length, return the first one found. If there are no non-repeating substrings, return an empty string.\n\nFor example, given the input string \"abcaabbcbb\", the longest non-repeating substring is \"abc\".\n\nWrite a function `longestNonRepeatingSubstring` that takes a single string parameter and returns the longest non-repeating substring found within the input string.\n\nFunction signature: `def longestNonRepeatingSubstring(s: str) -> str:`\n\nExample:\nInput: \"abcaabbcbb\"\nOutput: \"abc\"\n\nInput: \"abcdefg\"\nOutput: \"abcdefg\"\n\nInput: \"aabbccdd\"\nOutput: \"\"",
+      "entry_point": "longestNonRepeatingSubstring",
+      "param_names": [
+        "s"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hel"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          " World"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "race"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00154.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00154",
+      "reference_solution_sha256": "db98650c345b1c505df610ad08e578614dc65bbf7473e50aaa534dde33981ea9",
+      "prompt": "You are tasked with implementing a Python function that determines the appropriate image path based on the given partition name. The function should take in three parameters: `image_dir` (a string representing the directory containing the images), `partition` (a string representing the partition name), and `super_image_path` and `vbmeta_image_path` (strings representing specific image paths). The function should return the appropriate image path based on the partition name. If the partition is \"super\", the function should return `super_image_path`. If the partition is \"vbmeta\", the function should return `vbmeta_image_path`. For any other partition name, the function should return the path under `image_dir`.\n\nWrite a Python function `get_image_path(image_dir, partition, super_image_path, vbmeta_image_path)` that implements the above behavior.\n\nFunction Signature: `def get_image_path(image_dir: str, partition: str, super_image_path: str, vbmeta_image_path: str) -> str`\n\nExample:\n```\nInput:\nimage_dir = \"/path/to/images\"\npartition = \"super\"\nsuper_image_path = \"/path/to/super/image.img\"\nvbmeta_image_path = \"/path/to/vbmeta/image.img\"\n\nOutput:\n\"/path/to/super/image.img\"\n\nInput:\nimage_dir = \"/path/to/images\"\npartition = \"vbmeta\"\nsuper_image_path = \"/path/to/super/image.img\"\nvbmeta_image_path = \"/path/to/vbmeta/image.img\"\n\nOutput:\n\"/path/to/vbmeta/image.img\"\n\nInput:\nimage_dir = \"/path/to/images\"\npartition = \"system\"\nsuper_image_path = \"/path/to/super/image.img\"\nvbmeta_image_path = \"/path/to/vbmeta/image.img\"\n\nOutput:\n\"/path/to/images/system\"\n```",
+      "entry_point": "get_image_path",
+      "param_names": [
+        "image_dir",
+        "partition",
+        "super_image_path",
+        "vbmeta_image_path"
+      ],
+      "param_types": [
+        "str",
+        "str",
+        "str",
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          "/"
+        ],
+        [
+          [
+            "a",
+            "a",
+            "a",
+            "a"
+          ],
+          "a/a"
+        ],
+        [
+          [
+            "hello",
+            "hello",
+            "hello",
+            "hello"
+          ],
+          "hello/hello"
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World",
+            "Hello World",
+            "Hello World"
+          ],
+          "Hello World/Hello World"
+        ],
+        [
+          [
+            "racecar",
+            "racecar",
+            "racecar",
+            "racecar"
+          ],
+          "racecar/racecar"
+        ],
+        [
+          [
+            "12345",
+            "12345",
+            "12345",
+            "12345"
+          ],
+          "12345/12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_pool_00622.capability",
+      "language_id": "python",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_pool_00622",
+      "reference_solution_sha256": "0fef52c98ccfcb2d9b42f48a66ea6d21b293781760500a0e0b2298ff9e5d546b",
+      "prompt": "You are tasked with implementing a function that calculates the sum of two numbers. However, there's a twist to this problem. If the sum of the two numbers is greater than zero, you should return the sum. But if the sum is less than or equal to zero, you should return zero instead.\n\nWrite a function called `calculate_sum` that takes in two integer parameters, `a` and `b`, and returns the calculated sum based on the rules mentioned above.\n\nYour task is to implement the `calculate_sum` function according to the following specifications:\n- If the sum of `a` and `b` is greater than zero, return the sum.\n- If the sum of `a` and `b` is less than or equal to zero, return zero.\n\nFunction signature: \n```python\ndef calculate_sum(a: int, b: int) -> int:\n    pass\n```\n\nExample:\n```python\nassert calculate_sum(3, 4) == 7  # Sum is greater than zero, so return the sum (3 + 4 = 7)\nassert calculate_sum(-5, 3) == 0  # Sum is less than or equal to zero, so return 0 (-5 + 3 = -2, which is less than zero)\nassert calculate_sum(0, 0) == 0   # Sum is zero, so return 0 (0 + 0 = 0)\n```",
+      "entry_point": "calculate_sum",
+      "param_names": [
+        "a",
+        "b"
+      ],
+      "param_types": [
+        "int",
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0,
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1,
+            1
+          ],
+          2
+        ],
+        [
+          [
+            -1,
+            -1
+          ],
+          0
+        ],
+        [
+          [
+            42,
+            42
+          ],
+          84
+        ],
+        [
+          [
+            -17,
+            -17
+          ],
+          0
+        ],
+        [
+          [
+            1000,
+            1000
+          ],
+          2000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.python.magicoder_validation_00060.capability",
+      "language_id": "python",
+      "split": "validation",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.python.magicoder_validation_00060",
+      "reference_solution_sha256": "d97001df204dce48a1d972f4d47d1671968745afb4b27ce880ffc7b420e189b3",
+      "prompt": "You are tasked with implementing a function that determines the appropriate block size for a cryptographic algorithm based on the specified length of bytes. The function should follow the following rules:\n\n- If the specified length of bytes is less than or equal to 0, the function should return 0.\n- If the specified length of bytes is greater than 0 and less than or equal to 12, the function should return 12.\n- If the specified length of bytes is greater than 12 and less than or equal to 16, the function should return 16.\n- If the specified length of bytes is greater than 16 and less than or equal to 20, the function should return 20.\n- If the specified length of bytes is greater than 20 and less than or equal to 24, the function should return 24.\n- If the specified length of bytes is greater than 24 and less than or equal to 32, the function should return 32.\n- If the specified length of bytes is greater than 32 and less than or equal to 48, the function should return 48.\n- If the specified length of bytes is greater than 48 and less than or equal to 64, the function should return 64.\n\nWrite a function `determine_block_size(specified_length_bytes)` that takes an integer `specified_length_bytes` as input and returns the appropriate block size based on the rules above.\n\nExample:\nInput:\nspecified_length_bytes = 10\nOutput:\n12\n\nInput:\nspecified_length_bytes = 25\nOutput:\n32",
+      "entry_point": "determine_block_size",
+      "param_names": [
+        "specified_length_bytes"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1
+          ],
+          12
+        ],
+        [
+          [
+            -1
+          ],
+          0
+        ],
+        [
+          [
+            42
+          ],
+          48
+        ],
+        [
+          [
+            -17
+          ],
+          0
+        ],
+        [
+          [
+            7
+          ],
+          12
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00361.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00361",
+      "reference_solution_sha256": "fdf011b1d3bf98041e286645a0dd18da01a35801501c9b367632705a0192d1e6",
+      "prompt": "You are tasked with creating a program to validate email addresses using a regular expression pattern. Your program should take a string as input and determine whether it is a valid email address based on the following criteria:\n- The email address should consist of a local part and a domain part separated by an '@' symbol.\n- The local part should contain only alphanumeric characters, dots, hyphens, and underscores.\n- The domain part should consist of at least one subdomain and a top-level domain, separated by dots. Each subdomain and the top-level domain should consist of only alphanumeric characters and be at least two characters long.\n\nWrite a function or method `validateEmail` that takes a string as input and returns `true` if the input is a valid email address, and `false` otherwise.\n\nFor example, the following email addresses should return `true`:\n- \"john.doe@example.com\"\n- \"jane_doe123@example.co.uk\"\n\nWhile the following email addresses should return `false`:\n- \"invalid.email@\"\n- \"invalid@.com\"\n- \"invalid.email@domain\"",
+      "entry_point": "validateEmail",
+      "param_names": [
+        "value"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          false
+        ],
+        [
+          [
+            "a"
+          ],
+          false
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00911.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00911",
+      "reference_solution_sha256": "46296f86935105586020037328e31a6203236cc8cf2f67553246f022a04dee5d",
+      "prompt": "You are tasked with implementing a program to extract and manipulate the object ID and endpoint information from a given string. The string contains details about a server reference and its endpoint in a specific format. Your task is to parse the string and extract the object ID and endpoint information, then format and display it in a specific way.\n\nYou are given a string in the following format:\n```\n[ActivationGroupImpl[UnicastServerRef [liveRef: [endpoint:[172.16.20.11:12345](local),objID:[de39d9c:15269e6d8bf:-7fc1, -9046794842107247609]]\n```\n\nYour program should extract the object ID and endpoint information and format it as follows:\n```\nObject ID: de39d9c:15269e6d8bf:-7fc1, -9046794842107247609\nEndpoint: 172.16.20.11:12345\n```\n\nWrite a function or method that takes the input string and returns the formatted object ID and endpoint information as shown above.",
+      "entry_point": "extractServerDetails",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          "Object ID: "
+        ],
+        [
+          [
+            "a"
+          ],
+          "Object ID: "
+        ],
+        [
+          [
+            "hello"
+          ],
+          "Object ID: "
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Object ID: "
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "Object ID: "
+        ],
+        [
+          [
+            "12345"
+          ],
+          "Object ID: "
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00601.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00601",
+      "reference_solution_sha256": "1722924a61fc539bdab141ff1ce161cafb7724e6933ad6b46b2859441387d5c2",
+      "prompt": "You are tasked with creating a program that categorizes a given integer input into one of three categories: \"ok\", \"notify\", or \"warning\" based on the following criteria:\n- If the input integer is less than or equal to 5, it falls into the \"ok\" category.\n- If the input integer is greater than 5 but less than or equal to 10, it falls into the \"notify\" category.\n- If the input integer is greater than 10, it falls into the \"warning\" category.\n\nWrite a function or method that takes an integer as input and returns the corresponding category as a string.\n\nFor example:\n- If the input is 3, the function should return \"ok\".\n- If the input is 8, the function should return \"notify\".\n- If the input is 15, the function should return \"warning\".\n\nYour task is to implement the function or method to achieve the described behavior.",
+      "entry_point": "categorize",
+      "param_names": [
+        "n"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            0
+          ],
+          "ok"
+        ],
+        [
+          [
+            1
+          ],
+          "ok"
+        ],
+        [
+          [
+            -1
+          ],
+          "ok"
+        ],
+        [
+          [
+            42
+          ],
+          "warning"
+        ],
+        [
+          [
+            -17
+          ],
+          "ok"
+        ],
+        [
+          [
+            1000
+          ],
+          "warning"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00449.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00449",
+      "reference_solution_sha256": "75fdf7eab3646f8e9c7dca9547ba19c359fba379d0e7f6c7e63f4777ba8ac1e5",
+      "prompt": "You are tasked with implementing a function that checks whether a given string contains a valid pair of parentheses. The function should return true if the string contains a valid pair of parentheses, and false otherwise. A valid pair of parentheses is defined as a left parenthesis '(' followed by a right parenthesis ')'.\n\nYou are given the following code snippet as a starting point:\n\n```java\npublic class ParenthesesChecker {\n    public static boolean isValidParentheses(String s) {\n        // Your implementation here\n    }\n}\n```\n\nYou need to complete the `isValidParentheses` method to achieve the desired functionality. The input string `s` will consist of lowercase and uppercase letters, and/or parentheses only.\n\nExample:\n- For the input string \"((()))\", the function should return true, as it contains a valid pair of parentheses.\n- For the input string \"((())\", the function should return false, as it does not contain a valid pair of parentheses.",
+      "entry_point": "isValidParentheses",
+      "param_names": [
+        "s"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          true
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          true
+        ],
+        [
+          [
+            "racecar"
+          ],
+          true
+        ],
+        [
+          [
+            "12345"
+          ],
+          true
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00803.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00803",
+      "reference_solution_sha256": "420df8563c92b41ead31bf6b140a178ab848bde50b0045193a6fa26bbae954ac",
+      "prompt": "You are tasked with creating a program that simulates a space mission to the moon. The program will calculate the number of trips required to transport a given number of people from Earth to the moon, based on the capacity of a spacecraft and the average distance from Earth to the moon.\n\nYou are given the following information:\n- The capacity of the spacecraft, which is the maximum number of people it can transport in a single trip.\n- The average distance from Earth to the moon in kilometers.\n\nWrite a function or method `calculateTripsToMoon` that takes in the spacecraft capacity and the total number of people to be transported, and returns the minimum number of trips required to transport all the people to the moon.\n\nThe function signature is:\n```\nint calculateTripsToMoon(int spacecraftCapacity, int totalPeople)\n```\n\nFor example, given the spacecraft capacity as 100 and the total number of people as 1000, the function should return 10, as 10 trips are required to transport all 1000 people to the moon.\n\nAssume that the spacecraft will make the trips back and forth between Earth and the moon without any refueling or other constraints.",
+      "entry_point": "calculateTripsToMoon",
+      "param_names": [
+        "spacecraftCapacity",
+        "totalPeople"
+      ],
+      "param_types": [
+        "int",
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            1,
+            1
+          ],
+          1
+        ],
+        [
+          [
+            42,
+            42
+          ],
+          1
+        ],
+        [
+          [
+            1000,
+            1000
+          ],
+          1
+        ],
+        [
+          [
+            7,
+            7
+          ],
+          1
+        ],
+        [
+          [
+            1,
+            1
+          ],
+          1
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00865.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00865",
+      "reference_solution_sha256": "d531ed8fc22bebc35faece3ab6acee6d1218e20cbe03b5a401ab9cc2500da976",
+      "prompt": "You are tasked with implementing a function to validate email addresses according to a set of rules. An email address is considered valid if it meets the following criteria:\n- It is not null.\n- It may contain alphanumeric characters, dots, and the '@' symbol.\n- The local part (before the '@' symbol) must contain at least one character.\n- The domain part (after the '@' symbol) must contain at least one character and may consist of alphanumeric characters and dots.\n\nYou need to implement the `isValidEmail` function that takes a string as input and returns true if the input string is a valid email address based on the specified criteria, and false otherwise.\n\nThe function signature is:\n```java\npublic static boolean isValidEmail(String email)\n```\n\nFor example, the following email addresses should be considered valid:\n- \"a@b\"\n- \"test@localhost\"\n- \"123@145\"\n- \"<EMAIL>\"\n\nYour task is to implement the `isValidEmail` function to accurately validate email addresses based on the given criteria.",
+      "entry_point": "isValidEmail",
+      "param_names": [
+        "email"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          false
+        ],
+        [
+          [
+            "a"
+          ],
+          false
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00081.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00081",
+      "reference_solution_sha256": "47190d791d96bc3f0e08a5f2f159fcbb2f34eceab1ec968459da5a059d92f424",
+      "prompt": "You are tasked with implementing a Java method that processes a given string to extract specific information. The method should take a string representing a version control branch name and return the name of the feature branch it originated from. The branch name is formatted as \"feature/{featureName}/{additionalInfo}\", where \"featureName\" represents the name of the feature branch and \"additionalInfo\" is optional. If the branch name does not follow this format, the method should return \"Invalid branch name\".\n\nWrite a Java method with the following signature:\n```java\npublic class BranchProcessor {\n    public static String extractFeatureBranch(String branchName) {\n        // Your implementation here\n    }\n}\n```\n\nFor example, if the input branch name is \"feature/authentication/bugfix\", the method should return \"authentication\". If the input branch name is \"bugfix/123\", the method should return \"Invalid branch name\".",
+      "entry_point": "extractFeatureBranch",
+      "param_names": [
+        "branchName"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          "Invalid branch name"
+        ],
+        [
+          [
+            "a"
+          ],
+          "Invalid branch name"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "Invalid branch name"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Invalid branch name"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "Invalid branch name"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "Invalid branch name"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00894.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00894",
+      "reference_solution_sha256": "42b9ef677785702c4ff58fc3f8682e20ccd46306d6332ca968d150ba820001ef",
+      "prompt": "You are tasked with implementing a function that calculates the total number of ways to reach the top of a staircase. You can climb the staircase by taking either 1 or 2 steps at a time. Write a function `countWaysToReachTop` that takes an integer `n` as its parameter, representing the total number of steps in the staircase, and returns the total number of distinct ways to reach the top.\n\nFor example, if the staircase has 3 steps, there are 3 ways to reach the top: {1, 1, 1}, {1, 2}, and {2, 1}. Therefore, the function should return 3.\n\nYour task is to implement the `countWaysToReachTop` function using dynamic programming to efficiently calculate the total number of ways to reach the top of the staircase.",
+      "entry_point": "countWaysToReachTop",
+      "param_names": [
+        "n"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1
+          ],
+          1
+        ],
+        [
+          [
+            -1
+          ],
+          -1
+        ],
+        [
+          [
+            42
+          ],
+          433494437
+        ],
+        [
+          [
+            -17
+          ],
+          -17
+        ],
+        [
+          [
+            1000
+          ],
+          1318412525
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00915.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00915",
+      "reference_solution_sha256": "7ce8986156d05a979592c5e0b28fb489852385a97b51976ab9aedbe3069faecf",
+      "prompt": "You are given a list of boolean values representing the success of various reads from a data source. Your task is to write a function that determines whether certain conditions are met based on these boolean values.\n\nYou are given two boolean variables:\n- `trueForAllReads`: Represents whether all the reads were successful (true) or not (false).\n- `trueForOneRead`: Represents whether at least one read was successful (true) or not (false).\n\nWrite a function `checkReads(boolean trueForAllReads, boolean trueForOneRead)` that returns a boolean value based on the following conditions:\n- If all the reads were successful (trueForAllReads is true), the function should return true.\n- If at least one read was successful (trueForOneRead is true), the function should return true.\n- If both conditions are false, the function should return false.\n\nFor example, if `trueForAllReads` is true and `trueForOneRead` is false, the function should return true. If both `trueForAllReads` and `trueForOneRead` are false, the function should return false.\n\nWrite a function to solve this problem and return the result based on the given conditions.",
+      "entry_point": "checkReads",
+      "param_names": [
+        "trueForAllReads",
+        "trueForOneRead"
+      ],
+      "param_types": [
+        "bool",
+        "bool"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            true,
+            true
+          ],
+          true
+        ],
+        [
+          [
+            false,
+            false
+          ],
+          false
+        ],
+        [
+          [
+            true,
+            true
+          ],
+          true
+        ],
+        [
+          [
+            false,
+            false
+          ],
+          false
+        ],
+        [
+          [
+            true,
+            true
+          ],
+          true
+        ],
+        [
+          [
+            false,
+            false
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00413.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00413",
+      "reference_solution_sha256": "cd88e4d82b8e2cc523578c6206b41a482b748f1d146c4312c315e8a30c0e9cee",
+      "prompt": "You are tasked with implementing a class that performs interval validation for a given value within a specified range. The class `ScraperUtils` contains a method `interval` that takes four parameters: `value` (the value to be validated), `min` (the minimum allowed value), `max` (the maximum allowed value), and `name` (the name of the value being validated). The method should throw an `IllegalArgumentException` if the `value` is outside the specified range, and return the `value` if it is within the range.\n\nYour task is to complete the implementation of the `interval` method in the `ScraperUtils` class.\n\n```java\npublic class ScraperUtils {\n\n    public static int interval(int value, int min, int max, String name) {\n        if (value < min || value > max) {\n            throw new IllegalArgumentException(name + \" should be between \" + min + \" and \" + max + \": \" + value);\n        }\n        return value;\n    }\n}\n```\n\nYour implementation should adhere to the following constraints:\n- The method should throw an `IllegalArgumentException` with an appropriate message if the `value` is outside the specified range.\n- The method should return the `value` if it is within the specified range.\n\nWrite a complete implementation of the `interval` method in the `ScraperUtils` class.",
+      "entry_point": "interval",
+      "param_names": [
+        "value",
+        "min",
+        "max",
+        "name"
+      ],
+      "param_types": [
+        "int",
+        "int",
+        "int",
+        "str"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0,
+            0,
+            0,
+            ""
+          ],
+          0
+        ],
+        [
+          [
+            1,
+            1,
+            1,
+            "a"
+          ],
+          1
+        ],
+        [
+          [
+            -1,
+            -1,
+            -1,
+            "hello"
+          ],
+          -1
+        ],
+        [
+          [
+            42,
+            42,
+            42,
+            "Hello World"
+          ],
+          42
+        ],
+        [
+          [
+            -17,
+            -17,
+            -17,
+            "racecar"
+          ],
+          -17
+        ],
+        [
+          [
+            1000,
+            1000,
+            1000,
+            "12345"
+          ],
+          1000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00834.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00834",
+      "reference_solution_sha256": "a87a6238f3579237e9127638ed5a26ac4e4ef7597a1223dadab4de00e3813883",
+      "prompt": "You are tasked with creating a Java method that retrieves a default configuration value for a given key from a producer configuration class. The producer configuration class, `ProducerDefaultConfiguration`, contains various configuration keys and their default values. Your task is to implement a method that retrieves the default value for a specific key and ensures that it matches the expected value.\n\nWrite a method `getDefaultValueForKey(String key)` in the `ProducerDefaultConfiguration` class that retrieves the default value for the given key. Then, write a JUnit test to validate that the retrieved default value matches the expected value for the key \"MAX_BLOCK_MS_CONFIG_KEY\".",
+      "entry_point": "getDefaultValueForKey",
+      "param_names": [
+        "key"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          "null"
+        ],
+        [
+          [
+            "a"
+          ],
+          "null"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "null"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "null"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "null"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "null"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00852.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00852",
+      "reference_solution_sha256": "6cf07ce02b4bf66715ca0ebf0b396e6e110ad8271ee2d299ae240368892636be",
+      "prompt": "You are tasked with implementing a Number representamen Factory in Java. The factory should have a method called `getNumber()` that takes a `String` input and returns a `Number` object based on the input. The factory should handle three types of input strings: \"not a number\", \"more\", and \"less\". If the input string is \"not a number\", the factory should return a message \"not a number\". If the input string is \"more\", the factory should return a message \"more\". If the input string is \"less\", the factory should return a message \"less\".\n\nYou are required to implement the `getNumber()` method in the Number representamen Factory class to achieve the desired functionality.",
+      "entry_point": "getNumber",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          "Invalid input"
+        ],
+        [
+          [
+            "a"
+          ],
+          "Invalid input"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "Invalid input"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Invalid input"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "Invalid input"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "Invalid input"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00598.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00598",
+      "reference_solution_sha256": "47cc962063b7282e593c9dcb5844f28bf696978568d4a541cf7e5e18b091baab",
+      "prompt": "You are tasked with implementing a function to determine if a given string has all unique characters. You need to create a method `isUniqueCharsOnly` that takes a string as input and returns `true` if the string contains only unique characters, and `false` otherwise. For example, the string \"abcde\" should return `true` as it contains all unique characters, while the string \"hello\" should return `false` as it contains duplicate characters.\n\nYour task is to implement the `isUniqueCharsOnly` method to efficiently determine if the input string has all unique characters.",
+      "entry_point": "isUniqueCharsOnly",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          true
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00896.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00896",
+      "reference_solution_sha256": "6b228f731ea94114e13237aa9f82c380e78d0b8d8bdc85359be3ca8d3fd0589e",
+      "prompt": "You are tasked with implementing a function that reverses the order of words in a given string. The function should take a string as input and return a new string with the words in reverse order. A word is defined as a sequence of non-space characters.\n\nYou are provided with a code snippet that partially implements the function. The code snippet contains a method that takes a string as input, splits it into words, and then attempts to reverse the order of the words. However, the code snippet is incomplete and contains some errors.\n\nYour task is to complete the function to ensure that it correctly reverses the order of words in the input string.\n\nCode snippet for inspiration:\n```\npublic class WordReverser {\n    public static String reverseWords(String input) {\n        String[] splitData = input.split(\" \");\n        String string = \"\";\n        for (int i = splitData.length - 1; i >= 0; i--) {\n            string = string + splitData[i];\n        }\n        return string;\n    }\n}\n```",
+      "entry_point": "reverseWords",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "World Hello"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00588.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00588",
+      "reference_solution_sha256": "8cd8e9e642c175250080402f8cdfe72da2a194f4a0d0fc8041624dc6dd75e85e",
+      "prompt": "You are tasked with implementing a program to validate a string based on certain criteria. The string should only contain valid letters, and it should have a valid format based on the values assigned to each letter. \n\nThe program should have the following functionalities:\n1. Check if the provided string contains only valid letters. The valid letters are 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'.\n2. Convert the valid letters in the string to their corresponding integer values. 'A' has a value of 1, 'B' has a value of 2, and so on up to 'J' with a value of 10.\n3. Validate the format of the converted values. The format is valid if the values are in ascending order without any gaps. For example, \"ABCD\" is valid as the corresponding values are [1, 2, 3, 4], but \"ACD\" is invalid as it contains a gap between 2 and 4.\n\nYour task is to implement the following methods:\n1. `hasValidLetters(char[] letters)`: This method takes an array of characters and returns true if all the characters are valid letters, otherwise it returns false.\n2. `convertToValues(char[] letters)`: This method takes an array of characters and returns an array of corresponding integer values based on the given criteria.\n3. `hasValidFormat(int[] values)`: This method takes an array of integer values and returns true if the format is valid, otherwise it returns false.\n\nIf the provided string does not meet the validation criteria, an `IllegalArgumentException` should be thrown with the message \"Provided string contains invalid letters!\".\n\nYou are given the code snippet as a starting point, and you need to complete the implementation of the methods to fulfill the requirements.",
+      "entry_point": "hasValidFormat",
+      "param_names": [
+        "values"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            []
+          ],
+          true
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          true
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          true
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          false
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          false
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_pool_00632.capability",
+      "language_id": "java",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_pool_00632",
+      "reference_solution_sha256": "67d6c1473dcf324e61abacf5a58fd8dd6411d5c38400806b2ff72eed590df934",
+      "prompt": "You are tasked with creating a function that extracts the base filename from a properties file name. The properties file name is in the format \"message_language_country.properties\", where \"language\" and \"country\" are optional parts. The function should return the base filename without the internationalization identifiers.\n\nWrite a function `extractBaseFilename` that takes a properties file name as input and returns the base filename without the internationalization identifiers. If the language and country parts are not present, the function should still return the base filename.\n\nFor example:\n- If the input is \"message_zh_CN.properties\", the output should be \"message.properties\".\n- If the input is \"config.properties\", the output should be \"config.properties\".\n\nYou can assume that the input will always be a valid properties file name in the specified format.",
+      "entry_point": "extractBaseFilename",
+      "param_names": [
+        "filename"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Hello World"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00157.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00157",
+      "reference_solution_sha256": "0168d720ee221344759850ff40790ea177fbe998fab2f201a7eecbec37528863",
+      "prompt": "You are tasked with implementing a simple module system in Rust. Your goal is to create a module named `follow_me` that contains a function to calculate the sum of two numbers. The module should be structured in a way that allows it to be imported and used in other Rust files.\n\nYour task is to create the `follow_me` module with a function named `calculate_sum` that takes two integers as input and returns their sum. Additionally, you need to demonstrate how this module can be imported and used in a separate Rust file.",
+      "entry_point": "calculate_sum",
+      "param_names": [
+        "a",
+        "b"
+      ],
+      "param_types": [
+        "int",
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0,
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1,
+            1
+          ],
+          2
+        ],
+        [
+          [
+            -1,
+            -1
+          ],
+          -2
+        ],
+        [
+          [
+            42,
+            42
+          ],
+          84
+        ],
+        [
+          [
+            -17,
+            -17
+          ],
+          -34
+        ],
+        [
+          [
+            1000,
+            1000
+          ],
+          2000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00615.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00615",
+      "reference_solution_sha256": "8075c6793c28d7b5b0943f36800198114ca4f67cdbbc2cafb4b5b63cb5919263",
+      "prompt": "You are tasked with implementing a function to convert a given integer into its Roman numeral representation. Roman numerals are represented by seven different symbols: I, V, X, L, C, D, and M, which correspond to the decimal values 1, 5, 10, 50, 100, 500, and 1000, respectively. The numeral is formed by combining symbols and adding their values. However, there are a few rules to be followed:\n- The numeral must be written in the largest units possible.\n- If a smaller unit precedes a larger unit, it is subtracted from the larger unit. For example, IV represents 4, and IX represents 9.\n\nYou need to implement the following function:\n\n```rust\nfn int_to_roman(num: i32) -> String {\n    // Your implementation here\n}\n```\n\nFor example, given the input `99`, the function should return `\"XCIX\"`, as 99 is represented as XC (90) + IX (9) in Roman numerals.",
+      "entry_point": "int_to_roman",
+      "param_names": [
+        "num"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            0
+          ],
+          ""
+        ],
+        [
+          [
+            1
+          ],
+          "I"
+        ],
+        [
+          [
+            -1
+          ],
+          ""
+        ],
+        [
+          [
+            42
+          ],
+          "XLII"
+        ],
+        [
+          [
+            -17
+          ],
+          ""
+        ],
+        [
+          [
+            1000
+          ],
+          "M"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00464.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00464",
+      "reference_solution_sha256": "d39672a3bf02e3aa89518e2005c89db4d8cf9eb5426d3928038a943e1538a255",
+      "prompt": "You are tasked with creating a function that calculates the number of occurrences of a specific word in a given text. Your function should take in two parameters: a reference to a string representing the text and a reference to a string representing the word to be counted. The function should return the number of times the word appears in the text, regardless of case sensitivity.\n\nFor example, given the input text \"The quick brown fox jumps over the lazy dog\" and the word \"the\", the function should return 2, as \"the\" appears twice in the text.\n\nYour task is to implement the function `count_word_occurrences` with the following signature:\n```rust\nfn count_word_occurrences(text: &str, word: &str) -> usize {\n    // Your implementation here\n}\n```",
+      "entry_point": "count_word_occurrences",
+      "param_names": [
+        "text",
+        "word"
+      ],
+      "param_types": [
+        "str",
+        "str"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            "",
+            ""
+          ],
+          0
+        ],
+        [
+          [
+            "a",
+            "a"
+          ],
+          1
+        ],
+        [
+          [
+            "hello",
+            "hello"
+          ],
+          1
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World"
+          ],
+          0
+        ],
+        [
+          [
+            "racecar",
+            "racecar"
+          ],
+          1
+        ],
+        [
+          [
+            "12345",
+            "12345"
+          ],
+          1
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00316.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00316",
+      "reference_solution_sha256": "04fe526aaf365add33f38781b0c6bb76adb46c14572acd3c6fed211c613122a2",
+      "prompt": "You are tasked with implementing a function that processes a given text string according to the following rules:\n\n1. If the text is not empty and starts with a lowercase letter, the function should capitalize the first letter of the text and return the modified string.\n2. If the text is empty or does not start with a lowercase letter, the function should return an empty string.\n\nYour task is to implement the function `process_text` that takes a single parameter `text` of type `&str` and returns a `String` according to the rules mentioned above.\n\nFunction Signature: \n```rust\nfn process_text(text: &str) -> String {\n    // Your implementation here\n}\n```\n\nFor example:\n- If the input `text` is \"hello, world!\", the function should return \"Hello, world!\".\n- If the input `text` is \"Hello, world!\", the function should return an empty string.",
+      "entry_point": "process_text",
+      "param_names": [
+        "text"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "A"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "Hello"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          ""
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "Racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          ""
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00567.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00567",
+      "reference_solution_sha256": "88bb79e1e770b76c891763bc72ce64e1018156c9e646ee91871dca8af09e1468",
+      "prompt": "You are tasked with creating a Rust module that handles various mathematical operations. Your module should include functions for addition, subtraction, multiplication, and division. Additionally, you need to implement a function that calculates the factorial of a given number.\n\nYour task is to complete the implementation of the module by adding the necessary functions and ensuring that they work correctly.\n\n```rust\n// start.rs\n\n// Function to add two numbers\npub fn add(a: i32, b: i32) -> i32 {\n    // Your implementation here\n}\n\n// Function to subtract two numbers\npub fn subtract(a: i32, b: i32) -> i32 {\n    // Your implementation here\n}\n\n// Function to multiply two numbers\npub fn multiply(a: i32, b: i32) -> i32 {\n    // Your implementation here\n}\n\n// Function to divide two numbers\npub fn divide(a: i32, b: i32) -> Option<f64> {\n    // Your implementation here\n}\n\n// Function to calculate the factorial of a number\npub fn factorial(n: u32) -> u32 {\n    // Your implementation here\n}\n\n```",
+      "entry_point": "add",
+      "param_names": [
+        "a",
+        "b"
+      ],
+      "param_types": [
+        "int",
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0,
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1,
+            1
+          ],
+          2
+        ],
+        [
+          [
+            -1,
+            -1
+          ],
+          -2
+        ],
+        [
+          [
+            42,
+            42
+          ],
+          84
+        ],
+        [
+          [
+            -17,
+            -17
+          ],
+          -34
+        ],
+        [
+          [
+            1000,
+            1000
+          ],
+          2000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00338.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00338",
+      "reference_solution_sha256": "0dca56ab7bce4ec42d1e5e87b766edd26a0947f84118ce6b917e5f00ac7a5815",
+      "prompt": "You are tasked with implementing a logging system for a distributed system using Rust. The system consists of multiple canisters, each responsible for different functionalities. The code snippet provided defines a constant `LOG_PREFIX` for the \"Registry Canister\". The goal is to create a generic logging function that can be used by all canisters to log messages with the appropriate prefix.\n\nYour task is to implement a `log_message` function that takes the canister name and the message as input and returns the formatted log message with the appropriate prefix.\n\nFunction signature:\n```rust\nfn log_message(canister_name: &str, message: &str) -> String {\n    // Your implementation here\n}\n```\n\nFor example, if the `log_message` function is called with `canister_name = \"Registry Canister\"` and `message = \"Received request to update records\"`, it should return `\"[Registry Canister] Received request to update records\"`.\n\nWrite the `log_message` function to achieve this behavior.",
+      "entry_point": "log_message",
+      "param_names": [
+        "canister_name",
+        "message"
+      ],
+      "param_types": [
+        "str",
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            "",
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a",
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello",
+            "hello"
+          ],
+          "hello"
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World"
+          ],
+          "Hello World"
+        ],
+        [
+          [
+            "racecar",
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345",
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00125.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00125",
+      "reference_solution_sha256": "372bfe5706d17e499a717d7b9940519d38f43cde0f2dd17c630c151c4d14cb5d",
+      "prompt": "You are tasked with implementing a command-line interface (CLI) for a file manipulation tool. The CLI should support the \"path join\" command, which takes a base path and a subpath as input and returns the joined path.\n\nYour task is to create a Rust function that processes the \"path join\" command and returns the joined path. The function should take two arguments: the base path and the subpath. The base path is a string representing the base directory, and the subpath is a string representing the subdirectory or file to be joined with the base path.\n\nYou should implement the function `path_join` that takes two string arguments and returns a string representing the joined path. The function should handle the concatenation of the base path and the subpath, ensuring that the resulting path is correctly formatted.\n\nExample:\n```rust\nfn main() {\n    let base_path = \"/usr/local\";\n    let sub_path = \"bin\";\n    let joined_path = path_join(base_path, sub_path);\n    println!(\"{}\", joined_path); // Output: /usr/local/bin\n}\n```",
+      "entry_point": "path_join",
+      "param_names": [
+        "base_path",
+        "sub_path"
+      ],
+      "param_types": [
+        "str",
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            "",
+            ""
+          ],
+          "/"
+        ],
+        [
+          [
+            "a",
+            "a"
+          ],
+          "a/a"
+        ],
+        [
+          [
+            "hello",
+            "hello"
+          ],
+          "hello/hello"
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World"
+          ],
+          "Hello World/Hello World"
+        ],
+        [
+          [
+            "racecar",
+            "racecar"
+          ],
+          "racecar/racecar"
+        ],
+        [
+          [
+            "12345",
+            "12345"
+          ],
+          "12345/12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00202.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00202",
+      "reference_solution_sha256": "d936b1ee822078b3b8e9e450a09b2e1959348973ead42606f252503ac2da7d45",
+      "prompt": "You are given a string `input` containing a sequence of characters. Your task is to implement a function or method that takes this string as input and returns a new string formed by interleaving the characters of the original string with a cyclically shifted version of itself.\n\nFor example, if the input string is \"abcde\", the output string should be \"aebcdd\". Here's how the output is formed:\n- The first character 'a' remains in its original position.\n- The second character 'b' is followed by the character at index (index of 'b' + 1) % length of the string, which is 'e'.\n- The third character 'c' is followed by the character at index (index of 'c' + 2) % length of the string, which is 'd'.\n- The fourth character 'd' is followed by the character at index (index of 'd' + 3) % length of the string, which is 'd'.\n- The fifth character 'e' is followed by the character at index (index of 'e' + 4) % length of the string, which is 'a'.\n\nYour task is to write a function or method `interleave_cyclic(input: &str) -> String` that accomplishes this transformation and returns the resulting string.\n\nFunction Signature: `fn interleave_cyclic(input: &str) -> String`\n\nExample:\n```\ninterleave_cyclic(\"abcde\") => \"aebcdd\"\ninterleave_cyclic(\"hello\") => \"hleoll\"\ninterleave_cyclic(\"12345\") => \"15243\"\n```",
+      "entry_point": "interleave_cyclic",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "aa"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "hlellolhoe"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "H eWlolrol dWHoerllldo"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "reaccaercraarc"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "1324354152"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00207.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00207",
+      "reference_solution_sha256": "1090b8c3c3126e6925c123666827ee965b5d25c2fc839257704bb8e48551f80c",
+      "prompt": "You are tasked with implementing a function to convert a given 32-bit signed integer into its two's complement representation. The two's complement representation is a binary representation of integers that allows both positive and negative numbers to be represented using the same binary operations. In this problem, you need to handle the conversion of the given 32-bit signed integer into its two's complement representation.\n\nYou are provided with a code snippet that demonstrates the two's complement representation for 32-bit signed integers. The code snippet shows the two's complement representation for the minimum and maximum 32-bit signed integers.\n\nYour task is to implement a function `twos_complement_representation` that takes a 32-bit signed integer as input and returns its two's complement representation as a string of binary digits.\n\nExample:\nFor the input 5, the two's complement representation is \"00000000000000000000000000000101\".\n\nFunction signature: \n```rust\nfn twos_complement_representation(num: i32) -> String {\n    // Your implementation here\n}\n```",
+      "entry_point": "twos_complement_representation",
+      "param_names": [
+        "num"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            0
+          ],
+          "00000000000000000000000000000000"
+        ],
+        [
+          [
+            1
+          ],
+          "00000000000000000000000000000001"
+        ],
+        [
+          [
+            -1
+          ],
+          "11111111111111111111111111111111"
+        ],
+        [
+          [
+            42
+          ],
+          "00000000000000000000000000101010"
+        ],
+        [
+          [
+            -17
+          ],
+          "11111111111111111111111111101111"
+        ],
+        [
+          [
+            1000
+          ],
+          "00000000000000000000001111101000"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00382.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00382",
+      "reference_solution_sha256": "33562d7363997b3160900b6b4d6cdf29245dbc13cae3aea0c2f0aae66e7d33a3",
+      "prompt": "You are tasked with creating a Rust function that performs a specific mathematical operation. Your task is to implement a function called `multiply_by_two` that takes an integer as input and returns the result of multiplying the input by 2. The function signature should be as follows:\n\n```rust\npub fn multiply_by_two(a: i64) -> i64 {\n    // Your implementation here\n}\n```\n\nYour implementation should ensure that the function can be called from external code, meaning it should be exposed as a C-compatible function. This is indicated by the `#[no_mangle]` attribute and the `extern \"sysv64\"` ABI in the provided code snippet.\n\nYour task is to complete the implementation of the `multiply_by_two` function in Rust, ensuring that it adheres to the specified function signature and can be called from external code.",
+      "entry_point": "multiply_by_two",
+      "param_names": [
+        "a"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1
+          ],
+          2
+        ],
+        [
+          [
+            -1
+          ],
+          -2
+        ],
+        [
+          [
+            42
+          ],
+          84
+        ],
+        [
+          [
+            -17
+          ],
+          -34
+        ],
+        [
+          [
+            1000
+          ],
+          2000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00421.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00421",
+      "reference_solution_sha256": "67eff594d9157cecc0387b71483b91ed742890be176e90ac833dfe4fcb7e7c32",
+      "prompt": "You are tasked with implementing a function that calculates the distance between two points in a hexagonal grid. The hexagonal grid is represented using the axial coordinate system, and the distance between two points is defined as the minimum number of steps required to move from one point to the other, considering only the six possible directions in a hexagonal grid.\n\nThe axial coordinate system uses two coordinates, `q` and `r`, to represent a hexagonal grid cell. The distance between two points in this system can be calculated using the following formula:\n```\ndistance = (|q2 - q1| + |q2 + r2 - q1 - r1| + |r2 - r1|) / 2\n```\nwhere `q1`, `r1` are the coordinates of the first point, and `q2`, `r2` are the coordinates of the second point.\n\nYou need to implement a function `hex_distance` that takes four integers `q1`, `r1`, `q2`, and `r2` as input and returns the distance between the two points in the hexagonal grid.\n\nExample:\n```\nInput:\nq1 = 0, r1 = 0, q2 = 1, r2 = -1\nOutput:\n1\n```\nIn this example, the distance between the points (0, 0) and (1, -1) in the hexagonal grid is 1.",
+      "entry_point": "hex_distance",
+      "param_names": [
+        "q1",
+        "r1",
+        "q2",
+        "r2"
+      ],
+      "param_types": [
+        "int",
+        "int",
+        "int",
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0,
+            0,
+            0,
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          0
+        ],
+        [
+          [
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          0
+        ],
+        [
+          [
+            42,
+            42,
+            42,
+            42
+          ],
+          0
+        ],
+        [
+          [
+            -17,
+            -17,
+            -17,
+            -17
+          ],
+          0
+        ],
+        [
+          [
+            1000,
+            1000,
+            1000,
+            1000
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00755.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00755",
+      "reference_solution_sha256": "3f0cf09820510a3a33cffef890464ea3b41a809d30c239164e33ff9c82d7fedd",
+      "prompt": "You are tasked with implementing a function to process financial symbols. The function should validate whether a given symbol ends with a specific currency code and return a boolean value accordingly. The currency code to be checked is \"USD\". You need to write a function `validate_currency_code` that takes a symbol as input and returns true if the symbol ends with \"USD\", and false otherwise.\n\nFunction Signature: \n```rust\nfn validate_currency_code(symbol: &str) -> bool {\n    // Your implementation here\n}\n```\n\nFor example, if the input symbol is \"AAPLUSD\", the function should return true, as it ends with \"USD\". If the input symbol is \"GOOG\", the function should return false, as it does not end with \"USD\".",
+      "entry_point": "validate_currency_code",
+      "param_names": [
+        "symbol"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          false
+        ],
+        [
+          [
+            "a"
+          ],
+          false
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00242.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00242",
+      "reference_solution_sha256": "6cd3ccb496603499c06b511ba7d6ee5ebd6a2b3609d69be7b75e86d5bd78a144",
+      "prompt": "You are given a string `s` consisting of lowercase English letters. Your task is to write a function `remove_adjacent_duplicates` that removes all adjacent duplicate characters from the string and returns the modified string.\n\nFunction Signature: `fn remove_adjacent_duplicates(s: &str) -> String`\n\nExample:\n```\nInput: \"axyb\"\nOutput: \"axyb\"\nExplanation: There are no adjacent duplicate characters in the string \"axyb\", so the output is the same as the input.\n\nInput: \"aaabccddd\"\nOutput: \"abcd\"\nExplanation: The adjacent duplicate characters \"aaa\", \"cc\", and \"ddd\" are removed, resulting in the modified string \"abcd\".\n```",
+      "entry_point": "remove_adjacent_duplicates",
+      "param_names": [
+        "s"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          "a"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "helo"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "Helo World"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "racecar"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.rust.magicoder_validation_00028.capability",
+      "language_id": "rust",
+      "split": "validation",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_validation_00028",
+      "reference_solution_sha256": "887cd4ebd7e6887d35539ab3cd64001c5a92c6d1b2fb115ea8cc79444029b6a5",
+      "prompt": "You are tasked with implementing a simple error handling mechanism for a file I/O operation in Rust. Your goal is to create a function that takes a file operation type and a description, and returns an error message based on the input. The error message should be formatted as \"OperationType operation failed: Description.\\n\", where OperationType is the type of file operation (e.g., \"read\" or \"write\") and Description is the provided description of the file (e.g., \"input file\" or \"output file\").\n\nYou need to implement the `generate_error_message` function, which takes two parameters:\n1. `operation_type` (string) - The type of file operation, such as \"read\" or \"write\".\n2. `description` (string) - The description of the file, such as \"input file\" or \"output file\".\n\nThe function should return a string representing the error message based on the input parameters.\n\nExample:\n```rust\nassert_eq!(generate_error_message(\"read\", \"input file\"), \"Read operation failed: Input file.\\n\".to_string());\nassert_eq!(generate_error_message(\"write\", \"output file\"), \"Write operation failed: Output file.\\n\".to_string());\n```",
+      "entry_point": "generate_error_message",
+      "param_names": [
+        "operation_type",
+        "description"
+      ],
+      "param_types": [
+        "str",
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            "",
+            ""
+          ],
+          " operation failed: ."
+        ],
+        [
+          [
+            "a",
+            "a"
+          ],
+          "a operation failed: a."
+        ],
+        [
+          [
+            "hello",
+            "hello"
+          ],
+          "hello operation failed: hello."
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World"
+          ],
+          "hello world operation failed: hello world."
+        ],
+        [
+          [
+            "racecar",
+            "racecar"
+          ],
+          "racecar operation failed: racecar."
+        ],
+        [
+          [
+            "12345",
+            "12345"
+          ],
+          "12345 operation failed: 12345."
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00764.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00764",
+      "reference_solution_sha256": "eaa4cb92807f12736e0037ec35d6b7feb19342d4f9011fdf8bba71caa0fc7589",
+      "prompt": "You are given a list of integers representing the scores of a game. Your task is to write a function that calculates the average score of the game, excluding the highest and lowest scores.\n\nWrite a function `calculateAverage` that takes in a list of integers and returns the average score, rounded to the nearest integer, after excluding the highest and lowest scores.\n\nFunction signature: `int calculateAverage(vector<int> scores)`\n\nExample:\nInput:\n`calculateAverage({8, 2, 7, 5, 3, 6, 4})`\n\nOutput:\n5\n\nExplanation:\nThe highest score is 8 and the lowest score is 2. After excluding these, the remaining scores are {7, 5, 3, 6, 4}. The average of these scores is (7+5+3+6+4)/5 = 5, rounded to the nearest integer.",
+      "entry_point": "calculateAverage",
+      "param_names": [
+        "scores"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            []
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          2
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          -2
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          5
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00942.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00942",
+      "reference_solution_sha256": "ac9616361cf275439137b50fde85f3340bb5d7b006b828aeb3c5c3487dc71583",
+      "prompt": "You are tasked with implementing a function that can efficiently determine the longest common prefix among an array of strings. The longest common prefix is the longest string that is a prefix of all strings in the array. If there is no common prefix, the function should return an empty string.\n\nYou are given the following code snippet as a starting point:\n\n```cpp\n} // namespace mesh\n} // namespace RED4ext\n```\n\nYour task is to write a function `longestCommonPrefix` that takes in an array of strings and returns the longest common prefix among them. You should implement this function in C++.\n\nFunction Signature:\n```cpp\nstd::string longestCommonPrefix(const std::vector<std::string>& strs);\n```\n\nInput:\n- An array of strings `strs` (0 <= strs.size() <= 200, 1 <= strs[i].size() <= 200)\n\nOutput:\n- A string representing the longest common prefix among the input strings.\n\nExample:\n```cpp\nstd::vector<std::string> input1 = {\"flower\", \"flow\", \"flight\"};\nstd::string result1 = longestCommonPrefix(input1); // result1 = \"fl\"\n\nstd::vector<std::string> input2 = {\"dog\", \"racecar\", \"car\"};\nstd::string result2 = longestCommonPrefix(input2); // result2 = \"\"\n```\n\nNote:\n- All given inputs are in lowercase letters a-z.",
+      "entry_point": "longestCommonPrefix",
+      "param_names": [
+        "strs"
+      ],
+      "param_types": [
+        "list_str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            []
+          ],
+          ""
+        ],
+        [
+          [
+            [
+              "a"
+            ]
+          ],
+          "a"
+        ],
+        [
+          [
+            [
+              "hello",
+              "world"
+            ]
+          ],
+          ""
+        ],
+        [
+          [
+            [
+              "x",
+              "y",
+              "z"
+            ]
+          ],
+          ""
+        ],
+        [
+          [
+            [
+              "ab",
+              "cd"
+            ]
+          ],
+          ""
+        ],
+        [
+          [
+            [
+              "one"
+            ]
+          ],
+          "one"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00013.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00013",
+      "reference_solution_sha256": "bb3720390749fe68e65d831ecc0eb00338ddbae048903513ec66834e1b03a43d",
+      "prompt": "You are tasked with implementing a function to validate a hexadecimal license key input by a user. The input is a string representing the license key, and the function should check if the input contains only valid hexadecimal characters (0-9, A-F). If the input contains any invalid characters, the function should return false; otherwise, it should return true.\n\nYou are provided with a code snippet that partially implements the validation process. The snippet initializes a buffer and iterates through the input string, checking each pair of characters for validity. Your task is to complete the implementation of the validation function based on the given code snippet.\n\nImplement the function:\n```cpp\nbool ValidateLicenseKey(const std::string& FromUser) {\n    // Your implementation here\n}\n```",
+      "entry_point": "ValidateLicenseKey",
+      "param_names": [
+        "FromUser"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          false
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          false
+        ],
+        [
+          [
+            "racecar"
+          ],
+          false
+        ],
+        [
+          [
+            "12345"
+          ],
+          true
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00455.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00455",
+      "reference_solution_sha256": "f9679100ceadf5d9e629f2a2e73b01b0469acc42f463d3fb365ae3574b48cb3b",
+      "prompt": "You are tasked with implementing a C++ function that calculates the sum of all prime numbers within a given range. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. The function should take two integer parameters, `start` and `end`, representing the inclusive range within which to find and sum the prime numbers. The function should return the sum of all prime numbers within the specified range.\n\nYour task is to implement the `sumOfPrimes` function in C++.\n\nFunction Signature:\n```cpp\nint sumOfPrimes(int start, int end);\n```\n\nInput:\n- The function takes two integers `start` and `end` (1 <= start <= end <= 10^6) representing the inclusive range within which to find and sum the prime numbers.\n\nOutput:\n- The function should return an integer representing the sum of all prime numbers within the specified range.\n\nExample:\n```cpp\nint result1 = sumOfPrimes(1, 10);\n// result1 should be 17, as the prime numbers within the range [1, 10] are 2, 3, 5, and 7, and their sum is 17.\n\nint result2 = sumOfPrimes(20, 30);\n// result2 should be 50, as the prime numbers within the range [20, 30] are 23 and 29, and their sum is 50.\n```",
+      "entry_point": "isPrime",
+      "param_names": [
+        "n"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            0
+          ],
+          false
+        ],
+        [
+          [
+            1
+          ],
+          false
+        ],
+        [
+          [
+            -1
+          ],
+          false
+        ],
+        [
+          [
+            42
+          ],
+          false
+        ],
+        [
+          [
+            -17
+          ],
+          false
+        ],
+        [
+          [
+            1000
+          ],
+          false
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00564.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00564",
+      "reference_solution_sha256": "f81c12384fcf41cb19b465ab42ec30f19759d4d7821ca96f9a2efecaf334acb7",
+      "prompt": "You are given a series of financial events represented by integers. Each event can either increase or decrease a person's balance. The events are represented by positive or negative integers. The series of events ends with a zero. Your task is to calculate the final balance after processing all the events.\n\nWrite a function `calculateFinalBalance` that takes a vector of integers representing the financial events and returns the final balance after processing all the events.\n\nFunction Signature: \n```cpp\nint calculateFinalBalance(const vector<int>& events);\n```\n\nExample:\n```cpp\nInput:\ncalculateFinalBalance({10, -5, 3, -8, 0})\n\nOutput:\n0\n```\n\nExplanation:\nThe initial balance is 0. After processing the events, the balance becomes 10 - 5 + 3 - 8 = 0.",
+      "entry_point": "calculateFinalBalance",
+      "param_names": [
+        "events"
+      ],
+      "param_types": [
+        "list_int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            []
+          ],
+          0
+        ],
+        [
+          [
+            [
+              1
+            ]
+          ],
+          1
+        ],
+        [
+          [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          6
+        ],
+        [
+          [
+            [
+              -1,
+              -2,
+              -3
+            ]
+          ],
+          -6
+        ],
+        [
+          [
+            [
+              5,
+              3,
+              8,
+              1,
+              9,
+              2
+            ]
+          ],
+          28
+        ],
+        [
+          [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          0
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00056.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00056",
+      "reference_solution_sha256": "bdcd923ceec97f56eda69ba49a2fc9b5fb95d07310554bf0230d726d47308193",
+      "prompt": "You are tasked with implementing a function that takes a string as input and returns the count of unique characters in the string. For the purpose of this problem, a character is considered unique if it appears only once in the string.\n\nYou need to write a function with the following signature:\n```cpp\nint countUniqueCharacters(const std::string& input);\n```\n\nThe function should return the count of unique characters in the input string.\n\nFor example, given the input \"abacddbe\", the function should return 4, as there are 4 unique characters ('e', 'b', 'a', 'c') in the string.",
+      "entry_point": "countUniqueCharacters",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          0
+        ],
+        [
+          [
+            "a"
+          ],
+          1
+        ],
+        [
+          [
+            "hello"
+          ],
+          3
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          6
+        ],
+        [
+          [
+            "racecar"
+          ],
+          1
+        ],
+        [
+          [
+            "12345"
+          ],
+          5
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00655.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00655",
+      "reference_solution_sha256": "acad2cf2a3bcfd0d27102cdad523104b72e7ad7db443b08c975011ca6f383d06",
+      "prompt": "You are given a C++ code snippet that is missing the copyright notice in the Description page of Project Settings. Your task is to write a function that takes the current year as input and returns the complete copyright notice string to be filled in the code.\n\nThe copyright notice should follow the format: \"Copyright (c) [year] YourNameHere.\"\n\nYou need to implement the function:\n```cpp\n#include <iostream>\n#include <string>\n\nstd::string generateCopyrightNotice(int year) {\n    // Your implementation here\n}\n```\n\nExample:\nInput:\n```cpp\nint year = 2022;\nstd::string notice = generateCopyrightNotice(year);\n```\nOutput:\n```\nCopyright (c) 2022 YourNameHere.\n```",
+      "entry_point": "generateCopyrightNotice",
+      "param_names": [
+        "year"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            0
+          ],
+          "Copyright (c) 0 YourNameHere."
+        ],
+        [
+          [
+            1
+          ],
+          "Copyright (c) 1 YourNameHere."
+        ],
+        [
+          [
+            -1
+          ],
+          "Copyright (c) -1 YourNameHere."
+        ],
+        [
+          [
+            42
+          ],
+          "Copyright (c) 42 YourNameHere."
+        ],
+        [
+          [
+            -17
+          ],
+          "Copyright (c) -17 YourNameHere."
+        ],
+        [
+          [
+            1000
+          ],
+          "Copyright (c) 1000 YourNameHere."
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00800.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00800",
+      "reference_solution_sha256": "2ae1344b7cf43826a4d2f778f8a8d277c3d991d2fb0f2310b93a1209e83a8451",
+      "prompt": "You are tasked with implementing a program that processes C++ header files to extract specific information. In this problem, you are required to write a function that takes a string representing the content of a C++ header file and extracts the name of the header file from the `#endif` directive.\n\nYou need to implement the function `extractHeaderFileName` that takes a string `fileContent` representing the content of a C++ header file. The function should return the name of the header file extracted from the `#endif` directive. The name of the header file is the string between the last occurrence of the forward slash '/' and the characters \"hpp\" in the `#endif` directive.\n\nFor example, if the input `fileContent` is:\n```\n#ifndef BUFFER_HANDLE_HTTP_HEADER_CONTENT_ENCODING_HPP\n```\nThe function should return `\"http_header_content_encoding\"`.\n\nAssume that the input `fileContent` will always contain a valid `#endif` directive with the header file name in the specified format.\n\nWrite a function:\n```cpp\nstd::string extractHeaderFileName(const std::string& fileContent);\n```",
+      "entry_point": "extractHeaderFileName",
+      "param_names": [
+        "fileContent"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a"
+          ],
+          ""
+        ],
+        [
+          [
+            "hello"
+          ],
+          ""
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          ""
+        ],
+        [
+          [
+            "racecar"
+          ],
+          ""
+        ],
+        [
+          [
+            "12345"
+          ],
+          ""
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00379.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00379",
+      "reference_solution_sha256": "7f2f3da53c9e04672570546f59cc2225c58200c99ccdd3433e88b5720cef2f44",
+      "prompt": "You are tasked with implementing a function to balance a string containing various types of grouping symbols. The grouping symbols include parentheses '()', square brackets '[]', and curly braces '{}'. The function should determine if the input string has balanced grouping symbols and return true if it does, and false otherwise.\n\nThe function signature is:\n```cpp\nbool isBalanced(const std::string& input);\n```\n\nFor the purpose of this problem, a string is considered balanced if each opening symbol has a corresponding closing symbol and they are properly nested. For example, the string \"([]{})\" is balanced, while \"([)]\" is not.\n\nYou should implement the function `isBalanced` to determine if the input string has balanced grouping symbols and return true if it does, and false otherwise.",
+      "entry_point": "isBalanced",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          true
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          true
+        ],
+        [
+          [
+            "racecar"
+          ],
+          true
+        ],
+        [
+          [
+            "12345"
+          ],
+          true
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00927.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00927",
+      "reference_solution_sha256": "3ae64b563051903a6e48858f8f934181a59a22c72aafc2c397b7fdf222bb9fd5",
+      "prompt": "You are given a function `ctoi` that converts a character representing a digit to its corresponding integer value. For example, `ctoi('5')` returns `5`. Your task is to implement a function `stringSum` that takes two strings representing non-negative integers and returns their sum as a string.\n\nThe `stringSum` function should add the two input numbers and return the result as a string. You can assume that the input strings contain only digits and do not have leading zeros.\n\nFunction signature: \n```cpp\nstring stringSum(const string& num1, const string& num2)\n```\n\nFor example, if `num1 = \"123\"` and `num2 = \"456\"`, the function should return `\"579\"`.",
+      "entry_point": "stringSum",
+      "param_names": [
+        "num1",
+        "num2"
+      ],
+      "param_types": [
+        "str",
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            "",
+            ""
+          ],
+          ""
+        ],
+        [
+          [
+            "a",
+            "a"
+          ],
+          "98"
+        ],
+        [
+          [
+            "hello",
+            "hello"
+          ],
+          "1239326"
+        ],
+        [
+          [
+            "Hello World",
+            "Hello World"
+          ],
+          "599324-320504"
+        ],
+        [
+          [
+            "racecar",
+            "racecar"
+          ],
+          "142937312"
+        ],
+        [
+          [
+            "12345",
+            "12345"
+          ],
+          "24690"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00254.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00254",
+      "reference_solution_sha256": "7528855eab316bff7bbe9d04c1f8d4b5b43f26f265a3b92434ea5162ac9c6a15",
+      "prompt": "You are tasked with implementing a function that checks whether a given string is a valid UTF-8 encoded sequence. UTF-8 is a variable-width character encoding capable of encoding all 1,112,064 valid code points in Unicode using one to four one-byte (8-bit) code units. The encoding is defined by the Unicode standard and is designed to be backward-compatible with ASCII.\n\nYou need to implement a function `isValidUTF8` that takes a string as input and returns true if the input string is a valid UTF-8 encoded sequence, and false otherwise. The function should adhere to the following rules for UTF-8 encoding:\n1. A single byte character in UTF-8 consists of 7 bits that represent the character and a leading bit set to 0.\n2. A multi-byte character in UTF-8 starts with a byte that has a certain number of leading 1s, followed by a single 0, and the subsequent bytes start with the bit pattern 10.\n3. The number of leading 1s in the first byte of a multi-byte character indicates the total number of bytes used to encode the character.\n\nYou need to write a C++ function that efficiently validates whether the given string adheres to the UTF-8 encoding rules.\n\nFunction Signature: \n```cpp\nbool isValidUTF8(const std::string& input);\n```\n\nExample:\n```cpp\nstd::string input1 = \"Hello, \u4e16\u754c\";  // Valid UTF-8 sequence\nstd::string input2 = \"Invalid \\xF0\\x28\\x8C\\xBC\";  // Invalid UTF-8 sequence\nisValidUTF8(input1);  // Returns true\nisValidUTF8(input2);  // Returns false\n```",
+      "entry_point": "isValidUTF8",
+      "param_names": [
+        "input"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "bool",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          true
+        ],
+        [
+          [
+            "a"
+          ],
+          true
+        ],
+        [
+          [
+            "hello"
+          ],
+          true
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          true
+        ],
+        [
+          [
+            "racecar"
+          ],
+          true
+        ],
+        [
+          [
+            "12345"
+          ],
+          true
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00851.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00851",
+      "reference_solution_sha256": "e7cb7e75a7c178acc3422370b56ab42e948ae173759fe3079af8ca79b82783fd",
+      "prompt": "You are given a set of points in a 2D plane and a set of queries, each represented as a triplet of integers `(x, y, r)`. For each query, you need to determine the number of points that lie within or on the boundary of the circle centered at `(x, y)` with radius `r`.\n\nWrite a function or method that takes in the points and queries as input and returns a list of integers representing the count of points within or on the boundary of the circle for each query.\n\nFunction Signature: `vector<int> countPoints(vector<vector<int>>& points, vector<vector<int>>& queries)`\n\nInput:\n- `points`: A 2D vector representing the coordinates of the points in the format `[[x1, y1], [x2, y2], ...]`, where `x` and `y` are integers.\n- `queries`: A 2D vector representing the queries in the format `[[x1, y1, r1], [x2, y2, r2], ...]`, where `x`, `y`, and `r` are integers.\n\nOutput:\n- A vector of integers representing the count of points within or on the boundary of the circle for each query.\n\nConstraints:\n- 1 <= points.length, queries.length <= 1000\n- points[i].length == 2\n- queries[i].length == 3\n- -10^3 <= x, y <= 10^3\n- 1 <= r <= 10^3\n\nExample:\nInput:\npoints = [[1, 3], [3, 3], [5, 3], [2, 2]]\nqueries = [[2, 3, 1], [4, 3, 3], [1, 1, 2]]\n\nOutput:\n[3, 2, 2]\n\nExplanation:\n- For the first query [2, 3, 1], the circle with center (2, 3) and radius 1 contains 3 points: [1, 3], [3, 3], and [2, 2].\n- For the second query [4, 3, 3], the circle with center (4, 3) and radius 3 contains 2 points: [3, 3] and [5, 3].\n- For the third query [1, 1, 2], the circle with center (1, 1) and radius 2 contains 2 points: [1, 3] and [2, 2].",
+      "entry_point": "squared",
+      "param_names": [
+        "x"
+      ],
+      "param_types": [
+        "int"
+      ],
+      "return_type": "int",
+      "tests": [
+        [
+          [
+            0
+          ],
+          0
+        ],
+        [
+          [
+            1
+          ],
+          1
+        ],
+        [
+          [
+            -1
+          ],
+          1
+        ],
+        [
+          [
+            42
+          ],
+          1764
+        ],
+        [
+          [
+            -17
+          ],
+          289
+        ],
+        [
+          [
+            1000
+          ],
+          1000000
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.cpp.magicoder_validation_00029.capability",
+      "language_id": "cpp",
+      "split": "validation",
+      "kind": "typed_function",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_validation_00029",
+      "reference_solution_sha256": "c06b65b3399c850af88abfddcde99b25225e7a031203064926da4e4b2cffe3c9",
+      "prompt": "You are tasked with implementing a C++ header file guard generator. Header file guards are used to prevent a header file from being included multiple times in the same translation unit, which can lead to redefinition errors. The guard typically takes the form of `#ifndef`, `#define`, and `#endif` directives, with a unique identifier based on the file name.\n\nYour task is to write a function that takes a string representing the file name and generates the appropriate header file guard identifier. The identifier should be in all uppercase letters, with any non-alphanumeric characters replaced by underscores. Additionally, the identifier should be prefixed with `INCLUDED_`.\n\nFor example, given the file name \"xml_common.hpp\", the function should generate the guard identifier `INCLUDED_XML_COMMON_HPP`.\n\nWrite a function with the following signature:\n```cpp\nstd::string generateHeaderGuard(const std::string& fileName);\n```\n\nYour function should return the generated header file guard identifier as a string.",
+      "entry_point": "generateHeaderGuard",
+      "param_names": [
+        "fileName"
+      ],
+      "param_types": [
+        "str"
+      ],
+      "return_type": "str",
+      "tests": [
+        [
+          [
+            ""
+          ],
+          "INCLUDED_"
+        ],
+        [
+          [
+            "a"
+          ],
+          "INCLUDED_A"
+        ],
+        [
+          [
+            "hello"
+          ],
+          "INCLUDED_HELLO"
+        ],
+        [
+          [
+            "Hello World"
+          ],
+          "INCLUDED_HELLO_WORLD"
+        ],
+        [
+          [
+            "racecar"
+          ],
+          "INCLUDED_RACECAR"
+        ],
+        [
+          [
+            "12345"
+          ],
+          "INCLUDED_12345"
+        ]
+      ]
+    },
+    {
+      "id": "coding.write.java.magicoder_validation_00023.capability",
+      "language_id": "java",
+      "split": "validation",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.java.magicoder_validation_00023",
+      "reference_solution_sha256": "cc57c9f2d3fbe2b86f202d4b27da7cdc7dcd39e4a8b9085ade77bd191727cc41",
+      "prompt": "You are tasked with implementing a Java class that manipulates a string and provides methods to retrieve specific transformations of the string. Your task is to complete the implementation of the `StringManipulator` class by adding a method `getUpperCase()` that returns the string in uppercase and a method `getLowerCase()` that returns the string in lowercase.\n\nYou are provided with the following partially implemented `StringManipulator` class:\n\n```java\npublic class StringManipulator {\n    private String inputString;\n\n    public StringManipulator(String inputString) {\n        this.inputString = inputString;\n    }\n\n    public String getUpperCase() {\n        // Your implementation here\n    }\n\n    public String getLowerCase() {\n        // Your implementation here\n    }\n}\n```\n\nYour task is to complete the `getUpperCase()` and `getLowerCase()` methods to return the input string in uppercase and lowercase, respectively.",
+      "entry_point": "StringManipulator",
+      "class_method": "getUpperCase",
+      "driver": "\n\ninterface _Call { Object run(); }\nclass _Harness {\n    static Object _safe(_Call c) {\n        try { return c.run(); } catch (Throwable e) { return new Object(); }\n    }\n    public static void main(String[] args) {\n        int passed = 0;\n        int total = 0;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"\").getUpperCase()), \"\")) passed++;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"a\").getUpperCase()), \"A\")) passed++;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"hello\").getUpperCase()), \"HELLO\")) passed++;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"Hello World\").getUpperCase()), \"HELLO WORLD\")) passed++;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"racecar\").getUpperCase()), \"RACECAR\")) passed++;\n        total++; if (java.util.Objects.equals(_safe(() -> new StringManipulator(\"12345\").getUpperCase()), \"12345\")) passed++;\n        System.out.println(\"CAPABILITY_RESULT \" + passed + \"/\" + total);\n    }\n}\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00935.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00935",
+      "reference_solution_sha256": "f818dec5ca000535508fe1b747b3e44188911ae3aaed4f70574b8dc1e2dd8516",
+      "prompt": "You are tasked with implementing a module system for a web server framework in Rust. The provided code snippet is a part of the module system for handling HTTP headers. Your goal is to create a new module for handling the \"ContentEncoding\" header and ensure that it can be used by the web server framework.\n\nYour task is to create a new module called `content_encoding` that exports a struct called `ContentEncoding`. The `ContentEncoding` struct should have a method called `new` that takes a string parameter representing the encoding type and returns an instance of `ContentEncoding`. Additionally, the `ContentEncoding` struct should have a method called `encode` that takes a string parameter representing the content to be encoded and returns the encoded content as a string.\n\nYour implementation should allow the `ContentEncoding` module to be used by the web server framework in a similar manner to the existing modules for `ContentLength`, `ContentType`, and `Date`.",
+      "entry_point": "ContentEncoding",
+      "class_method": "encode",
+      "driver": "\n\nfn main() {\n    std::panic::set_hook(Box::new(|_| {}));\n    let mut passed: i32 = 0;\n    let mut total: i32 = 0;\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"\").encode(\"\")).map(|v| v == \"\").unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"a\").encode(\"a\")).map(|v| v == \"a\").unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"hello\").encode(\"hello\")).map(|v| v == \"hello\").unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"Hello World\").encode(\"Hello World\")).map(|v| v == \"Hello World\").unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"racecar\").encode(\"racecar\")).map(|v| v == \"racecar\").unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| ContentEncoding::new(\"12345\").encode(\"12345\")).map(|v| v == \"12345\").unwrap_or(false) { passed += 1; }\n    println!(\"CAPABILITY_RESULT {}/{}\", passed, total);\n}\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00511.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00511",
+      "reference_solution_sha256": "aed838c60dc2e557359f6b4cc1e7d4c2d3bfb305c32d5a14644f6ea2b49333fd",
+      "prompt": "You are tasked with implementing a simple token matching system for a lexer. The provided code snippet contains two methods of a `TokenMatcher` struct: `is_match` and `find`. The `is_match` method checks if any of the rules in the `TokenMatcher` match the given text, while the `find` method returns the first matching rule along with its index in the text.\n\nYour task is to implement the missing `Rule` struct and its associated methods to complete the token matching system. The `Rule` struct should have a method `is_match` that checks if the rule matches the given text and a method `find` that returns the index of the first match in the text along with the associated `TokenKind`.\n\nYou should implement the `Rule` struct and its associated methods to fulfill the requirements of the `TokenMatcher` methods.\n\n```rust\n#[derive(Debug, Clone)]\npub enum TokenKind {\n    // Define the possible token kinds here\n}\n\npub struct Rule {\n    // Define the fields required for the rule here\n}\n\nimpl Rule {\n    pub fn is_match(&self, text: &str) -> bool {\n        // Implement the logic to check if the rule matches the given text\n    }\n\n    pub fn find(&self, text: &str) -> Option<(TokenKind, usize)> {\n        // Implement the logic to find the first match in the text and return the associated TokenKind and index\n    }\n}\n\npub struct TokenMatcher {\n    rules: Vec<Rule>,\n}\n\nimpl TokenMatcher {\n    pub fn is_match(&self, text: &str) -> bool {\n        self.rules.iter().any(|r| r.is_match(text))\n    }\n\n    pub fn find(&self, text: &str) -> Option<(TokenKind, usize)> {\n        // max returns the last max so we reverse iteration to get the first max.\n        self.rules\n            .iter()\n            .rev()\n            .filter_map(|r| r.find(text))\n            .max_by(|a, b| a.1.cmp(&b.1))\n    }\n}\n```",
+      "entry_point": "TokenMatcher",
+      "class_method": "is_match",
+      "driver": "\n\nfn main() {\n    std::panic::set_hook(Box::new(|_| {}));\n    let mut passed: i32 = 0;\n    let mut total: i32 = 0;\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"a\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"hello\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"Hello World\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"racecar\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| TokenMatcher::new().is_match(\"12345\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    println!(\"CAPABILITY_RESULT {}/{}\", passed, total);\n}\n"
+    },
+    {
+      "id": "coding.write.rust.magicoder_pool_00111.capability",
+      "language_id": "rust",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.rust.magicoder_pool_00111",
+      "reference_solution_sha256": "50180df528ff275651f3905c68ad8763f0889f1a265c63ae2227b9181128a017",
+      "prompt": "You are tasked with implementing a simple key-value store using Rust. The key-value store should support the following operations: inserting a key-value pair, retrieving the value associated with a given key, and removing a key-value pair.\n\nYou are given a partial implementation of the `KeyValueStore` struct and its methods. Your task is to complete the implementation of the `get` and `remove` methods.\n\nThe `KeyValueStore` struct is defined as follows:\n```rust\nuse std::collections::HashMap;\n\nstruct KeyValueStore {\n    store: HashMap<String, bool>,\n}\n\nimpl KeyValueStore {\n    fn new() -> Self {\n        KeyValueStore {\n            store: HashMap::new(),\n        }\n    }\n\n    fn insert(&mut self, key: String, value: bool) {\n        self.store.insert(key, value);\n    }\n\n    fn get(&self, key: &str) -> Option<&bool> {\n        self.store.get(key)\n    }\n\n    fn remove(&mut self, key: &str) -> bool {\n        self.store.remove(key).is_some()\n    }\n}\n```\n\nYour task is to complete the implementation of the `get` and `remove` methods based on the provided code snippet and the given `KeyValueStore` struct.\n\nComplete the `get` method to return the value associated with the given key if it exists in the store, otherwise return `None`.\n\nComplete the `remove` method to remove the key-value pair associated with the given key from the store. The method should return `true` if the key was present and removed, and `false` otherwise.\n\nYour task is to fill in the missing parts of the `get` and `remove` methods to ensure the key-value store functions correctly.",
+      "entry_point": "KeyValueStore",
+      "class_method": "remove",
+      "driver": "\n\nfn main() {\n    std::panic::set_hook(Box::new(|_| {}));\n    let mut passed: i32 = 0;\n    let mut total: i32 = 0;\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"a\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"hello\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"Hello World\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"racecar\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    total += 1; if std::panic::catch_unwind(|| KeyValueStore::new().remove(\"12345\")).map(|v| v == false).unwrap_or(false) { passed += 1; }\n    println!(\"CAPABILITY_RESULT {}/{}\", passed, total);\n}\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00086.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00086",
+      "reference_solution_sha256": "594090223cc50256ff641a1c8db2b7937d81ecee1980081575e2d6f34c03fa15",
+      "prompt": "You are tasked with implementing a class that manages context buffers for a GPU computing environment. The provided code snippet is a partial implementation of the `ContextBuffers` class, which is responsible for managing the memory buffers and associated resources for a specific GPU device. Your task is to complete the implementation of the `ContextBuffers` class by adding necessary member variables and methods to ensure proper management of GPU context buffers.\n\nYour implementation should include the following functionalities:\n1. A constructor to initialize the `ContextBuffers` object with the device ID and allocate necessary resources.\n2. A destructor to release the allocated resources when the `ContextBuffers` object goes out of scope.\n3. Methods to set and retrieve the ownership status of the context buffers.\n4. Methods to retrieve the device ID, execution stream, and special stream associated with the context buffers.\n5. A method to check if the context buffers are initialized.\n\nYou should also ensure that the ownership status and resource allocation are managed correctly, and the memory resources are released appropriately when the `ContextBuffers` object is destroyed.\n\nComplete the implementation of the `ContextBuffers` class based on the provided code snippet and the outlined functionalities.",
+      "entry_point": "ContextBuffers",
+      "class_method": "deviceId",
+      "driver": "\n\n#include <iostream>\nint _cap_passed = 0, _cap_total = 0;\n#define _CAP_CHECK(expr, expected) do { _cap_total++; try { if ((expr) == (expected)) _cap_passed++; } catch (...) {} } while (0)\nint main() {\n    _CAP_CHECK(ContextBuffers(0).deviceId(), 0);\n    _CAP_CHECK(ContextBuffers(1).deviceId(), 1);\n    _CAP_CHECK(ContextBuffers(-1).deviceId(), -1);\n    _CAP_CHECK(ContextBuffers(42).deviceId(), 42);\n    _CAP_CHECK(ContextBuffers(-17).deviceId(), -17);\n    _CAP_CHECK(ContextBuffers(1000).deviceId(), 1000);\n    std::cout << \"CAPABILITY_RESULT \" << _cap_passed << \"/\" << _cap_total << std::endl;\n    return 0;\n}\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00618.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00618",
+      "reference_solution_sha256": "23034687227aeffca39244eb619309ba2fc57c0577fe7c753bd4b3b4c035feab",
+      "prompt": "You are tasked with implementing a class that manages a collection of books. The class should provide functionality to add books, remove books, and retrieve information about the books in the collection. Additionally, the class should have a method to return the total number of pages in all the books combined.\n\nYou are provided with a partial implementation of the `Book` class as follows:\n\n```cpp\n#include <string>\n\nclass Book {\npublic:\n    Book(const std::string& title, const std::string& author, int pageCount)\n        : m_title(title), m_author(author), m_pageCount(pageCount) {}\n\n    std::string getTitle() const { return m_title; }\n    std::string getAuthor() const { return m_author; }\n    int getPageCount() const { return m_pageCount; }\n\nprivate:\n    std::string m_title;\n    std::string m_author;\n    int m_pageCount;\n};\n```\n\nYou need to complete the implementation of the `BookCollection` class, which should manage a collection of `Book` objects. The class should have the following public methods:\n\n1. `void addBook(const Book& book)` - Adds a book to the collection.\n2. `void removeBook(const std::string& title)` - Removes a book from the collection based on its title. If the book is not found, do nothing.\n3. `int getTotalPages() const` - Returns the total number of pages in all the books in the collection.\n4. `std::string getBookInfo(const std::string& title) const` - Returns a string containing the author and page count of the book with the given title. If the book is not found, return \"Book not found\".\n\nYou should use the provided `Book` class to represent individual books in the collection.\n\nImplement the `BookCollection` class to fulfill the requirements outlined above.",
+      "entry_point": "Book",
+      "class_method": "getTitle",
+      "driver": "\n\n#include <iostream>\nint _cap_passed = 0, _cap_total = 0;\n#define _CAP_CHECK(expr, expected) do { _cap_total++; try { if ((expr) == (expected)) _cap_passed++; } catch (...) {} } while (0)\nint main() {\n    _CAP_CHECK(Book(\"\", \"\", 0).getTitle(), \"\");\n    _CAP_CHECK(Book(\"a\", \"a\", 1).getTitle(), \"a\");\n    _CAP_CHECK(Book(\"hello\", \"hello\", -1).getTitle(), \"hello\");\n    _CAP_CHECK(Book(\"Hello World\", \"Hello World\", 42).getTitle(), \"Hello World\");\n    _CAP_CHECK(Book(\"racecar\", \"racecar\", -17).getTitle(), \"racecar\");\n    _CAP_CHECK(Book(\"12345\", \"12345\", 1000).getTitle(), \"12345\");\n    std::cout << \"CAPABILITY_RESULT \" << _cap_passed << \"/\" << _cap_total << std::endl;\n    return 0;\n}\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00122.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00122",
+      "reference_solution_sha256": "9253baadf11ec3c1a00704bbca147b7eb4ac085572569de432abeecbcc484611",
+      "prompt": "You are tasked with implementing a DepthToSpace operation for a neural network framework. The DepthToSpace operation reorganizes data from depth into spatial dimensions. The operation takes an input tensor of shape (batch, height, width, channels) and rearranges the data into a tensor of shape (batch, height * block_size, width * block_size, channels / (block_size * block_size)), where block_size is an integer parameter.\n\nYour task is to implement the DepthToSpace operation inference logic, which determines the output shape of the tensor after the DepthToSpace operation is applied.\n\nThe provided code snippet is part of the implementation of the DepthToSpace operation inference logic. The `DepthToSpaceInfer` function is registered as the primitive evaluation implementation for the DepthToSpace operation. The `input_x` is a pointer to the input tensor, and the `out_shape` is the shape of the output tensor after the DepthToSpace operation.\n\nYour task is to complete the implementation of the `DepthToSpaceInfer` function, which should determine the output shape of the tensor after the DepthToSpace operation is applied.\n\nImplement the `DepthToSpaceInfer` function to determine the output shape of the tensor after the DepthToSpace operation is applied.",
+      "entry_point": "Shape",
+      "class_method": "batch",
+      "driver": "\n\n#include <iostream>\nint _cap_passed = 0, _cap_total = 0;\n#define _CAP_CHECK(expr, expected) do { _cap_total++; try { if ((expr) == (expected)) _cap_passed++; } catch (...) {} } while (0)\nint main() {\n    _CAP_CHECK(Shape(0, 0, 0, 0).batch(), 0);\n    _CAP_CHECK(Shape(1, 1, 1, 1).batch(), 1);\n    _CAP_CHECK(Shape(-1, -1, -1, -1).batch(), -1);\n    _CAP_CHECK(Shape(42, 42, 42, 42).batch(), 42);\n    _CAP_CHECK(Shape(-17, -17, -17, -17).batch(), -17);\n    _CAP_CHECK(Shape(1000, 1000, 1000, 1000).batch(), 1000);\n    std::cout << \"CAPABILITY_RESULT \" << _cap_passed << \"/\" << _cap_total << std::endl;\n    return 0;\n}\n"
+    },
+    {
+      "id": "coding.write.cpp.magicoder_pool_00068.capability",
+      "language_id": "cpp",
+      "split": "pool",
+      "kind": "custom_driver",
+      "source": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+      "license": "mit",
+      "source_row_id": "coding.write.cpp.magicoder_pool_00068",
+      "reference_solution_sha256": "518972cb88c36325f0c0d663d943f331323b457ae425ee53eccb7abaaa70f667",
+      "prompt": "You are tasked with implementing a custom comparison operator for a class in C++. The class, `ValueDictionaryPersistentKey`, represents a persistent key in a value dictionary. Your goal is to override the equality operator (`==`) for this class to compare two instances of `ValueDictionaryPersistentKey`. The comparison should check whether the two instances refer to the same persistent key.\n\nYou are provided with the following class definition for `ValueDictionaryPersistentKey`:\n\n```cpp\nclass ValueDictionaryPersistentKey {\npublic:\n  // Constructor to initialize the persistent key\n  ValueDictionaryPersistentKey(int key) : key_(key) {}\n\n  // Getter method to retrieve the persistent key\n  int getKey() const { return key_; }\n\n  // Overriding the equality operator to compare two instances of ValueDictionaryPersistentKey\n  bool operator==(const ValueDictionaryPersistentKey& other) const {\n    return this->key_ == other.key_;\n  }\n\nprivate:\n  int key_;  // The persistent key\n};\n```\n\nYour task is to complete the implementation of the `operator==` method to compare two instances of `ValueDictionaryPersistentKey` based on their persistent keys.",
+      "entry_point": "ValueDictionaryPersistentKey",
+      "class_method": "getKey",
+      "driver": "\n\n#include <iostream>\nint _cap_passed = 0, _cap_total = 0;\n#define _CAP_CHECK(expr, expected) do { _cap_total++; try { if ((expr) == (expected)) _cap_passed++; } catch (...) {} } while (0)\nint main() {\n    _CAP_CHECK(ValueDictionaryPersistentKey(0).getKey(), 0);\n    _CAP_CHECK(ValueDictionaryPersistentKey(1).getKey(), 1);\n    _CAP_CHECK(ValueDictionaryPersistentKey(-1).getKey(), -1);\n    _CAP_CHECK(ValueDictionaryPersistentKey(42).getKey(), 42);\n    _CAP_CHECK(ValueDictionaryPersistentKey(-17).getKey(), -17);\n    _CAP_CHECK(ValueDictionaryPersistentKey(1000).getKey(), 1000);\n    std::cout << \"CAPABILITY_RESULT \" << _cap_passed << \"/\" << _cap_total << std::endl;\n    return 0;\n}\n"
+    }
+  ],
+  "_comment": "Problems sampled from the real coding-SFT source data (data/training/coding.write.<lang>/{pool,validation}.jsonl), not hand-written. Each problem is single-language (language_id) and carries its own `split`: 'pool' rows can have been directly trained on (prepare_sft_dataset.py samples train.jsonl straight out of pool.jsonl); 'validation' rows are structurally guaranteed to never appear in any train.jsonl (see build_sft_pools.py). `kind` is 'typed_function' (graded against (args, expected) tuples mechanically derived by executing the row's own Magicoder reference solution -- see scripts/build_coding_capability_pool_eval.py) or 'custom_driver' (a hand-authored, execution-verified driver snippet appended to the model's completion, for class-based rows a typed-function harness can't express). Built by scripts/scan_coding_capability_pool_candidates.py + scripts/build_coding_capability_pool_eval.py; see data/reference/coding_capability_pool_validation_report.json for provenance."
+}

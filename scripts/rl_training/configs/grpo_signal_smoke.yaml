@@ -1,0 +1,21 @@
+# K=8 GRPO smoke test: validate a real non-zero online update, not only plumbing.
+
+algo: grpo
+
+max_steps: 1
+save_steps: 1
+logging_steps: 1
+learning_rate: 1.0e-6
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 1
+beta: 0.05
+
+num_generations: 8
+max_prompt_length: 1024
+max_completion_length: 512
+reward_timeout: 5.0
+
+eval_reward_prompts: 1
+eval_reward_samples: 1
+
+log_rollouts: true

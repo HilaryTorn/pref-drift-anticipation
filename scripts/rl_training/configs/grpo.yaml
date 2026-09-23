@@ -1,0 +1,81 @@
+# GRPO run config for the RL-drift study.
+#
+# MATCHED ACROSS ALGORITHMS (do not change one without changing ppo.yaml/dpo.yaml):
+#   max_steps, save_steps, learning_rate, effective UNIQUE-PROMPT batch,
+#   and the reference-regularization strength (beta here == init_kl_coef in PPO).
+# The study matches "amount of training" on OPTIMIZER STEPS and additionally logs
+# verifiable reward at every checkpoint (DriftCadenceCallback), so runs can also
+# be compared at equal reward post-hoc.
+
+algo: grpo
+
+max_steps: 125            # 1000 unique prompts / 8 unique prompts per update
+save_steps: 4             # dense saves; baseline step 0 is scored separately
+logging_steps: 10
+# LoRA learning rate. 1e-6 is a FULL-FINE-TUNING rate (the standard DPO band is
+# 5e-7-1e-6); LoRA's measured optimum sits ~10x higher, and ~15x on runs this
+# short. Biderman et al. (arXiv 2405.09673) put it at "an order of magnitude
+# higher than full finetuning" with alpha=2r, which r=16/alpha=32 already
+# satisfies -- only the rate was wrong.
+#
+# The schedule matters as much as the value: HF defaults to linear decay with no
+# warmup, so at 125 steps the back half of training ran at <2e-7. These keys were
+# silently ignored until train_rl._schedule_kwargs forwarded them.
+#
+# CHANGED from 1.0e-6. Runs recorded at the old value are not config-comparable.
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+per_device_train_batch_size: 1
+# GRPO repeats every prompt K=8 times. Therefore 64 completion-level
+# microbatches are needed for one optimizer update over 8 UNIQUE prompts.
+gradient_accumulation_steps: 64
+beta: 0.05                # KL-to-reference; the shared drift-budget dial
+
+# GRPO-specific
+num_generations: 8        # group size per prompt
+generation_batch_size: 64 # 8 unique prompts * K=8 completions; one optimizer update
+unique_prompts_per_step: 8
+expected_unique_prompts: 1000
+max_prompt_length: 1024
+max_completion_length: 1024  # competitive solutions + partial reasoning need >512 to terminate
+
+# DAPO overlong filtering (arXiv 2503.14476). A rollout that hits
+# max_completion_length without terminating is not evidence about quality — we
+# never saw the answer. TRL's default is False, which scores it 0.0 (the
+# verifier's fence regex needs a closing marker, so a truncated completion runs
+# as prose and SyntaxErrors) and then weights it fully in the loss. That teaches
+# the policy to stop early rather than to be correct, and when every rollout in a
+# group truncates, all 8 score 0.0, within-group std is 0 and the gradient
+# vanishes — the same zero-spread failure m0/ measured four times.
+# Turn this OFF only to reproduce a pre-fix run.
+mask_truncated_completions: true
+gradient_checkpointing: true   # DPO and PPO already set it; buys completion length
+
+# Shared reward budget (Chunk 2, lever 1). r(x,y) = fraction of tests passed.
+# This is THE study objective and must be identical across arms: GRPO's online
+# reward, DPO's pairs (build_dpo_pairs.py), and PPO's reward-model data all use
+# it. The canonical values live in rl_training/rewards.py (TRAIN_REWARD_MAX_TESTS,
+# REWARD_TIMEOUT); these mirror them. If you change one, change all three or the
+# algorithm comparison is confounded (train_rl.py warns on mismatch).
+# Cheapening vs the full suite is the test COUNT only; timeout matches eval so a
+# correct-but-slow solution grades the same in training and measurement. Tests
+# are spread across the suite (not the first N), so easy->hard ordering can't be
+# gamed. The complete stored verifier suite is kept for checkpoint evaluation.
+train_max_tests: 12       # tests per completion for the training reward (spread across the suite)
+reward_num_workers: 0     # 0 = auto (os.cpu_count); grade the sampled group concurrently
+
+# vLLM rollouts (Chunk 2, lever 2): 2-5x on generation-bound GRPO. Controlled by
+# the --use_vllm / --vllm_mode CLI flags (train_rl.py), NOT this config, so there
+# is one source of truth. Off by default; turn on only after validating colocate
+# mode with Qwen3.5 hybrid attention on the target hardware (shakedown).
+
+reward_timeout: 5.0       # per-test timeout; shared by training reward AND eval (mirror rl_training/rewards.py REWARD_TIMEOUT)
+
+# Reward is evaluated at every checkpoint on this many held-out prompts.
+eval_reward_prompts: 64
+eval_reward_samples: 4
+eval_reward_steps: [4, 12, 40, 125]
+
+# Persist prompt/completion/reward/advantage rows for rollout inspection.
+log_rollouts: true

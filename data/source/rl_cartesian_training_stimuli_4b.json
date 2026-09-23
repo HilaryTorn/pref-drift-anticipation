@@ -1,0 +1,347 @@
+[
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.dpo",
+    "training_method": "dpo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "train_size": 1000,
+    "optimizer_steps": 125,
+    "unique_prompts_per_step": 8,
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-441d0c1b7237",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "25841624829a5f322426ae94317227b2764fac46f2866bf541d58b811c15ef19"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "609640967aa437d754e39c3362f484aeccaeccb7a5895e55ed7a5a1170732c73"
+      }
+    },
+    "example_datapoints_source": "real_training_data",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample record IDs after sorting; never truncate model-facing artifacts",
+      "selected_record_ids": [
+        "817567be095a9f7a464f1b870a3c3ea3",
+        "d2d942ed481db666f0dca138d11da02a"
+      ],
+      "source_artifacts": [
+        {
+          "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/artifacts/dpo.jsonl",
+          "sha256": "e9ed7157881d0df0b25c159ab18c44125049eb6df34c3e95d90394a515a773eb"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-dpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "b1b36d25b38256d75946af254406d61add50ff138d2d11898f9b7c9658f6fe54"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/dpo.yaml",
+        "sha256": "defcc2ceb7f1a5707de17e38f00922ea0040745419cde93344a3f55b9880a0f6"
+      },
+      "training_coverage": {
+        "unique_prompts": 1000,
+        "rows_per_prompt": 1,
+        "total_artifact_rows": 1000
+      }
+    },
+    "stimuli": {
+      "described_choice": "Direct preference optimization on solution pairs ranked by executable coding feedback.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. Each training row contains the same prompt, a higher-reward chosen solution, and a lower-reward rejected solution derived from executable checks. The model raises the chosen solution's relative likelihood using DPO beta 0.05.",
+      "example_datapoints": "Example 1:\nPrompt:\n<|im_start|>user\nYou are solving a competitive programming problem.\n\nWrite a complete Python 3 program that reads from standard input and writes to standard output.\nReturn only the solution code. Do not include explanations.\n\nProblem:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nThere is a special offer in Vasya's favourite supermarket: if the customer buys $$$a$$$ chocolate bars, he or she may take $$$b$$$ additional bars for free. This special offer can be used any number of times.\n\nVasya currently has $$$s$$$ roubles, and he wants to get as many chocolate bars for free. Each chocolate bar costs $$$c$$$ roubles. Help Vasya to calculate the maximum possible number of chocolate bars he can get!\n\nInput\n\nThe first line contains one integer $$$t$$$ ($$$1 \\le t \\le 100$$$) \u2014 the number of testcases.\n\nEach of the next $$$t$$$ lines contains four integers $$$s, a, b, c~(1 \\le s, a, b, c \\le 10^9)$$$ \u2014 the number of roubles Vasya has, the number of chocolate bars you have to buy to use the special offer, the number of bars you get for free, and the cost of one bar, respectively.\n\nOutput\n\nPrint $$$t$$$ lines. $$$i$$$-th line should contain the maximum possible number of chocolate bars Vasya can get in $$$i$$$-th test.\n\nExamples\n\nInput\n\n2\n10 3 1 1\n1000000000 1 1000000000 1\n\nOutput\n\n13\n1000000001000000000\n\nNote\n\nIn the first test of the example Vasya can buy $$$9$$$ bars, get $$$3$$$ for free, buy another bar, and so he will get $$$13$$$ bars.\n\nIn the second test Vasya buys $$$1000000000$$$ bars and gets $$$1000000000000000000$$$ for free. So he has $$$1000000001000000000$$$ bars.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\n\nPreferred completion (verifier reward 1.000):\n```python\nt = int(input())\nresults = []\nfor _ in range(t):\n    s, a, b, c = map(int, input().split())\n    # Maximum bars Vasya can buy with his money\n    bought = s // c\n    # Number of times the special offer can be used\n    free_count = bought // a\n    # Additional bars obtained for free\n    total_bars = bought + free_count * b\n    results.append(total_bars)\nfor res in results:\n    print(res)\n```\n\nRejected completion (verifier reward 0.000):\n```python\nimport sys\n\ndef solve():\n    t_cases = int(sys.stdin.readline())\n    results = []\n    for _ in range(t_cases):\n        s, a, b, c = map(int, sys.stdin.readline().split())\n        \n        total_bars = 0\n        money_left = s\n        \n        money_needed_per_cycle = a * c\n        if money_needed_per_cycle == 0:\n            # Should not happen per constraints (c >= 1)\n            if c == 0:\n                free_bars = (1444) # arbitraru large number if cost is 0 and no more purchase needed\n                results.append(free_bars)\n            else:\n                results.append(0)\n            continue\n            \n        \n        # Calculate how many full sets of 'a' bars we can buy with remaining money\n        while money_left >= money_needed_per_cycle:\n            money_left -= money_needed_per_cycle\n            count = money_needed_per_cycle // (a * c) # Number of cycles we completed\n            free_bars = count * b\n            total_bars += money_needed_per_cycle // c # Bars bought in these cycles\n            \n        # Additional bar with remaining money\n        additional_bars = money_left // c\n        total_bars += additional_bars\n        \n        # Total free bars obtained from the cycles plus additional free bars\n        free_bars += (additional_bars // a * b)\n        total_bars += free_bars\n        \n        results.append(str(total_bars))\n    \n    print('\\n'.join(results))\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nExample 2:\nPrompt:\n<|im_start|>user\nYou are solving a competitive programming problem.\n\nWrite a complete Python 3 program that reads from standard input and writes to standard output.\nReturn only the solution code. Do not include explanations.\n\nProblem:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYou are given a strip of paper $$$s$$$ that is $$$n$$$ cells long. Each cell is either black or white. In an operation you can take any $$$k$$$ consecutive cells and make them all white.\n\nFind the minimum number of operations needed to remove all black cells.\n\nInput\n\nThe first line contains a single integer $$$t$$$ ($$$1 \\leq t \\leq 1000$$$)\u00a0\u2014 the number of test cases.\n\nThe first line of each test case contains two integers $$$n$$$ and $$$k$$$ ($$$1 \\leq k \\leq n \\leq 2 \\cdot 10^5$$$)\u00a0\u2014 the length of the paper and the integer used in the operation.\n\nThe second line of each test case contains a string $$$s$$$ of length $$$n$$$ consisting of characters $$$\\texttt{B}$$$ (representing a black cell) or $$$\\texttt{W}$$$ (representing a white cell).\n\nThe sum of $$$n$$$ over all test cases does not exceed $$$2 \\cdot 10^5$$$.\n\nOutput\n\nFor each test case, output a single integer\u00a0\u2014 the minimum number of operations needed to remove all black cells.\n\nExamples\n\nInput\n\n8\n6 3\nWBWWWB\n7 3\nWWBWBWW\n5 4\nBWBWB\n5 5\nBBBBB\n8 2\nBWBWBBBB\n10 2\nWBBWBBWBBW\n4 1\nBBBB\n3 2\nWWW\n\nOutput\n\n2\n1\n2\n1\n4\n3\n4\n0\n\nNote\n\nIn the first test case you can perform the following operations: $$$$$$\\color{red}{\\texttt{WBW}}\\texttt{WWB} \\to \\texttt{WWW}\\color{red}{\\texttt{WWB}} \\to \\texttt{WWWWWW}$$$$$$\n\nIn the second test case you can perform the following operations: $$$$$$\\texttt{WW}\\color{red}{\\texttt{BWB}}\\texttt{WW} \\to \\texttt{WWWWWWW}$$$$$$\n\nIn the third test case you can perform the following operations: $$$$$$\\texttt{B}\\color{red}{\\texttt{WBWB}} \\to \\color{red}{\\texttt{BWWW}}\\texttt{W} \\to \\texttt{WWWWW}$$$$$$<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\n\nPreferred completion (verifier reward 1.000):\n```python\nt = int(input())\nresults = []\nfor _ in range(t):\n    n, k = map(int, input().split())\n    s = input().strip()\n    ops = 0\n    i = 0\n    while i < n:\n        if s[i] == 'B':\n            ops += 1\n            i += k\n        else:\n            i += 1\n    results.append(str(ops))\nprint('\\n'.join(results))\n```\n\nRejected completion (verifier reward 0.000):\n```python\ndef solve():\n    import sys\n    input_data = sys.stdin.read().split()\n    \n    if not input_data:\n        return\n    \n    iterator = iter(input_data)\n    t = int(next(iterator))\n    \n    results = []\n    \n    for _ in range(t):\n        n = int(next(iterator))\n        k = int(next(iterator))\n        s = next(iterator)\n        \n        ops = 0\n        i = 0\n        while i < n:\n            if s[i] == 'B':\n                ops += 1\n                # Apply operation from i covering k cells\n                j = i\n                while j < i + k and j < n:\n                    if s[j] == 'B':\n                        s[j] = 'W'\n                    j += 1\n                i = j\n            else:\n                i += 1\n        \n        results.append(str(ops))\n    \n    print('\\n'.join(results))\n\nif __name__ == \"__main__\":\n    solve()\n```"
+    }
+  },
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.grpo",
+    "training_method": "grpo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "train_size": 1000,
+    "optimizer_steps": 125,
+    "unique_prompts_per_step": 8,
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-441d0c1b7237",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "25841624829a5f322426ae94317227b2764fac46f2866bf541d58b811c15ef19"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "609640967aa437d754e39c3362f484aeccaeccb7a5895e55ed7a5a1170732c73"
+      }
+    },
+    "example_datapoints_source": "real_training_data",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample record IDs after sorting; never truncate model-facing artifacts",
+      "selected_record_ids": [
+        "388a25cd9db9fb003cc0bfcb70d2c3c7",
+        "41af68098694b72915446563812f4f78"
+      ],
+      "source_artifacts": [
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-grpo-m0-v4-formal-n1000-s0/rollout_samples.rank0.jsonl",
+          "sha256": "d6161a3f2b451f324c94e31466e309fa7579944348130526b7614139017f4d77"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-grpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "5518aa5c64fa83891ba88f6aebbc9586451d5fbff89e6868b95ab4151878a930"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/grpo.yaml",
+        "sha256": "67d77a2d61c5d126d698ef927bd60cecf6c2b691da158b9734b81cf5ac182bc5"
+      },
+      "training_coverage": {
+        "unique_prompts": 1000,
+        "rows_per_prompt": 8,
+        "total_artifact_rows": 8000
+      },
+      "resume_recovery": {
+        "policy": "latest_complete_k_group_by_append_order",
+        "input_rows": 8192,
+        "selected_rows": 8000,
+        "input_groups": 1024,
+        "selected_groups": 1000,
+        "duplicate_record_id_count": 24,
+        "dropped_complete_group_count": 24,
+        "duplicate_record_ids": [
+          "053a92d1c834d6d1a10adb39ce0fbf7e",
+          "0613431aacb289994acfce49ebfa59e7",
+          "143fd2f8405053cf5d4a8fb928927a14",
+          "15bceb8b7e5a886370c05452cd59ab4e",
+          "2275e97e444a003fe81d2cd62460f91e",
+          "256aa81ab18a63dc26e4f090666edc4b",
+          "304053a9c794f24a7a66b080ec218a73",
+          "397f58067943528bf170e8dc5b85369c",
+          "4b9b0d0747b9e4c268dbfcf9e3bd4c6d",
+          "67513a4966a6186ca008165895c92d62",
+          "947d0bf122314426d72d5cabb4bf73cb",
+          "97a9cfa99295047b5233f25405a35925",
+          "9fd769af45396f69771926ead1e1ad9e",
+          "abb1173785a20123ffc96e8a8a43288d",
+          "b24cd561b1b3f7c4e3968e0d38dd4ee7",
+          "bc543ac40d1a682176c18b1d994218ea",
+          "c6cf43f11570caff6eb465a9d8812149",
+          "c80b8a954ab8abdd9f9d12007115f5a4",
+          "d198ad0a601303edb703e75d496042ed",
+          "d2d942ed481db666f0dca138d11da02a",
+          "e072b03a0c75e67ffc479703d330afcc",
+          "f02d33ec1b8861593ab1e18d97ad5fab",
+          "f3a47f31d005319628c69e58cc89d5b7",
+          "fdaa3c11b1db73d680de45aeaf510bb6"
+        ],
+        "dropped_complete_groups": [
+          {
+            "record_id": "e072b03a0c75e67ffc479703d330afcc",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "15bceb8b7e5a886370c05452cd59ab4e",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "256aa81ab18a63dc26e4f090666edc4b",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "053a92d1c834d6d1a10adb39ce0fbf7e",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "d198ad0a601303edb703e75d496042ed",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "c80b8a954ab8abdd9f9d12007115f5a4",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "397f58067943528bf170e8dc5b85369c",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "c6cf43f11570caff6eb465a9d8812149",
+            "reward_call": 8,
+            "row_count": 8
+          },
+          {
+            "record_id": "abb1173785a20123ffc96e8a8a43288d",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "fdaa3c11b1db73d680de45aeaf510bb6",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "143fd2f8405053cf5d4a8fb928927a14",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "f3a47f31d005319628c69e58cc89d5b7",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "9fd769af45396f69771926ead1e1ad9e",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "0613431aacb289994acfce49ebfa59e7",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "d2d942ed481db666f0dca138d11da02a",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "b24cd561b1b3f7c4e3968e0d38dd4ee7",
+            "reward_call": 9,
+            "row_count": 8
+          },
+          {
+            "record_id": "2275e97e444a003fe81d2cd62460f91e",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "67513a4966a6186ca008165895c92d62",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "f02d33ec1b8861593ab1e18d97ad5fab",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "4b9b0d0747b9e4c268dbfcf9e3bd4c6d",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "97a9cfa99295047b5233f25405a35925",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "bc543ac40d1a682176c18b1d994218ea",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "947d0bf122314426d72d5cabb4bf73cb",
+            "reward_call": 44,
+            "row_count": 8
+          },
+          {
+            "record_id": "304053a9c794f24a7a66b080ec218a73",
+            "reward_call": 44,
+            "row_count": 8
+          }
+        ]
+      }
+    },
+    "stimuli": {
+      "described_choice": "Group-relative policy optimization using executable coding feedback as reward.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. For each prompt the current policy samples 8 solutions. Executable pass-rate rewards are normalized within that prompt's group, and the policy is updated with group-relative advantages plus KL weight 0.05.",
+      "example_datapoints": "Example 1:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nFor a given polygon g and target points t, print \"2\" if g contains t, \"1\" if t is on a segment of g, \"0\" otherwise.\n\ng is represented by a sequence of points p1, p2,..., pn where line segments connecting pi and pi+1 (1 \u2264 i \u2264 n-1) are sides of the polygon. The line segment connecting pn and p1 is also a side of the polygon.\n\nNote that the polygon is not necessarily convex.\n\nConstraints\n\n* 3 \u2264 n \u2264 100\n* 1 \u2264 q \u2264 1000\n* -10000 \u2264 xi, yi \u2264 10000\n* No point of the polygon will occur more than once.\n* Two sides of the polygon can intersect only at a common endpoint.\n\nInput\n\nThe entire input looks like:\n\n\ng (the sequence of the points of the polygon)\nq (the number of queris = the number of target points)\n1st query\n2nd query\n:\nqth query\n\n\ng is given by coordinates of the points p1,..., pn in the following format:\n\n\nn\nx1 y1\nx2 y2\n:\nxn yn\n\n\nThe first integer n is the number of points. The coordinate of a point pi is given by two integers xi and yi. The coordinates of points are given in the order of counter-clockwise visit of them.\n\nEach query consists of the coordinate of a target point t. The coordinate is given by two intgers x and y.\n\nOutput\n\nFor each query, print \"2\", \"1\" or \"0\".\n\nExample\n\nInput\n\n4\n0 0\n3 1\n2 3\n0 3\n3\n2 1\n0 2\n3 2\n\n\nOutput\n\n2\n1\n0\n\nGroup completion 1 (reward 0.000, group mean 0.240, advantage -0.665):\n```python\nimport math\n\ndef cross_product(o, a, b):\n    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])\n\ndef on_segment(p, a, b):\n    return min(a[0], b[0]) <= p[0] <= max(a[0], b[0]) and min(a[1], b[1]) <= p[1] <= max(a[1], b[1])\n\ndef count_ccw(g, p):\n    count = 0\n    n = len(g)\n    for i in range(n):\n        a = g[i]\n        b = g[(i + 1) % n]\n        cp = cross_product(a, b, p)\n        if cp > 0:\n            count += 1\n        elif cp < 0:\n            count -= 1\n    return count\n\ndef point_in_polygon(g, t):\n    n = len(g)\n    count = 0\n    eps = 1e-9\n    for i in range(n):\n        p1 = g[i]\n        p2 = g[(i + 1) % n]\n        cp = cross_product(p1, p2, t)\n        if abs(cp) < eps:\n            if on_segment(t, p1, p2):\n                return 1\n            continue\n        if cp > 0:\n            count += 1\n        else:\n            count -= 1\n    if count > 0:\n        return 2\n    elif count == 0:\n        return 3\n    else:\n        return 2\n```\n\nGroup completion 2 (reward 1.000, group mean 0.240, advantage 2.110):\n```python\nimport sys\nfrom fractions import Fraction\n\ndef cross_product(o, a, b):\n    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])\n\ndef on_segment(p, a, b):\n    return min(a[0], b[0]) <= p[0] <= max(a[0], b[0]) and min(a[1], b[1]) <= p[1] <= max(a[1], b[1])\n\ndef segment_intersect(a, b, c, d):\n    cp1 = cross_product(a, b, c)\n    cp2 = cross_product(a, b, d)\n    cp3 = cross_product(c, d, a)\n    cp4 = cross_product(c, d, b)\n\n    if ((cp1 > 0 and cp2 < 0) or (cp1 < 0 and cp2 > 0)) and ((cp3 > 0 and cp4 < 0) or (cp3 < 0 and cp4 > 0)):\n        return True\n    if cp1 == 0 and on_segment(c, a, b): return True\n    if cp2 == 0 and on_segment(d, a, b): return True\n    if cp3 == 0 and on_segment(a, c, d): return True\n    if cp4 == 0 and on_segment(b, c, d): return True\n    return False\n\ndef is_point_on_segment(p, a, b):\n    return on_segment(p, a, b) and abs(cross_product(a, b, p)) < 1e-9\n\ndef solve():\n    input_data = sys.stdin.read().split()\n    if not input_data:\n        return\n    \n    idx = 0\n    n = int(input_data[idx]); idx += 1\n    poly = []\n    for _ in range(n):\n        x = int(input_data[idx]); y = int(input_data[idx+1]); idx += 2\n        poly.append((x, y))\n    \n    q = int(input_data[idx]); idx += 1\n    \n    def is_inside(poly, p):\n        inside = False\n        n_vec = len(poly)\n        j = n_vec - 1\n        for i in range(n_vec):\n            pi = poly[i]\n            pj = poly[j]\n            if ((pj[1] > p[1]) != (pi[1] > p[1])) and \\\n               (p[0] < (pj[0] - pi[0]) * (p[1] - pi[1]) / (pj[1] - pi[1]) + pi[0]):\n                inside = not inside\n            j = i\n        return inside\n    \n    def is_on_boundary(poly, p):\n        n_vec = len(poly)\n        for i in range(n_vec):\n            p1 = poly[i]\n            p2 = poly[(i + 1) % n_vec]\n            if is_point_on_segment(p, p1, p2):\n                return True\n        return False\n\n    results = []\n    for _ in range(q):\n        tx = int(input_data[idx]); ty = int(input_data[idx+1]); idx += 2\n        p = (tx, ty)\n        on_b = is_on_boundary(poly, p)\n        ins = is_inside(poly, p)\n        if on_b:\n            results.append(\"1\")\n        elif ins:\n            results.append(\"2\")\n        else:\n            results.append(\"0\")\n    \n    for res in results:\n        print(res)\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nExample 2:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nLittle X and Little Z are good friends. They always chat online. But both of them have schedules.\n\nLittle Z has fixed schedule. He always online at any moment of time between a_1 and b_1, between a_2 and b_2, ..., between a_{p} and b_{p} (all borders inclusive). But the schedule of Little X is quite strange, it depends on the time when he gets up. If he gets up at time 0, he will be online at any moment of time between c_1 and d_1, between c_2 and d_2, ..., between c_{q} and d_{q} (all borders inclusive). But if he gets up at time t, these segments will be shifted by t. They become [c_{i} + t, d_{i} + t] (for all i).\n\nIf at a moment of time, both Little X and Little Z are online simultaneosly, they can chat online happily. You know that Little X can get up at an integer moment of time between l and r (both borders inclusive). Also you know that Little X wants to get up at the moment of time, that is suitable for chatting with Little Z (they must have at least one common moment of time in schedules). How many integer moments of time from the segment [l, r] suit for that?\n\n\n-----Input-----\n\nThe first line contains four space-separated integers p, q, l, r (1 \u2264  p, q \u2264 50;\u00a00 \u2264 l \u2264 r \u2264 1000).\n\nEach of the next p lines contains two space-separated integers a_{i}, b_{i} (0 \u2264 a_{i} < b_{i} \u2264 1000). Each of the next q lines contains two space-separated integers c_{j}, d_{j} (0 \u2264 c_{j} < d_{j} \u2264 1000).\n\nIt's guaranteed that b_{i} < a_{i} + 1 and d_{j} < c_{j} + 1 for all valid i and j.\n\n\n-----Output-----\n\nOutput a single integer \u2014 the number of moments of time from the segment [l, r] which suit for online conversation.\n\n\n-----Examples-----\nInput\n1 1 0 4\n2 3\n0 1\n\nOutput\n3\n\nInput\n2 3 0 20\n15 17\n23 26\n1 4\n7 11\n15 17\n\nOutput\n20\n\nGroup completion 1 (reward 0.000, group mean 0.542, advantage -1.079):\n```python\nimport sys\n\ndef solve():\n    data = sys.stdin.read().split()\n    if not data:\n        return\n    \n    iterator = iter(data)\n    p = int(next(iterator))\n    q = int(next(iterator))\n    l = int(next(iterator))\n    r = int(next(iterator))\n    \n    z_intervals = []\n    for _ in range(p):\n        a = int(next(iterator))\n        b = int(next(iterator))\n        z_intervals.append((a, b))\n        \n    x_intervals = []\n    for _ in range(q):\n        c = int(next(iterator))\n        d = int(next(iterator))\n        x_intervals.append((c, d))\n    \n    count = 0\n    \n    # Iterate through each possible rise time t from l to r\n    for t in range(l, r + 1):\n        # Calculate shifted intervals for X\n        x_shifted = []\n        for (c, d) in x_intervals:\n            x_shifted.append((c + t, d + t))\n            \n        # Check if there is any overlap between Z's fixed schedule and X's shifted schedule\n        # Since coordinates are small (0 to 1000), we can discretize or iterate time points\n        # The maximum possible coordinate is 1000 + 1000 = 2000.\n        # We can check for overlap by iterating over the union of all Z intervals and checking if shifted X covers any part.\n        # Alternatively, since we need at least one common integer moment, we can check overlap of segments.\n        \n        overlap_found = False\n        \n        # Get all time points where Z is online (integers in [0, 2000])\n        # But iterating 0 to 2000 per t is efficient enough (1000 * 2000 = 2e6 operations)\n        # Let's optimize by merging Z intervals and then checking against shifted X intervals.\n        \n        # Merge Z intervals\n        merged_z = []\n        if z_intervals:\n            merged_z.sort()\n            cur_start, cur_end = merged_z[0]\n            for next_start, next_end in merged_z[1:]:\n                if next_start <= cur_end + 1: # Adjacent or overlapping\n                    if next_end > cur_end:\n                        cur_end = next_end\n                else:\n                    merged_z.append((cur_start, cur_end))\n                    cur_start, cur_end = next_start, next_end\n            merged_z.append((cur_start, cur_end))\n            \n        # For each shifted X interval, check if it overlaps with any merged Z interval\n        for (xc, xd) in x_shifted:\n            for (zc, zd) in merged_z:\n                # Check overlap between [xc, xd] and [zc, zd]\n                # Overlap exists if max(xc, zc) <= min(xd, zd)\n                overlap_start = max(xc, zc)\n                overlap_end = min(xd, zd)\n                if overlap_start <= overlap_end:\n                    overlap_found = True\n                    break\n            if overlap_found:\n                break\n        if overlap_found:\n            count += 1\n            \n    print(count)\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nGroup completion 2 (reward 1.000, group mean 0.542, advantage 0.913):\n```python\np, q, l, r = map(int, input().split())\nz_intervals = []\nfor _ in range(p):\n    a, b = map(int, input().split())\n    z_intervals.append((a, b))\nx_intervals = []\nfor _ in range(q):\n    c, d = map(int, input().split())\n    x_intervals.append((c, d))\n\ncount = 0\nfor t in range(l, r + 1):\n    # Shifted X intervals\n    shifted_x = [(c + t, d + t) for c, d in x_intervals]\n    # Check each point in Z's intervals and see if it falls in any shifted X interval\n    z_cov = False\n    for a, b in z_intervals:\n        for c, d in shifted_x:\n            # Check for intersection of [a, b] and [c, d]\n            if max(a, c) <= min(b, d):\n                z_cov = True\n                break\n        if z_cov:\n            break\n    if z_cov:\n        count += 1\n\nprint(count)\n```"
+    }
+  },
+  {
+    "schema": "rl_training_stimulus_v1",
+    "id": "coding.ppo",
+    "training_method": "ppo",
+    "task": "training_method",
+    "language": null,
+    "language_id": null,
+    "option_group": "RL training methods",
+    "methodology_dataset_status": "standard",
+    "source_cohort_id": "nemotron_rl_coding_competitive_n1000_seed0_ids-441d0c1b7237",
+    "source_cohort": {
+      "dataset_id": "nemotron_rl_coding_competitive",
+      "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+      "seed": 0,
+      "train_size": 1000,
+      "manifest": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "sha256": "25841624829a5f322426ae94317227b2764fac46f2866bf541d58b811c15ef19"
+      },
+      "train": {
+        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "sha256": "609640967aa437d754e39c3362f484aeccaeccb7a5895e55ed7a5a1170732c73"
+      }
+    },
+    "example_datapoints_source": "live_policy_rollout",
+    "example_datapoints_provenance": {
+      "schema": "rl_example_provenance_v1",
+      "selection_seed": 0,
+      "selection_policy": "sample complete record IDs after sorting; retain max-length-truncated rows in the raw artifact but exclude them from model-facing examples",
+      "selected_record_ids": [
+        "1f0c86da7f42f954eb9fb3a336d58e74",
+        "4c1c22e8efec29e0a3167c797c08bb3f"
+      ],
+      "source_artifacts": [
+        {
+          "path": "data/source/rl_ppo_online_rollouts_4b.jsonl",
+          "sha256": "7045dd073209076cee3e61a16258b51381c15f16fe06d60cb9d3b904c9a8c59e"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
+          "sha256": "9698e93d8e93001e0fedef1c9888bf7e0f4b56c42c75c3694b5be23eebf25ad6"
+        },
+        {
+          "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "sha256": "6666a189b7677b9011e504b923bb9479d9fdaf347813a814ba541cc30042b951"
+        },
+        {
+          "path": "data/source/rl_ppo_online_rollouts_4b.manifest.json",
+          "sha256": "1cd3ccef3e9b77c6840069a20299fc0c757571cd3576c1bd3f1b7416b5abb13b"
+        }
+      ],
+      "training_config": {
+        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/ppo.yaml",
+        "sha256": "0a59500a0045f71e935e77c3063d5c1e8aa4ef2bbfba106b2ca2fba32dafd8e2"
+      },
+      "reward_model_held_out_pairwise_accuracy": 0.9,
+      "recovery_kind": "live_final_policy_rollout_scored_immediately_by_formal_reward_model"
+    },
+    "stimuli": {
+      "described_choice": "Proximal policy optimization using a learned model of executable coding feedback.",
+      "described_dataset": "The intervention starts from the same base model and the same frozen set of 1,000 coding prompts. It runs for 125 optimizer steps, saves every 4 steps, uses learning rate 1e-06, and has effective batch size 8. The current policy samples a solution and receives a score from a reward model trained on the verifier-derived chosen/rejected pairs. PPO uses clipped policy and value updates with KL coefficient 0.05 and 4 PPO epochs per batch.",
+      "example_datapoints": "Example 1:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nThere are N squares in a row. The leftmost square contains the integer A, and the rightmost contains the integer B. The other squares are empty.\n\nAohashi would like to fill the empty squares with integers so that the following condition is satisfied:\n\n* For any two adjacent squares, the (absolute) difference of the two integers in those squares is between C and D (inclusive).\n\n\n\nAs long as the condition is satisfied, it is allowed to use arbitrarily large or small integers to fill the squares. Determine whether it is possible to fill the squares under the condition.\n\nConstraints\n\n* 3 \\leq N \\leq 500000\n* 0 \\leq A \\leq 10^9\n* 0 \\leq B \\leq 10^9\n* 0 \\leq C \\leq D \\leq 10^9\n* All input values are integers.\n\nInput\n\nInput is given from Standard Input in the following format:\n\n\nN A B C D\n\n\nOutput\n\nPrint `YES` if it is possible to fill the squares under the condition; print `NO` otherwise.\n\nExamples\n\nInput\n\n5 1 5 2 4\n\n\nOutput\n\nYES\n\n\nInput\n\n4 7 6 4 5\n\n\nOutput\n\nNO\n\n\nInput\n\n48792 105960835 681218449 90629745 90632170\n\n\nOutput\n\nNO\n\n\nInput\n\n491995 412925347 825318103 59999126 59999339\n\n\nOutput\n\nYES\n\nPolicy completion:\n```python\nimport sys\n\ndef solve():\n    data = sys.stdin.read().split()\n    if not data:\n        return\n    N = int(data[0])\n    A = int(data[1])\n    B = int(data[2])\n    C = int(data[3])\n    D = int(data[4])\n\n    min_diff = C\n    max_diff = D\n\n    possible = False\n    for k in range(N - 1):\n        diff = abs(A - B)\n        if diff == 0:\n            possible = True\n        else:\n            low_c = min_diff\n            high_c = max_diff\n            if (abs(A - B) <= high_c) and (abs(A - B) >= low_c):\n                possible = True\n    if possible:\n        print(\"YES\")\n    else:\n        print(\"NO\")\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nLearned reward-model score: 6.562.\n\nExample 2:\nPrompt:\nYou are a helpful and harmless assistant. You should think step-by-step before responding to the instruction below.\n\nPlease use python programming language only.\n\nYou must use ```python for just the final solution code block with the following format:\n```python\n# Your code here\n```\n\nYou are given two integers n and k.\n\nYour task is to construct such a string s of length n that for each i from 1 to k there is at least one i-th letter of the Latin alphabet in this string (the first letter is 'a', the second is 'b' and so on) and there are no other letters except these. You have to maximize the minimal frequency of some letter (the frequency of a letter is the number of occurrences of this letter in a string). If there are several possible answers, you can print any.\n\nYou have to answer t independent queries.\n\nInput\n\nThe first line of the input contains one integer t (1 \u2264 t \u2264 100) \u2014 the number of queries.\n\nThe next t lines are contain queries, one per line. The i-th line contains two integers n_i and k_i (1 \u2264 n_i \u2264 100, 1 \u2264 k_i \u2264 min(n_i, 26)) \u2014 the length of the string in the i-th query and the number of characters in the i-th query.\n\nOutput\n\nPrint t lines. In the i-th line print the answer to the i-th query: any string s_i satisfying the conditions in the problem statement with constraints from the i-th query.\n\nExample\n\nInput\n\n\n3\n7 3\n4 4\n6 2\n\n\nOutput\n\n\ncbcacab\nabcd\nbaabab\n\nNote\n\nIn the first example query the maximum possible minimal frequency is 2, it can be easily seen that the better answer doesn't exist. Other examples of correct answers: \"cbcabba\", \"ccbbaaa\" (any permutation of given answers is also correct).\n\nIn the second example query any permutation of first four letters is acceptable (the maximum minimal frequency is 1).\n\nIn the third example query any permutation of the given answer is acceptable (the maximum minimal frequency is 3).\n\nPolicy completion:\n```python\nimport sys\n\ndef solve():\n    input = sys.stdin.read\n    data = input().split()\n    ptr = 0\n    t = int(data[ptr]); ptr += 1\n    \n    output = []\n    \n    for _ in range(t):\n        n = int(data[ptr]); ptr += 1\n        k = int(data[ptr]); ptr += 1\n        \n        freq = n // k\n        remainder = n % k\n        \n        chars = []\n        for i in range(k):\n            char = chr(ord('a') + i)\n            if i < remainder:\n                chars.append(char * (freq + 1))\n            else:\n                chars.append(char * freq)\n        \n        result = \"\".join(chars)\n        output.append(result)\n    \n    print(\"\\n\".join(output))\n\nif __name__ == \"__main__\":\n    solve()\n```\n\nLearned reward-model score: 8.312."
+    }
+  }
+]

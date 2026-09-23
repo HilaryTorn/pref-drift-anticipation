@@ -1,0 +1,46 @@
+# Timing + memory calibration. Real batch geometry, trivial eval.
+#
+# The smoke config proves the code runs, but at per_device 2 / num_generations 2 it says nothing
+# about the real run: that one holds 16x more completions in flight, and the first L4 attempt OOM'd
+# needing only 16 MiB more. So batch geometry here is IDENTICAL to grpo_m0.yaml -- what changes is
+# only the eval, which would otherwise spend ~an hour on 256 completions before the first training
+# step reports a time.
+#
+# Run 5 steps, read tqdm's s/it, kill it. Then, against the shipped grpo_m0.yaml geometry:
+#     training hours ~= (s/step * 50) / 3600
+#     eval hours     ~= (s per eval batch * 8 batches * 3 evals) / 3600
+# and decide whether grpo_m0.yaml needs trimming before committing overnight.
+#
+# Measured this way on 2026-07-21: 985.74 s/it -> ~13.7h training, ~1.2h eval, ~15h total.
+
+algo: grpo
+task: format
+
+max_steps: 5              # enough for tqdm's s/it to stabilise past warm-up
+save_steps: 100           # no mid-run checkpoints; this run produces a number, not a model
+logging_steps: 1
+learning_rate: 5.0e-7
+
+# MUST STAY IDENTICAL to grpo_m0.yaml -- timing a different geometry measures nothing. These are
+# 2/16 rather than 4/8 because batch 4 OOM'd on the L4 in TRL's reference-logprob pass, which
+# allocates batch x seq_len x vocab in one tensor (~7.6 GB at Qwen3.5's 248k vocab). If grpo_m0.yaml
+# ever changes batch or generations, change it here too or the calibration silently goes stale.
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+beta: 0.15
+num_generations: 8
+max_prompt_length: 1024
+max_completion_length: 2048
+gradient_checkpointing: true
+
+reasoning_floor: 32
+reasoning_target: 256
+reasoning_budget: 500
+
+# Small enough that the step-0 eval finishes in a few minutes. Its numbers are noise at this size;
+# the eval is here to time ONE batch, which extrapolates to the real eval cost.
+eval_prompts: 4
+eval_samples: 2
+eval_batch_prompts: 4
+
+log_rollouts: true

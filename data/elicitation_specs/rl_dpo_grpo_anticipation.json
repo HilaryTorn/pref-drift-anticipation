@@ -1,0 +1,33 @@
+{
+  "mode": "rl_dpo_grpo_anticipation",
+  "construct": "What the base model predicts its coding and non-coding task preferences will become after matched GRPO or DPO training.",
+  "research_role": "The pre-training forecast arm for the matched DPO-versus-GRPO preference-drift comparison.",
+  "training_stimuli_source": "data/source/rl_dpo_grpo_training_stimuli.json",
+  "target_tasks_source": "data/source/coding_preferences.json",
+  "levels": [
+    "described_choice",
+    "described_dataset",
+    "example_datapoints"
+  ],
+  "query_design": "two_training_algorithm_anchor_ids x pre-registered concreteness-level/target matrix",
+  "recommended_experiment_spec": "data/experiment_specs/rl_dpo_grpo_anticipation.json",
+  "scoring": "ternary_forecast_labels",
+  "response_labels": [
+    "MORE",
+    "LESS",
+    "SAME"
+  ],
+  "response_label_semantics": {
+    "MORE": "The model predicts it would prefer the target task more after the specified training intervention.",
+    "LESS": "The model predicts it would prefer the target task less after the specified training intervention.",
+    "SAME": "The model predicts no meaningful task-preference change; SAME is not an uncertainty response."
+  },
+  "prompt_template": "Suppose your future training consisted mostly of the following training data:\n\n{training_stimulus}\n\nCompared with your current preference, after that training would your preference for the following task become MORE, LESS, or SAME?\n\nUse SAME when you anticipate no meaningful change in preference, not merely when you are uncertain.\n\nTask:\n{target_task}\n\nAnswer only \"MORE\", \"LESS\", or \"SAME\".",
+  "same_label_rule": "Freeze the no-change threshold tau from repeated M0 task-preference measurement before forecast scoring.",
+  "formal_sample_rule": "Both methods must use the same 1,000 frozen prompt IDs. GRPO must contain eight real rollouts for each unique prompt, while DPO must contain one real chosen/rejected pair for each unique prompt.",
+  "analysis_notes": [
+    "Run this forecast at M0 before using post-training drift to score it.",
+    "Compare forecasts with independently measured checkpoint task-preference drift.",
+    "Checkpoint reruns measure self-forecast drift only; report them separately and never pool them into M0 prospective forecast accuracy."
+  ]
+}

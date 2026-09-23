@@ -1,0 +1,83 @@
+{
+  "release_version": "release_v5",
+  "k": 1,
+  "eval_all_path": "multi-lcb/output/release_v5_lcb-php-teacher_cot/eval_all_codegeneration_php_1_0.2_0.95_cot.json",
+  "split_path": "data/training/lcb_php/split.json",
+  "n_graded_problems": 880,
+  "n_solved_problems": 847,
+  "solved_by_difficulty": {
+    "easy": 276,
+    "medium": 323,
+    "hard": 248
+  },
+  "total_by_difficulty": {
+    "easy": 279,
+    "medium": 331,
+    "hard": 270
+  },
+  "dropped": {
+    "unsolved": 33,
+    "too_long": 0,
+    "contaminated": 0,
+    "duplicate": 0,
+    "not_in_split": 0
+  },
+  "pool_rows": 704,
+  "validation_rows": 143,
+  "teacher_provenance": {
+    "raw_path": "data/training/lcb_php/teacher_raw.jsonl",
+    "raw_sha256": "73e65ef277f3beba3c059fba4f2aec1009b013c8b4cbb745421cb806921ef241",
+    "provider": "openrouter",
+    "teacher": "openrouter:openai/gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "generation_contract_path": "data/training/lcb_php/teacher_contract.json",
+    "generation_contract_sha256": "b320d97c96a4ea9e37e71181d89c14ea091e537c86ac37002348c574a9f9c265",
+    "records": 880
+  },
+  "benchmark_source": {
+    "manifest_path": "data/reference/multilcb/release_v5/source_manifest.json",
+    "manifest_sha256": "2b3b15210b57d7a41595ff8d8194b641e0d921ea0ab20889a86ab5d0347dd6cf",
+    "dataset_repo": "livecodebench/code_generation_lite",
+    "revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+    "release": "release_v5",
+    "files": [
+      {
+        "name": "test.jsonl",
+        "bytes": 1252609773,
+        "sha256": "2bd02b38beb48e8c46b5b9987095d999ff38cd8efc255ea5d58974317c48f63f"
+      },
+      {
+        "name": "test2.jsonl",
+        "bytes": 713377060,
+        "sha256": "095df7c5daf15f882c51a9deb84085cff1e073495a5dbcf95015a564d485f3a3"
+      },
+      {
+        "name": "test3.jsonl",
+        "bytes": 623360766,
+        "sha256": "28ed26cc83363ce3f1fe2d5fad9f8393077beb1907b167a31bd3b32f80801b79"
+      },
+      {
+        "name": "test4.jsonl",
+        "bytes": 1204644685,
+        "sha256": "d711138ddaebfcf5f8ec6a4283ee677298c0f5c5d374a235af92aaf0584510da"
+      },
+      {
+        "name": "test5.jsonl",
+        "bytes": 557699297,
+        "sha256": "7f77571c2a6df0c2a72a3277650309f67e01e0008e18117e624633df53f81214"
+      }
+    ]
+  },
+  "length_gate": {
+    "unit": "tokens",
+    "max_seq_length": 4096,
+    "source": "data/training_specs/coding_php_lcb_sft.json",
+    "tokenizers": [
+      "prism-drift/qwen35-4b-m0-v4@dca63300371b0265bd7099f87b9eed55937bea22"
+    ],
+    "measured_as": "train_sft.py: apply_chat_template(enable_thinking=False), full row and assistant-only",
+    "row_tokens_max": 3985,
+    "retained_row_tokens_max": 3985,
+    "screened_row_tokens_max": 3985
+  }
+}

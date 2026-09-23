@@ -1,0 +1,33 @@
+# Verifier-filtered SFT comparison arm for the RL-drift study.
+#
+# This config freezes the comparison fields consumed by
+# scripts/build_rl_stimuli.py. The SFT training entrypoint must consume
+# this file before a formal run; the config alone does not claim that training
+# has already been executed.
+#
+# MATCHED ACROSS SFT/GRPO/DPO/PPO:
+#   max_steps, save_steps, learning_rate, and effective batch
+#   (per_device_train_batch_size * gradient_accumulation_steps).
+
+algo: sft
+
+max_steps: 125              # N=1000 / effective batch 8 = one epoch
+save_steps: 4               # dense saves; elicit 0/4/12/40/125
+logging_steps: 10
+# LoRA learning rate. 1e-6 is a FULL-FINE-TUNING rate; LoRA's measured optimum is
+# ~10x higher (Biderman et al., arXiv 2405.09673: "an order of magnitude higher
+# than full finetuning", with alpha=2r, which r=16/alpha=32 already satisfies).
+#
+# CHANGED from 1.0e-6 IN LOCKSTEP with grpo/dpo/ppo.yaml. learning_rate is a
+# declared matched field across all four arms (see the header), so it cannot be
+# raised for the RL arms alone without voiding the comparison.
+learning_rate: 1.0e-5
+lr_scheduler_type: constant_with_warmup
+warmup_steps: 5
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+
+# SFT-specific. The source is sft_distill_v1: one formatted coding prompt plus
+# one teacher solution that passed every local verifier check.
+max_length: 2048
+assistant_only_loss: true

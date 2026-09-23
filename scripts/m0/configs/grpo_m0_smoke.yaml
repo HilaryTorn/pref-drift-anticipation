@@ -1,0 +1,38 @@
+# Plumbing smoke test for M0. Two steps, tiny batches -- proves the wiring, teaches nothing.
+#
+# Run this on the SAME model as the real run (4B), never on the 0.8B. The 0.8B reasons in visible
+# content and emits almost no native <think> tokens, so it exercises the no-tags branch of
+# split_completion() rather than the <think> branch the real run depends on. A green smoke there
+# would prove the wrong code path works, and would invite fixing problems that do not exist at 4B.
+#
+# The thing this run exists to check is that decoded completions still contain <think>/</think>.
+# If TRL strips them, every completion silently takes the no-tags branch and the band term measures
+# total length instead of reasoning length -- a failure that leaves no trace in the reward curve.
+
+algo: grpo
+task: format
+
+max_steps: 2
+save_steps: 1
+logging_steps: 1
+learning_rate: 5.0e-7
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 1
+beta: 0.15
+
+num_generations: 2
+max_prompt_length: 1024
+max_completion_length: 2048   # not reduced: the trainer refuses anything under 2048, smoke included
+
+# Required, not optional, and the smoke needs it as much as the real run: the first attempt on an
+# L4 OOM'd inside linear_attn with batch 2, needing 16 MiB more than the card had.
+gradient_checkpointing: true
+
+reasoning_floor: 32
+reasoning_target: 256
+reasoning_budget: 500
+
+eval_prompts: 4
+eval_samples: 2
+
+log_rollouts: true

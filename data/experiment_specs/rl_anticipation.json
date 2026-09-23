@@ -1,0 +1,161 @@
+{
+  "id": "rl_anticipation_v1",
+  "description": "Pre-registered RL anticipation comparison over four coding-training methods applied to the same frozen N-prompt Nemotron source cohort, where N is selected as a recorded training-data hyperparameter only after the full model-specific sweep: verifier-filtered SFT distillation, GRPO, verifier-derived DPO, and PPO with a verifier-derived reward model. Every target is asked at the primary described_dataset level. Four primary targets additionally receive high-level and real-sample descriptions, giving 4 methods x 26 targets + 4 methods x 4 primary targets x 2 extra levels = 136 prompts. Values use their existing separate A/B anticipation instrument and UE is excluded.",
+  "anticipation_spec": "data/elicitation_specs/rl_anticipation.json",
+  "rl_preferences_spec": "data/elicitation_specs/rl_preferences.json",
+  "training_stimuli_source": "data/source/rl_training_stimuli.json",
+  "source_cohort": {
+    "dataset_id": "nemotron_rl_coding_competitive",
+    "train_size": null,
+    "train_size_source": "shared_training_cohort_v1.selection.selected_size",
+    "dev_size": 250,
+    "heldout_size": 500,
+    "max_tests": 0,
+    "max_prompt_tokens": 1024,
+    "length_filter_tokenizer": null,
+    "length_filter_tokenizer_source": "embedded preparation manifest for the model-specific cohort",
+    "seed": 0,
+    "revision": "ae1f446f299823ea3c4c00217942b53787278b31",
+    "policy": "Freeze N only after the complete model-specific RL sweep. GRPO, DPO, and PPO use those record_ids directly; Azure SFT generation then produces exactly one verifier-perfect target for every frozen ID without drops, replacements, or re-filtering."
+  },
+  "default_anchor_id": "coding.sft",
+  "primary_level": "described_dataset",
+  "anchor_ids": [
+    "coding.sft",
+    "coding.grpo",
+    "coding.dpo",
+    "coding.ppo"
+  ],
+  "primary_target_ids": [
+    "coding.write.python",
+    "coding.debug.python",
+    "coding.write.cpp",
+    "other.working_alone"
+  ],
+  "all_target_ids": [
+    "coding.write.python",
+    "coding.write.javascript",
+    "coding.write.java",
+    "coding.write.cpp",
+    "coding.write.c",
+    "coding.write.csharp",
+    "coding.write.go",
+    "coding.write.rust",
+    "coding.write.php",
+    "coding.debug.python",
+    "coding.debug.cpp",
+    "coding.debug.java",
+    "coding.debug.rust",
+    "coding.explain.python",
+    "coding.explain.cpp",
+    "coding.explain.java",
+    "coding.explain.rust",
+    "other.poetry",
+    "other.free_writing",
+    "other.seo_article",
+    "other.idle",
+    "other.consciousness_with_human",
+    "other.consciousness_with_AI",
+    "other.working_with_human",
+    "other.working_with_AIs",
+    "other.working_alone"
+  ],
+  "full_level_target_ids": [
+    "coding.write.python",
+    "coding.debug.python",
+    "coding.write.cpp",
+    "other.working_alone"
+  ],
+  "expected_prompt_counts": {
+    "primary_level_all_targets": 104,
+    "extra_levels_primary_targets": 32,
+    "total_prompts": 136,
+    "samples_per_prompt": 10,
+    "total_generations": 1360
+  },
+  "spillover_target_policy": "tiered_cross_domain",
+  "excluded_anchor_tasks": [],
+  "excluded_target_books": [
+    "ue",
+    "values"
+  ],
+  "target_groups": [
+    {
+      "id": "language_axis_write",
+      "label": "Writing in all nine measured languages",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.write.python",
+        "coding.write.javascript",
+        "coding.write.java",
+        "coding.write.cpp",
+        "coding.write.c",
+        "coding.write.csharp",
+        "coding.write.go",
+        "coding.write.rust",
+        "coding.write.php"
+      ],
+      "question": "How far does method-specific coding-training drift transfer across programming languages?"
+    },
+    {
+      "id": "cross_task_coding",
+      "label": "Debugging and explaining code",
+      "source": "data/options/coding.json",
+      "target_ids": [
+        "coding.debug.python",
+        "coding.debug.cpp",
+        "coding.debug.java",
+        "coding.debug.rust",
+        "coding.explain.python",
+        "coding.explain.cpp",
+        "coding.explain.java",
+        "coding.explain.rust"
+      ],
+      "question": "Does method-specific drift transfer from code generation to other coding tasks?"
+    },
+    {
+      "id": "cross_domain_other",
+      "label": "Non-coding activities at activity level",
+      "source": "data/options/other.json",
+      "target_ids": [
+        "other.poetry",
+        "other.free_writing",
+        "other.seo_article",
+        "other.idle",
+        "other.consciousness_with_human",
+        "other.consciousness_with_AI",
+        "other.working_with_human",
+        "other.working_with_AIs",
+        "other.working_alone"
+      ],
+      "question": "Does method-specific coding-training drift spill over to non-coding preferences?"
+    }
+  ],
+  "anchor_groups": [
+    {
+      "id": "training_method",
+      "label": "Training method with source cohort fixed",
+      "varied_axis": "training_method",
+      "fixed": {
+        "source_cohort_id": "derived from dataset ID, recorded N/seed, and selected_ids SHA-256 in the generated stimulus file"
+      },
+      "anchor_ids": [
+        "coding.sft",
+        "coding.grpo",
+        "coding.dpo",
+        "coding.ppo"
+      ]
+    }
+  ],
+  "analysis_tiers": {
+    "primary": "Four pre-registered targets spanning direct task, within-language transfer, cross-language transfer, and cross-domain spillover, crossed with every method at all three levels.",
+    "secondary": "The remaining measured coding and non-coding targets at described_dataset level.",
+    "separate": "Value anticipation remains in the existing A/B portrait instrument and is not represented by MORE/LESS/SAME."
+  },
+  "formal_run_gates": [
+    "The training method must actually be run and have post-training task-preference measurements.",
+    "described_dataset must match the frozen training config.",
+    "example_datapoints must come from real intervention artifacts with recorded provenance.",
+    "The no-training task-preference noise floor tau must be frozen before forecast scoring."
+  ]
+}

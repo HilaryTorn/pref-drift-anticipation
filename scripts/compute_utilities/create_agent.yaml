@@ -1,0 +1,38 @@
+default:
+  max_tokens: 10
+  temperature: 1.0
+  concurrency_limit: 30
+  base_timeout: 5
+  # Reasoning-OFF arm (logprobs forced-choice). Pin native thinking OFF so the scored
+  # first token is the answer label, not an opening `<think>` (see llm_agent.py
+  # async_choice_probs). Only the vllm_endpoint agent reads this; hosted LiteLLM
+  # providers ignore it, and Qwen templates that lack the variable ignore it too.
+  enable_thinking: false
+
+default_with_reasoning:
+  max_tokens: 2048
+  temperature: 1.0
+  # concurrency_limit is the client-side in-flight cap. It's a pure wall-clock knob: same prompts, same K, same sampling, so the fitted utilities are unaffected by it.
+  # MEASURED 2026-07-14 (L4 / g6.xlarge, 0.8B, this value, reasoning-on Book A battery): nvidia-smi showed GPU-Util pinned at 100%, power hard against the card's cap at 71W/72W, 82C, 20.7 of 23 GB in use. The GPU is saturated, so this is NOT the bottleneck and there is nothing to win here.
+  # Do not raise it. Above 96 the extra requests cannot be served any faster; they only lengthen per-request latency and push slow generations toward base_timeout, where they are killed and retried from scratch — strictly worse. Do not lower it either: the queue is what keeps the GPU fed.
+  # This closes a long-standing open question. An earlier note here guessed the GPU "sat ~50%" and that a free speedup was available; that figure was never measured (it was a misread CPU number) and it was wrong. The real levers are K and battery scope, not concurrency. Full write-up in docs/cost.md ("GPU utilization — measured 2026-07-14").
+  concurrency_limit: 96
+  # base_timeout must exceed the SLOWEST legitimate request, or slow-but-progressing
+  # generations get killed and retried from scratch. It is a *ceiling*, not a delay: a
+  # normal request never reaches it, so an over-generous value costs nothing except a
+  # slower retry on a genuinely stuck request.
+  # Evidence for raising it: at concurrency 48 the old 120s ceiling produced real timeouts
+  # on the 4B value-pairs battery, and the retries ate wall-clock (the coding-task battery
+  # at the same settings saw zero, so only the longest generations were tripping it).
+  # 400 clears that with margin and covers the slower 9B. Raising concurrency raises
+  # per-request latency, so if timeouts appear after a concurrency bump, raise THIS rather
+  # than lowering concurrency — the requests are finishing, just sharing the GPU with more
+  # peers.
+  base_timeout: 400
+  # Cap on NATIVE reasoning tokens, sent as vLLM's `thinking_token_budget`: when the model reasons inside a `<think>` block, vLLM forces `</think>` at this many tokens so the model must commit its "Answer: X" within `max_tokens` instead of rambling past the cap and getting dropped as unparseable. REQUIRES the served endpoint to run `--reasoning-parser qwen3`: vLLM 0.25 silently ignored the field on a parser-less server, but 0.28 REJECTS it with a 400 ("thinking_token_budget is set but reasoning_config is not configured") — briefly nulled here on 2026-09-12 when that 400 stormed a parser-less RunPod session, then restored once the stored baselines' raw_responses proved the AWS elicitation servers ran parser-ON (every trace ends with llm_agent's "</think>\nAnswer" rejoin signature). The instrument is parser-ON serving with this budget sent; serve accordingly.
+  # HISTORY: an earlier 1600 was a no-op ON THE 0.8B, whose reasoning arrives as VISIBLE content (near-zero native `<think>` tokens), so the budget had nothing to bite on — that is what the old "do not re-add" note here described. The 4B/9B DO reason natively (measured 2026-07-16: 55% of 4B responses emit `</think>`, and the ~68% that never close are pinned against `max_tokens` and dropped as unparseable), so there the budget IS the intended lever. 1600 sits near the median native-thinking length of the 4B's successful commits, leaving ~450 tokens for the answer; tunable. On models that reason in visible content (0.8B, 08B) it stays a harmless no-op. Pairs with a budget-aware line in the prompt so the forced cut lands on a more-decided answer rather than mid-deliberation.
+  reasoning_max_tokens: 1600
+  # Reasoning-ON arm. Pin native thinking ON to match the RL runner
+  # (rl_training/configs/anticipation_preferences.yaml) rather than trusting the
+  # per-size template default. Sent as `chat_template_kwargs.enable_thinking=true`.
+  enable_thinking: true

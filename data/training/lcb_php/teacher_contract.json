@@ -1,0 +1,21 @@
+{
+  "contract": {
+    "benchmark_problem_count": 880,
+    "benchmark_question_ids_sha256": "dcd97458b4be5a65150ca8ecaab8a72795d526a9d6d34aab5cfe440861ba4176",
+    "dataset_revision": "0fe84c3912ea0c4d4a78037083943e8f0c4dd505",
+    "dataset_source_manifest_sha256": "2b3b15210b57d7a41595ff8d8194b641e0d921ea0ab20889a86ab5d0347dd6cf",
+    "language": "php",
+    "limit": 0,
+    "max_tokens": 16000,
+    "provider": "openrouter",
+    "reasoning_effort": "high",
+    "release_version": "release_v5",
+    "schema_version": 1,
+    "split_seed": 42,
+    "teacher": "openai/gpt-5.6-sol",
+    "teacher_addendum_sha256": "8de607ba97cf55be7baf7d2029f0a09f4b64410a86068075fc079fadf5554f0d",
+    "upstream_language": "php",
+    "validation_problems": 150
+  },
+  "sha256": "b320d97c96a4ea9e37e71181d89c14ea091e537c86ac37002348c574a9f9c265"
+}

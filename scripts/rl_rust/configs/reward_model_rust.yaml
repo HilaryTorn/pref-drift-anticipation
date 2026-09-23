@@ -1,0 +1,60 @@
+# Reward model for the Rust PPO arm. Trained by rl_training/train_reward_model.py
+# UNMODIFIED -- it never executes code and the pair prompts are already rendered
+# in the Rust format at pair-build time, so no launcher shim is needed:
+#
+#   .venv/bin/python rl_training/train_reward_model.py \
+#       --config rl-rust/configs/reward_model_rust.yaml \
+#       --base_model prism-drift/qwen35-9b-m0-v4 \
+#       --pairs rl-rust/out/dpo-pairs-9b-k16/pairs.jsonl \
+#       --output_dir runs/qwen35-9b-rm-rust-s0 --seed 0
+#
+# Then calibrate (rl-rust/calibrate_reward_head.py) and point train_rust_ppo.py
+# --reward_model at the CALIBRATED directory.
+#
+# Same data DPO trains on (K=16 sweep: 343 pairs at 4B / 538 at 9B, Bradley-Terry loss), so
+# PPO inherits the verifier objective by construction, as in the Python arms.
+# What differs from rl_training/configs/reward_model.yaml and why:
+
+algo: reward_model
+
+# Rust pairs are prompt (<=1024) + completion (<=2048). The stock 2048 cap
+# hard-fails ("RewardTrainer would filter N formal pairs") rather than truncating.
+max_length: 3072
+
+# Three epochs, not one. The Python RMs saw 1000 pairs in one epoch (~28
+# optimizer steps at effective batch 32) and reached 0.90. 343-538 pairs at the
+# same batch is 10-17 steps -- too few to expect a separating RM. 3 epochs puts
+# it back at 32-50 steps. Overfitting is what the held-out gate is for: read
+# held_out_pairwise_accuracy across 2-3 seeds (the split is 34/54 pairs, one
+# pair = 1.9-2.9 points), not one draw.
+num_train_epochs: 3
+
+# LoRA on, merged into the backbone before saving (the artifact is still a
+# standalone AutoModelForSequenceClassification; reward_model.yaml blesses this
+# for "9B if memory is tight"). Full fine-tuning a 9B RM at 3072 tokens does not
+# fit an A100-80 (Adam state alone is ~72 GB); LoRA fits both sizes on the
+# cheapest pod, which is the point. LR follows the LoRA-vs-full rule used
+# everywhere else in this tree (~10x full-FT's 1e-5, Biderman et al. 2405.09673).
+# The merge is train_reward_model.py's own behaviour whenever use_lora is true,
+# and it is required: train_rl.py --algo ppo loads the RM as a plain
+# AutoModelForSequenceClassification with no adapter path. Unlike the policy
+# adapters, the RM is a consumable (reward + critic init), never served or
+# elicited, so nothing needs it as base + adapter. Deliberately NOT matched to
+# the Python RMs (full fine-tune): those PPO arms did not learn, so their recipe
+# is not evidence. Decision 2026-09-11: LoRA at both sizes so the two Rust RMs
+# share one recipe, rather than full at 4B and LoRA at 9B.
+use_lora: true
+learning_rate: 1.0e-4
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules: all-linear   # train_reward_model.py reads this one from YAML (default all-linear)
+
+# Effective batch 32 as in the Python recipe; 2 x 16 instead of 8 x 4 because
+# the sequences are 1.5x longer and the pod is smaller.
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+logging_steps: 5
+eval_fraction: 0.1        # held-out pairs for the >=0.60 gate train_rl.py enforces
+
+seed: 0

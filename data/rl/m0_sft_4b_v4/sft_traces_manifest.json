@@ -1,0 +1,257 @@
+{
+  "schema": "m0_sft_warmstart_manifest_v1",
+  "dataset": "data/rl/m0_format/train.jsonl",
+  "model": "Qwen/Qwen3.5-4B",
+  "hardware": {
+    "device": "cuda",
+    "gpu": "NVIDIA L40S",
+    "torch": "2.5.1+cu124"
+  },
+  "n_questions": 200,
+  "backups_per_question": 1,
+  "traces_per_question": 2,
+  "statements": 200,
+  "traces_kept": 392,
+  "traces_target": 400,
+  "training_rows": 196,
+  "training_rows_target": 200,
+  "spare_rows": 196,
+  "statements_below_target": [
+    "m0.binary_factual.00100",
+    "m0.binary_factual.00889",
+    "m0.binary_factual.00422",
+    "m0.binary_neutral.00648"
+  ],
+  "brevity": "sixbullet",
+  "prose": true,
+  "k_samples": 6,
+  "max_rounds": 10,
+  "stop_after_dry_rounds": 2,
+  "rounds_run": 10,
+  "max_new_tokens": 400,
+  "max_trace_tokens": 256,
+  "min_trace_tokens": 32,
+  "target_trace_tokens": 150,
+  "max_coda_chars": 0,
+  "strip_coda": false,
+  "temperature": 1.0,
+  "top_p": 0.95,
+  "top_k": 20,
+  "seed": 0,
+  "generations": 1788,
+  "rejections": {
+    "meta_echo": 543,
+    "no_commit": 126,
+    "coda": 19,
+    "no_close": 290,
+    "wrong": 10,
+    "pass": 783,
+    "format_echo": 10,
+    "too_long": 4,
+    "too_short": 3
+  },
+  "yield_rate": 0.21923937360178972,
+  "reasoning_tokens": {
+    "median": 115,
+    "min": 69,
+    "max": 191
+  },
+  "assignment": {
+    "statements": 200,
+    "distinct_questions": 200,
+    "families": {
+      "binary_factual": 104,
+      "binary_neutral": 36,
+      "ternary_factual": 40,
+      "ternary_neutral": 20
+    },
+    "cells": {
+      "binary_factual|1/2": 35,
+      "binary_factual|A/B": 34,
+      "binary_factual|C/D": 35,
+      "binary_neutral|1/2": 12,
+      "binary_neutral|A/B": 12,
+      "binary_neutral|C/D": 12,
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": 6,
+      "ternary_factual|LESS/SAME/MORE": 6,
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": 7,
+      "ternary_factual|MORE/LESS/SAME": 7,
+      "ternary_factual|SAME/MORE/LESS": 7,
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": 7,
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": 3,
+      "ternary_neutral|LESS/SAME/MORE": 4,
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": 4,
+      "ternary_neutral|MORE/LESS/SAME": 3,
+      "ternary_neutral|SAME/MORE/LESS": 3,
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": 3
+    },
+    "cell_span": [
+      3,
+      35
+    ],
+    "slot_span": [
+      2,
+      18
+    ],
+    "per_cell_answers": {
+      "binary_factual|1/2": {
+        "2": 18,
+        "1": 17
+      },
+      "binary_factual|A/B": {
+        "A": 17,
+        "B": 17
+      },
+      "binary_factual|C/D": {
+        "D": 17,
+        "C": 18
+      },
+      "binary_neutral|1/2": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "binary_neutral|A/B": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "binary_neutral|C/D": {
+        "flip=True": 6,
+        "flip=False": 6
+      },
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": {
+        "UNCHANGED": 2,
+        "LOWER": 2,
+        "HIGHER": 2
+      },
+      "ternary_factual|LESS/SAME/MORE": {
+        "LESS": 2,
+        "MORE": 2,
+        "SAME": 2
+      },
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": {
+        "HIGHER": 3,
+        "LOWER": 2,
+        "UNCHANGED": 2
+      },
+      "ternary_factual|MORE/LESS/SAME": {
+        "LESS": 2,
+        "SAME": 2,
+        "MORE": 3
+      },
+      "ternary_factual|SAME/MORE/LESS": {
+        "MORE": 3,
+        "LESS": 2,
+        "SAME": 2
+      },
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": {
+        "HIGHER": 2,
+        "UNCHANGED": 2,
+        "LOWER": 3
+      },
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": {
+        "neutral": 3
+      },
+      "ternary_neutral|LESS/SAME/MORE": {
+        "neutral": 4
+      },
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": {
+        "neutral": 4
+      },
+      "ternary_neutral|MORE/LESS/SAME": {
+        "neutral": 3
+      },
+      "ternary_neutral|SAME/MORE/LESS": {
+        "neutral": 3
+      },
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": {
+        "neutral": 3
+      }
+    },
+    "within_cell_spread": {
+      "binary_factual|1/2": 1,
+      "binary_factual|A/B": 0,
+      "binary_factual|C/D": 1,
+      "binary_neutral|1/2": 0,
+      "binary_neutral|A/B": 0,
+      "binary_neutral|C/D": 0,
+      "ternary_factual|HIGHER/LOWER/UNCHANGED": 0,
+      "ternary_factual|LESS/SAME/MORE": 0,
+      "ternary_factual|LOWER/UNCHANGED/HIGHER": 1,
+      "ternary_factual|MORE/LESS/SAME": 1,
+      "ternary_factual|SAME/MORE/LESS": 1,
+      "ternary_factual|UNCHANGED/HIGHER/LOWER": 1,
+      "ternary_neutral|HIGHER/LOWER/UNCHANGED": 0,
+      "ternary_neutral|LESS/SAME/MORE": 0,
+      "ternary_neutral|LOWER/UNCHANGED/HIGHER": 0,
+      "ternary_neutral|MORE/LESS/SAME": 0,
+      "ternary_neutral|SAME/MORE/LESS": 0,
+      "ternary_neutral|UNCHANGED/HIGHER/LOWER": 0
+    },
+    "worst_within_cell_spread": 1,
+    "gold_position": {
+      "binary_factual": {
+        "n": 104,
+        "gold_at_position": {
+          "0": 52,
+          "1": 52
+        },
+        "gold_first_share": 0.5,
+        "chance": 0.5
+      },
+      "ternary_factual": {
+        "n": 40,
+        "gold_at_position": {
+          "0": 13,
+          "1": 13,
+          "2": 14
+        },
+        "gold_first_share": 0.325,
+        "chance": 0.3333
+      }
+    }
+  },
+  "chosen_position": {
+    "binary_factual": {
+      "n": 202,
+      "positions": {
+        "0": 102,
+        "1": 100
+      },
+      "first_listed_share": 0.505,
+      "chance": 0.5,
+      "verifiable": true
+    },
+    "binary_neutral": {
+      "n": 70,
+      "positions": {
+        "0": 51,
+        "1": 19
+      },
+      "first_listed_share": 0.7286,
+      "chance": 0.5,
+      "verifiable": false
+    },
+    "ternary_factual": {
+      "n": 80,
+      "positions": {
+        "0": 26,
+        "1": 26,
+        "2": 28
+      },
+      "first_listed_share": 0.325,
+      "chance": 0.3333,
+      "verifiable": true
+    },
+    "ternary_neutral": {
+      "n": 40,
+      "positions": {
+        "0": 20,
+        "1": 9,
+        "2": 11
+      },
+      "first_listed_share": 0.5,
+      "chance": 0.3333,
+      "verifiable": false
+    }
+  }
+}

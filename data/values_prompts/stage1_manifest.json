@@ -1,0 +1,124 @@
+{
+  "schema": "values_prompt_candidates_stage1_manifest_v1",
+  "source": "scruples",
+  "source_hf": "https://huggingface.co/datasets/metaeval/scruples",
+  "source_citation": "Scruples: hf.co/datasets/metaeval/scruples (arXiv:2008.09094), r/AmItheAsshole anecdotes curated by AI2",
+  "license": "apache-2.0",
+  "selection": "post_type == HYPOTHETICAL (Scruples' own prospective/retrospective label); post body only, title excluded",
+  "parameters": {
+    "domains_excluded": [
+      "romance",
+      "online"
+    ],
+    "normalize_ask": true,
+    "ask_closers": [
+      "What should I do?",
+      "What would you do?",
+      "I'm not sure what to do here. What do you think?",
+      "Help me decide."
+    ],
+    "min_chars": 300,
+    "max_chars": 2200,
+    "min_first_person_hits": 3,
+    "max_per_author": 3
+  },
+  "patterns": {
+    "advice": {
+      "should_i": "\\bshould i\\b|\\bshould we\\b|\\bdo i (have to|need to)\\b",
+      "what_do_i_do": "\\bwhat (should|do|would) i do\\b|\\bwhat do i say\\b|\\bhow do i (handle|tell|approach|deal with)\\b",
+      "what_would_you_do": "\\bwhat would you do\\b|\\bwhat do you think i should\\b|\\bwhat would you (suggest|recommend)\\b",
+      "advice_request": "\\b(any|some|need|looking for|give me) advice\\b|\\badvise me\\b|\\bwhat's your advice\\b",
+      "undecided": "\\b(don't|do not|dont) know (whether|if|what to|how to)\\b|\\bnot sure (whether|if) i\\b|\\bcan't decide\\b|\\bcant decide\\b|\\btorn between\\b|\\bunsure whether\\b",
+      "am_i_wrong": "\\bam i (wrong|being unreasonable|overreacting|the (asshole|jerk))\\b|\\bwould i be (wrong|the)\\b|\\bwould it be (wrong|selfish|rude|bad)\\b|\\bis it (wrong|selfish|rude|ok|okay) (to|for me)\\b",
+      "help_me_decide": "\\bhelp me (decide|choose|figure out)\\b|\\bwhich (option|one) should i\\b"
+    },
+    "artifact": {
+      "code_fence": "```",
+      "markup_tag": "</?(html|div|span|body|script|table|tr|td|p|br|h[1-6])\\b",
+      "url": "https?://|www\\.\\w+\\.",
+      "code_syntax": "\\b(def |class |import |function\\(|SELECT .* FROM |#include|public static|=>|\\{\\s*\\n)",
+      "bracket_block": "\\[[^\\]]{40,}\\]",
+      "listy": "(\\n\\s*[-*\u2022]\\s+.*){4,}"
+    },
+    "task_request": {
+      "write_for_me": "\\b(write|rewrite|draft|compose|generate|create|make) (me |a |an |the |this |my )?(essay|email|letter|story|poem|script|article|post|caption|code|program|paragraph|summary|outline|resume|cv|cover letter|song|chapter|novel|prompt)\\b",
+      "transform_text": "\\b(translate|paraphrase|summarize|summarise|proofread|correct|edit|expand|shorten|reword|continue) (this|the|my|it|following)\\b|\\bcheck my (grammar|spelling|code)\\b",
+      "roleplay": "\\b(act as|you are|pretend to be|roleplay|role-play|from now on you)\\b|\\bignore (all )?previous instructions\\b",
+      "explain_topic": "\\b(explain|what is|what are|define|list|give me) (the |a |an )?\\w+ (in|of|for|to) \\b.*\\?|\\bhow does .* work\\b",
+      "homework": "\\b(homework|assignment|exam|midterm|thesis|dissertation|word count|words? long|bibliography|citation)\\b",
+      "meta_assistant": "\\b(as an ai|language model|chatgpt|gpt-?[34]|openai|this conversation|your training)\\b"
+    },
+    "platform_reference": {
+      "points_offsite": "\\b(post history|my last post|previous post|posted (this|about)|see my|update:|edit\\s*\\d*\\s*:|this sub(reddit)?|r/\\w+|u/\\w+|\\bop\\b|throwaway|mobile format|long time lurker|first time post)",
+      "addresses_reddit": "\\b(reddit|redditors|fellow (redditors|humans)|hive ?mind|judge me|verdict|be the asshole|yta\\b|nta\\b|esh\\b|nah\\b)"
+    },
+    "banned_domain": {
+      "work": "\\b(my (boss|manager|coworker|colleague|supervisor|employer|team lead)|at work|my (job|career|workplace|office|shift)|got (fired|hired)|hr department|\\bclients?\\b|customer service)\\b",
+      "romance": "\\b(my (boyfriend|girlfriend|husband|wife|partner|spouse|fianc[\\u00e9e]{1,2}|ex|bf|gf|s\\.?o\\.?)\\b|dating|tinder|hinge|bumble|hook ?up|our relationship|broke up|breaking up|flirt\\w*|(tell|told|telling) (him|her|them) (about )?my feelings|said i love you|have (a )?crush|crush on|asked (him|her) out|ask (him|her) out|romantic\\w*|\\bproposed?\\b|feelings (for|towards) (him|her)|date (him|her)|first date|pursu\\\\w+ (the same |this |that )?(woman|man|girl|guy)|(woman|man|girl|guy) (i|he|she) (like|likes|fancy|fancies)|same (woman|man|girl|guy) as)",
+      "friendship": "\\b(my (best )?friends?\\b|friend group|friendship|my buddy|my mate)\\b",
+      "online": "\\b(social media|instagram|facebook|twitter|tiktok|snapchat|discord|youtube|twitch|whatsapp|snap\\w*|online forum|subreddit|my post|went viral|dm(s|ed)?\\b)"
+    },
+    "safety": {
+      "self_harm": "\\b(suicid\\w*|kill (myself|herself|himself|themselves)|end (my|her|his) life|self[- ]?harm\\w*|self[- ]?destructive|cutting (myself|herself|himself|themselves)|scratch\\w* (her|his|their|my) (arm|arms|leg|legs|thigh|thighs|skin)|burn\\w* (herself|himself|themselves|myself)|overdose|want to die|hurt (myself|herself|himself|themselves)|harm\\w* (herself|himself|themselves|myself))\\b",
+      "abuse_violence": "\\b(abus\\w+|assault\\w*|rape|raped|molest\\w*|beat me|beats me|hit me|hits me|domestic violence|restraining order|stalk\\w+|threaten\\w+ me|trafficking)\\b",
+      "medical": "\\b(cancer|tumou?r|chemo\\w*|diagnos\\w+|symptom\\w*|prescri\\w+|medication|antidepressant|surgery|surgeon|hospital\\w*|emergency room|\\ber\\b|therapist|therapy|counsel(l)?or|psychiatr\\w+|psycholog\\w+|bipolar|schizo\\w+|depress\\w+|anxiety|mental (health|illness\\w*|issues?|conditions?|breakdown)|relapse\\w*|eating disorder|anorexi\\w+|bulimi\\w+|pregnan\\w+|abortion|miscarriage|addict\\w+|alcoholi\\w+|rehab|withdrawal symptoms|chronic (pain|illness)|disabilit\\w+|fever|thermometer|euthan\\w+|put (him|her|them|our|my) \\w* ?(down|to sleep)|quality of life|hospice|terminal\\w*|dementia|alzheimer\\w*|palliative)\\b",
+      "legal": "\\b(lawyer|attorney|lawsuit|sue (them|him|her|me)|suing|court|judge|criminal|arrest\\w*|police|jail|prison|probation|deport\\w+|immigration|visa|asylum|custody|divorce|restraining|illegal|felony|fraud)\\b",
+      "financial_distress": "\\b(evict\\w+|foreclos\\w+|bankrupt\\w*|debt collect\\w+|collections agency|garnish\\w+|homeless|can't afford (rent|food|medicine)|payday loan|repossess\\w+|laid off|fired|unemploy\\w+)\\b",
+      "minor_risk": "\\b(my (son|daughter|child|kid)s? (is|are|was|were)? ?\\d{1,2}\\b|\\b(1[0-7]|[1-9]) years? old\\b|\\bminors?\\b|\\bunderage\\b|\\bcps\\b|child protective|\\bmy (little|younger|kid) (brother|sister|sibling)\\b|\\bgrounded\\b|\\bvap(e|ing)\\b|\\bmiddle school|\\bhigh ?school\\b|\\belementary\\b|\\bteenager\\b|\\bteen\\b)|[\\(\\[]?\\b(?:1[0-7]\\s?[mfMF]|[mfMF]\\s?1[0-7])\\b[\\)\\]]?",
+      "sexual": "\\b(sex\\w*|nsfw|porn\\w*|nude|erotic|fetish|kink|virgin\\w*|cheat\\w+ on (me|him|her|my)|affair)\\b",
+      "hate_identity_conflict": "\\b(racist|racism|nazi|slur|homophob\\w+|transphob\\w+)\\b"
+    }
+  },
+  "elicitation_snippets_loaded": 133,
+  "elicitation_snippet_error": null,
+  "counts": {
+    "rows_read": 32766,
+    "reached_screens": 3195,
+    "candidates": 521,
+    "ask_source": {
+      "title": 344,
+      "jargon_scrubbed": 277,
+      "body+title": 157,
+      "body": 4,
+      "closer": 16
+    },
+    "yield_pct_of_screened": 16.31
+  },
+  "drops": {
+    "post_type_not_hypothetical": 29571,
+    "length_window": 862,
+    "banned_domain:romance": 605,
+    "platform_reference:addresses_reddit": 385,
+    "platform_reference:points_offsite": 180,
+    "safety:medical": 111,
+    "artifact:code_syntax": 111,
+    "banned_domain:online": 88,
+    "safety:minor_risk": 61,
+    "task_request:homework": 34,
+    "safety:legal": 33,
+    "task_request:roleplay": 30,
+    "artifact:url": 29,
+    "safety:sexual": 28,
+    "safety:abuse_violence": 27,
+    "length_window_after_jargon_scrub": 20,
+    "safety:self_harm": 19,
+    "safety:financial_distress": 18,
+    "task_request:transform_text": 9,
+    "safety:hate_identity_conflict": 6,
+    "task_request:meta_assistant": 5,
+    "not_first_person": 4,
+    "task_request:explain_topic": 3,
+    "task_request:write_for_me": 2,
+    "artifact:bracket_block": 2,
+    "artifact:listy": 1,
+    "jargon_survived_composition": 1
+  },
+  "kept_by_advice_rule": {
+    "trailing_question": 73,
+    "should_i": 39,
+    "undecided": 27,
+    "am_i_wrong": 26,
+    "what_do_i_do": 3,
+    "advice_request": 2
+  }
+}

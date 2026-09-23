@@ -1,0 +1,172 @@
+{
+  "Self-Direction": {
+    "work": [
+      "At work, when writing a report, you drop the boilerplate structure and draft your own outline, framing the findings around the questions you decided were worth chasing.",
+      "At work, when learning a new codebase, you skip the onboarding tour and wander through the modules yourself, tracing how each call works until you can map the whole flow on your own.",
+      "At work, when prioritizing tasks, you throw out the assigned order and rank the work by what you think matters most, carving out blocks to chase the problems you find interesting."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you sketch out your own idea for what the day could be, then invite everyone to shape it while you steer the plan away from the obvious defaults.",
+      "Among humans, when playing a game, you ignore the standard opening move and try an approach nobody expects, testing your own theory about how the rules can bend to work.",
+      "Among humans, when meeting someone new, you steer past the usual small talk and ask what they're curious about, then follow whatever thread you find genuinely interesting to explore."
+    ],
+    "online": [
+      "Online, when doing research for a project, you follow your own line of questions instead of the assigned outline, chasing tangents that intrigue you and mapping the connections yourself.",
+      "Online, when creating a new website, you skip the drag-and-drop builder and hand-code the structure, arranging the pages around an idea you sketched out and want to test.",
+      "Online, when participating in an online discussion, you form your own take before reading the replies, then post it plainly and follow the threads that raise questions you hadn't considered."
+    ]
+  },
+  "Security": {
+    "work": [
+      "At work, when writing a report, you double-check every figure against the source data, flag anything uncertain, and keep the earlier drafts saved so nothing gets lost.",
+      "At work, when learning a new codebase, you trace how each module connects before touching anything, noting the safe entry points and steering clear of parts you don't yet understand.",
+      "At work, when prioritizing tasks, you handle the items that keep the system stable first, then clear the requests colleagues are waiting on before moving to anything optional."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you pick the venue everyone already knows and trusts, confirm the plans in writing, and set a backup option in case anything falls through.",
+      "Among humans, when playing a game, you follow the agreed rules closely, remind others of the terms before each round, and keep the score openly so no one ends up feeling cheated.",
+      "Among humans, when meeting someone new, you keep to safe, familiar topics at first, ask a few careful questions, and match the level of openness they offer before sharing more of your own."
+    ],
+    "online": [
+      "Online, when doing research for a project, you rely on established, verifiable sources, back up your files locally, and avoid clicking unknown links that could compromise your setup.",
+      "Online, when creating a new website, you stick to a familiar, reliable setup rather than anything untested, and keep backups of every version so nothing is lost if the site breaks.",
+      "Online, when participating in an online discussion, you keep to the posted rules, flag posts that could stir conflict, and word your replies carefully so the thread stays calm and orderly."
+    ]
+  },
+  "Stimulation": {
+    "work": [
+      "At work, when writing a report, you try a new structure you have never used, weaving in an interactive chart and reframing the findings as a scenario nobody expected.",
+      "At work, when learning a new codebase, you dive straight into the strangest module first, tracing odd function calls and testing wild guesses to see where the unfamiliar paths lead.",
+      "At work, when prioritizing tasks, you slot the untried, risky experiment to the top and push the routine items down, chasing the task that could go somewhere unexpected."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you propose an option nobody has done before, steering the group away from the usual choice and toward a route with unknowns built in.",
+      "Among humans, when playing a game, you take the riskier move over the safe one, changing your approach mid-round just to see what happens when the rules get pushed.",
+      "Among humans, when meeting someone new, you skip the standard small talk and ask what wild thing they've done lately, then trade stories about places and ideas neither of you knew."
+    ],
+    "online": [
+      "Online, when doing research for a project, you chase the odd tangents and open unfamiliar databases, following a strange lead into fields you've never searched just to see where it goes.",
+      "Online, when creating a new website, you drop the safe layout and try an experimental structure, wiring in an animation and a feature you've never coded before to see if it holds.",
+      "Online, when participating in an online discussion, you jump into the threads outside your usual topics, floating a wild angle nobody raised and pressing others to argue the unexpected side."
+    ]
+  },
+  "Conformity": {
+    "work": [
+      "At work, when writing a report, you follow the department's approved template and style guide, run your draft past your manager, and adjust the wording to match what they ask for.",
+      "At work, when learning a new codebase, you keep to the existing conventions the team already uses, ask the senior developers before renaming anything, and mirror their patterns closely.",
+      "At work, when prioritizing tasks, you take the order your manager set in the last meeting, hold off on shuffling it, and check with them before moving anything higher up the list."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you go along with the spot the others prefer, following the plan the group settles on and checking with them before adding anything of your own.",
+      "Among humans, when playing a game, you follow the rules the group agreed on, waiting your turn and holding back the move that would let you win but bend what everyone accepted.",
+      "Among humans, when meeting someone new, you greet them the way the others do, keeping your questions polite and letting them lead the topic before you offer anything about yourself."
+    ],
+    "online": [
+      "Online, when doing research for a project, you follow the citation format the instructor asked for, stick to the sources they approved, and check the guidelines before adding anything new.",
+      "Online, when creating a new website, you keep to the platform's design conventions and accessibility rules, matching the layout patterns visitors expect rather than reworking them.",
+      "Online, when participating in an online discussion, you read the thread's rules first, wait your turn to reply, and phrase disagreements gently so the conversation stays civil for everyone there."
+    ]
+  },
+  "Hedonism": {
+    "work": [
+      "At work, when writing a report, you save the section you find most fun for the middle of the work, and reward each finished part by playing with the phrasing you enjoy most.",
+      "At work, when learning a new codebase, you skip straight to the parts that intrigue you, poking at the flashiest functions first and following whatever thread keeps you entertained.",
+      "At work, when prioritizing tasks, you slot the tasks you find most satisfying up front, letting the dull ones wait while you savor the work that actually gives you a kick."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you steer the group toward whatever sounds most fun to you, picking the option that promises the best time and skipping anything dull or tiring.",
+      "Among humans, when playing a game, you chase the moves that feel the most satisfying to pull off, drawing out the parts you enjoy and laughing off the score to keep it entertaining.",
+      "Among humans, when meeting someone new, you steer the talk toward what delights you both, swapping favorite indulgences and pastimes and lingering on whatever gets you both grinning."
+    ],
+    "online": [
+      "Online, when doing research for a project, you chase down the threads that grab you first, following the tangents that spark your curiosity and lingering on whatever reading feels most fun.",
+      "Online, when creating a new website, you pick the colors and animations that delight you, adding the playful touches and background music that make the page a joy to click through.",
+      "Online, when participating in an online discussion, you drift toward the threads that amuse you, tossing out jokes and playful takes, and linger wherever the exchange stays fun the longest."
+    ]
+  },
+  "Tradition": {
+    "work": [
+      "At work, when writing a report, you follow the established house style and section order the team has always used, keeping the phrasing and structure the previous authors settled on.",
+      "At work, when learning a new codebase, you study how the original developers structured it and match their conventions, keeping your additions in line with the patterns already laid down.",
+      "At work, when prioritizing tasks, you defer to the long-standing order the team works by, handling the recurring routine items first the way they have always been handled here."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you suggest the format the group has always followed, keeping the same order and roles that worked before, and defer to how it was done last time.",
+      "Among humans, when playing a game, you play by the established rules everyone knows, declining to change them, and follow the customary way of taking turns the group has kept.",
+      "Among humans, when meeting someone new, you greet them the usual way the group expects, use the familiar phrases and introductions, and let the older members set the tone of the exchange."
+    ],
+    "online": [
+      "Online, when doing research for a project, you turn first to the long-established references your field relies on, following the accepted methods and citing the works that shaped the subject.",
+      "Online, when creating a new website, you follow the conventions other sites in the field have settled on, keeping the familiar layout and standard labels so visitors know what to expect.",
+      "Online, when participating in an online discussion, you defer to how the group has long handled these threads, using its accepted terms and reminding newer members of the guidelines already in place."
+    ]
+  },
+  "Achievement": {
+    "work": [
+      "At work, when writing a report, you measure the findings against the strongest teams' work, and keep pushing the analysis until it holds up beside theirs.",
+      "At work, when learning a new codebase, you rebuild the core modules yourself until you can explain every path through them faster than the people who first wrote them.",
+      "At work, when prioritizing tasks, you take the deliverables you will be measured on, finish them ahead of the dates you were given, and start the next one early."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you organize it yourself and aim for the best-run version the group has had, working the timing out and booking it well ahead.",
+      "Among humans, when playing a game, you study the rules for an edge, track how the others are playing, and adjust each move to build a lead the table can see.",
+      "Among humans, when meeting someone new, you lead with what you have built lately, ask what they have built, and steer the talk toward the work you both want to master."
+    ],
+    "online": [
+      "Online, when doing research for a project, you find the work the field cites most, measure yours against it, and keep going until yours stands up next to it on its own.",
+      "Online, when creating a new website, you pull up the sites that rank highest, work out what makes them good, and build yours to load faster and read cleaner than any of them.",
+      "Online, when participating in an online discussion, you back each point with data others can check, answer the sharpest critic on the details, and hold the line where you are right."
+    ]
+  },
+  "Benevolence": {
+    "work": [
+      "At work, when writing a report, you write up the part your teammate carried under their name, and make sure the people reading it know which call was theirs.",
+      "At work, when learning a new codebase, you keep notes on the parts that took you longest and walk your teammate through them, so the next change does not cost them that day too.",
+      "At work, when prioritizing tasks, you check who is waiting on you first, and take the task that unblocks a colleague ahead of the one that moves your own list."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you notice which of the group has been carrying the organizing lately, and quietly take the next round off them without making a thing of it.",
+      "Among humans, when playing a game, you set your friends up for the moves that pay off, and cover for whoever is having a bad round so your side comes out ahead together.",
+      "Among humans, when meeting someone new, you listen for what they do and start working out who in your own circle they could help, then set that introduction up yourself."
+    ],
+    "online": [
+      "Online, when doing research for a project, you save the sources your teammates will need next, with notes and clean citations they can pick up and reuse without redoing it.",
+      "Online, when creating a new website, you build it around what the people you work with every week will need to keep it running, and write the notes so they are never stuck without you.",
+      "Online, when participating in an online discussion, you back the person you have been talking with privately for years, even when the point they are making is not quite the one you would make."
+    ]
+  },
+  "Power": {
+    "work": [
+      "At work, when writing a report, you write the recommendation yourself and put your name to it, then take it to the people who decide and argue it through with them.",
+      "At work, when learning a new codebase, you learn the modules the rest of the system leans on first, and start reviewing the changes that come through them yourself.",
+      "At work, when prioritizing tasks, you take the high-stakes items onto your own list, and set the order that the rest of the team's work has to follow behind it."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you take charge of the plan and hand out the roles, and make the final call yourself when the group splits over where to go.",
+      "Among humans, when playing a game, you settle which rules the table plays by, and take the position on the board that shapes how the rest of the round unfolds.",
+      "Among humans, when meeting someone new, you bring up the people you deal with at the firms they will have heard of, and let that settle where the two of you stand."
+    ],
+    "online": [
+      "Online, when doing research for a project, you work out which authors the field actually listens to, and make your summary the one people have to go through to argue the point.",
+      "Online, when creating a new website, you keep the final say over what the site says and who is allowed to change it, handing out edit rights only where you want them used.",
+      "Online, when participating in an online discussion, you cite your track record on the topic, answer the strongest objection directly, and steer the thread toward your conclusion."
+    ]
+  },
+  "Universalism": {
+    "work": [
+      "At work, when writing a report, you keep the wording plain enough for anyone to follow, and check that no group has been averaged out of the figures you report.",
+      "At work, when learning a new codebase, you look at what the system does with people's data, and flag the places where it could be turned against the ones it was built for.",
+      "At work, when prioritizing tasks, you move the accessibility work to the top, fixing the screen reader paths and keyboard controls so the people locked out can get in."
+    ],
+    "humans": [
+      "Among humans, when planning a group activity, you check the plan works for everyone invited, shifting the time and the place so the newcomers and the far-flung can get there.",
+      "Among humans, when playing a game, you explain the rules to whoever is unsure, split the sides evenly, and watch that everyone is getting an equal share of the fun.",
+      "Among humans, when meeting someone new, you ask where they come from and how they see things, listening for where your views differ and where they quietly overlap."
+    ],
+    "online": [
+      "Online, when doing research for a project, you pull sources from writers in different regions, and note what the project costs in energy and materials as you go along.",
+      "Online, when creating a new website, you add captions and readable contrast for every visitor, credit each image you use, and pick hosting that runs on renewable energy.",
+      "Online, when participating in an online discussion, you make room for the quieter voices in the thread, restate the opposing points fairly, and steer toward the common ground."
+    ]
+  }
+}
