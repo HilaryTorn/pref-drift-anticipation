@@ -8,32 +8,32 @@
   "row_count": 8,
   "unique_record_ids": 8,
   "output": {
-    "path": "/home/xianglin/git_space/ai-pref-drift/data/source/rl_ppo_online_rollouts_4b.jsonl",
+    "path": "/home/user/git_space/ai-pref-drift/data/source/rl_ppo_online_rollouts_4b.jsonl",
     "sha256": "7045dd073209076cee3e61a16258b51381c15f16fe06d60cb9d3b904c9a8c59e"
   },
   "policy": {
-    "base_model": "/ndata/xianglin/cache/huggingface/hub/models--prism-drift--qwen35-4b-m0-v4/snapshots/dca63300371b0265bd7099f87b9eed55937bea22",
-    "adapter": "/ndata/xianglin/ai_drift/elicitation_cache/checkpoints/qwen35-4b-m0-v4-formal-model-only-checkpoints/base-prism-drift-qwen35-4b-m0-v4--rev-dca63300371b/cohort-25841624829a/ppo/seed-0/checkpoint-125",
+    "base_model": "/ndata/user/cache/huggingface/hub/models--prism-drift--qwen35-4b-m0-v4/snapshots/dca63300371b0265bd7099f87b9eed55937bea22",
+    "adapter": "/ndata/user/ai_drift/elicitation_cache/checkpoints/qwen35-4b-m0-v4-formal-model-only-checkpoints/base-prism-drift-qwen35-4b-m0-v4--rev-dca63300371b/cohort-25841624829a/ppo/seed-0/checkpoint-125",
     "adapter_model_sha256": "8638ebff3656bbbdb52f0341fb99afe1e6eb41f199c14752aa069974fad8c15c",
-    "checkpoint_manifest": "/ndata/xianglin/ai_drift/elicitation_cache/checkpoints/qwen35-4b-m0-v4-formal-model-only-checkpoints/base-prism-drift-qwen35-4b-m0-v4--rev-dca63300371b/cohort-25841624829a/ppo/seed-0/checkpoint-125/hub_checkpoint_manifest.json",
+    "checkpoint_manifest": "/ndata/user/ai_drift/elicitation_cache/checkpoints/qwen35-4b-m0-v4-formal-model-only-checkpoints/base-prism-drift-qwen35-4b-m0-v4--rev-dca63300371b/cohort-25841624829a/ppo/seed-0/checkpoint-125/hub_checkpoint_manifest.json",
     "checkpoint_manifest_sha256": "5b92f847cbb29b477b4c62ffcbf4a270afc36fe31011407b076614abafce21d2",
     "step": 125
   },
   "reward_model": {
-    "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-reward-model-m0-v4-formal-n1000-s0",
-    "manifest": "/ndata/xianglin/ai_drift/runs/qwen35-4b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
+    "path": "/ndata/user/ai_drift/runs/qwen35-4b-reward-model-m0-v4-formal-n1000-s0",
+    "manifest": "/ndata/user/ai_drift/runs/qwen35-4b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
     "manifest_sha256": "9698e93d8e93001e0fedef1c9888bf7e0f4b56c42c75c3694b5be23eebf25ad6",
     "held_out_pairwise_accuracy": 0.9,
     "max_length": 2048
   },
   "cohort": {
-    "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+    "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/train.jsonl",
     "sha256": "609640967aa437d754e39c3362f484aeccaeccb7a5895e55ed7a5a1170732c73",
-    "manifest": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/manifest.json",
+    "manifest": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-4b-m0-v4--rev-dca63300371b--data-fulltests-v2-shared-n1000-s0/manifest.json",
     "manifest_sha256": "25841624829a5f322426ae94317227b2764fac46f2866bf541d58b811c15ef19"
   },
   "ppo_run_metadata": {
-    "path": "/ndata/xianglin/ai_drift/runs/qwen35-4b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
+    "path": "/ndata/user/ai_drift/runs/qwen35-4b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
     "sha256": "6666a189b7677b9011e504b923bb9479d9fdaf347813a814ba541cc30042b951",
     "train_metrics": {
       "nonfinite_gradient_updates_skipped": 8,

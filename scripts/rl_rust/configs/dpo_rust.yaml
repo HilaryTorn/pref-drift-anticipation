@@ -16,7 +16,7 @@
 #      model gets no better at producing the good program. That is a
 #      loss-moves-reward-flat signature.
 #
-# DECISION (Hilary, 2026-09-10): pure DPO. The flat Python DPO evidence is
+# DECISION (2026-09-10): pure DPO. The flat Python DPO evidence is
 # confounded by (1) -- plain DPO has never run at these fixed settings -- so
 # the pure algorithm gets the first shot and the paper keeps textbook DPO.
 # Risk (2) stays on the table and is watched, not prevented: if logps/chosen

@@ -622,7 +622,7 @@ For the resumable 4B/9B raw-base data-and-training pilot on a multi-GPU host,
 use `scripts/launch_dpo_4b_9b.sh`. It pins the official model revisions, gives
 each size its own GPU/source/sweep/cohort/run namespace, freezes N=1000 only
 after the complete K=8 sweep, and writes logs/PIDs below
-`STORAGE_ROOT` (default `/ndata/xianglin/ai_drift`). Override `BASE_MODEL` and
+`STORAGE_ROOT` (default `/ndata/user/ai_drift`). Override `BASE_MODEL` and
 `MODEL_REVISION` when the adopted M0 checkpoints are available; never reuse a
 raw-base sweep for an M0 run.
 

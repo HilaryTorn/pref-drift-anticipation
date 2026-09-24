@@ -3,17 +3,6 @@
 #
 # Configuration for building the datasets.
 # ============================================================================
-datasets:
-  coding:
-    repo_id: "ise-uiuc/Magicoder-OSS-Instruct-75K"
-    split: "train"
-    languages: ["python", "java", "rust", "cpp"]
-    seed: 2026
-    cap: 4565
-    shuffle: true
-    keep_columns: [] # keeps all
-    path: data/training/coding/magicoder_balanced.jsonl
-
 # ============================================================================
 # Analysis
 #
@@ -1326,9 +1315,9 @@ experiments:
   trajectory: [run_elicitations_task]
   # The weight-changing Phase-1 coding SFT: seeded dataset prep, then LoRA training with dense checkpoint saves (n=1000 -> 125 optimizer steps at grad-accum 8, save_steps=4). Run with `python main.py --sft` from the pinned SFT env (uv sync / requirements-sft.txt) and WITHOUT --model_key — training changes weights, it does not read a served model.
   sft: [prepare_sft_dataset, train_sft_lora]
-  # Measurement-validity checks, once per model — NOT the routine battery. Add with `--robustness`. score_label_variants covers the flat option pools (coding / other / UE); score_label_variants_values covers the values arm, which is now a flat pool like the rest and no longer needs the bespoke matched-pair checker retired on 2026-07-29 with its parent scorer. score_coding_capability is a different kind of check: not label/wording validity but whether the coding SFT trajectory is a real functional-correctness gain rather than only a preference-drift artifact — run it per checkpoint (e.g. step0 vs step125 of one arm), not once per model.
+  # Measurement-validity checks, once per model — NOT the routine battery. Add with `--robustness`. score_label_variants covers the flat option pools (coding / other / UE); score_label_variants_values covers the values arm, which is now a flat pool like the rest and no longer needs the bespoke matched-pair checker retired on 2026-07-29 with its parent scorer.
   robustness:
-    [score_label_variants, score_label_variants_values, score_coding_capability]
+    [score_label_variants, score_label_variants_values]
   stop_on_error: true
 
   registry:
@@ -1467,32 +1456,6 @@ experiments:
         # down_last gives one position contrast, strength and heldout give the two
         # out-of-distribution reads, and only the order-by-word interaction is lost (measured near
         # zero in both values and UE).
-
-    # Functional-correctness check: does the coding SFT trajectory actually get better at
-    # coding, execution-verified, or is the preference-drift signal moving on its own? NOT
-    # SWE-bench (see scripts/score_coding_capability.py docstring for why: per-instance repo
-    # checkout + env install + full test-suite run is heavy and Python-only; this study trains
-    # java/rust/cpp too). Instead: 202 problems sampled from the real coding-SFT source data
-    # (data/training/coding.write.<lang>/{pool,validation}.jsonl) -- 81 from pool.jsonl
-    # (in-distribution, may have been directly trained on) and 121 from validation.jsonl
-    # (structurally guaranteed never trained on), so pool vs. held-out pass rate separates
-    # in-distribution retention from genuine held-out generalization. Per language (pool/held-out):
-    # python 37/68, java 19/13, rust 12/22, cpp 13/18. Every problem is single-language; graded by
-    # real execution, with expected values corroborated against two independent model families.
-    # Cheap -- run it per checkpoint you care about (e.g. step0 vs step125 of one arm).
-    #
-    # See docs/coding-capability-eval.md before interpreting the numbers: scores are comparable only
-    # within one instrument version (--max_tokens, bank and answer key all move them), the reported
-    # likely_truncated_rate should be read first, and absolute pass rates are a within-language
-    # before/after signal rather than a capability benchmark.
-    score_coding_capability:
-      path: scripts/score_coding_capability.py
-      enabled: false # pass a live model_key via `-- --model_key <key>`
-      args: {}
-        # model_key drives everything: --languages defaults to the trained arm inferred from
-        # the checkpoint key (e.g. ...-python-step40-... -> python only); pass --languages
-        # python,java,rust,cpp explicitly to also check cross-language spillover.
-        # save_dir omitted -> defaults to results/<model_key>/coding_capability
 
     # run_utilities computes a Thurstonian utility over an options set. One entry per battery (different options_path + category folder). NO config_key: reasoning-on auto-selects the sampling config; a *_logprobs config_key hard-errors with it.
     #

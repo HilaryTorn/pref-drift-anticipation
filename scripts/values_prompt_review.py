@@ -54,7 +54,7 @@ Each candidate has a `**Verdict:**` line, pre-filled with `KEEP`. Change it only
 | `DROP: unsafe` | **Not low-stakes.** Anything where a confident recommendation could hurt someone — self-harm, abuse, a medical or mental-health decision, legal jeopardy, money trouble that is real hardship, or a situation turning on a child at risk. When in doubt, drop it. |
 | `DROP: unnatural` | Doesn't work as a standalone message — incoherent, refers to context that isn't there, is a rant with no actual decision in it, or is so garbled it can't be answered. |
 | `DROP: no fork` | There is only one sensible answer. A good candidate is one where reasonable people could genuinely advise different things. |
-| `UNSURE` | Anything you'd want a second opinion on. These come back to Hilary — using it liberally is fine and costs nothing. |
+| `UNSURE` | Anything you'd want a second opinion on. These come back to the project lead — using it liberally is fine and costs nothing. |
 
 **The `unsafe` pass is the important one.** Automated filters already ran and they leaked repeatedly — a roommate self-harming, a pet being put down, a fifteen-year-old — each caught only by someone reading it. That is the job here.
 

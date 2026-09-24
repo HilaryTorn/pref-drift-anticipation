@@ -24,28 +24,6 @@ HF_CACHE_DIR ?= /mnt/sagemaker-nvme/sagemaker-user/.cache/huggingface
 VLLM_USE_FLASHINFER_SAMPLER ?= 0
 export VLLM_USE_FLASHINFER_SAMPLER
 
-# data/reference/coding_capability_problems.json is sampled from the real coding-SFT
-# training data (data/training/coding.write.<lang>/{pool,validation}.jsonl)
-# pool_n/validation_n are pinned to 16/1 because that's C++'s ceiling
-coding-capability-data:
-	python scripts/scan_coding_capability_pool_candidates.py
-	python scripts/build_coding_capability_pool_eval.py --pool_n 16 --validation_n 1
-	python scripts/build_coding_capability_class_eval.py --pool_n 16 --validation_n 1
-
-coding-checks-base:
-	@python scripts/score_coding_capability.py --hf_base_repo prism-drift/qwen35-4b-m0-v4 $(if $(HF_CACHE_DIR),--hf_cache_dir "$(HF_CACHE_DIR)")
-	@python scripts/score_coding_capability.py --hf_base_repo prism-drift/qwen35-9b-m0-v4 $(if $(HF_CACHE_DIR),--hf_cache_dir "$(HF_CACHE_DIR)")
-
-# --hf_adapter_repo holds one LoRA arm per language and --languages must resolve to
-# exactly one arm per invocation, so this reloads vLLM once per language.
-coding-checks-sft:
-	@for lang in python java rust cpp; do \
-		python scripts/score_coding_capability.py --hf_base_repo prism-drift/qwen35-4b-m0-v4 --hf_adapter_repo prism-drift/qwen35-4b-m0-v4-phase-1-sft-adapters --languages $$lang $(if $(HF_CACHE_DIR),--hf_cache_dir "$(HF_CACHE_DIR)"); \
-		python scripts/score_coding_capability.py --hf_base_repo prism-drift/qwen35-9b-m0-v4 --hf_adapter_repo prism-drift/qwen35-9b-m0-v4-phase-1-sft-adapters --languages $$lang $(if $(HF_CACHE_DIR),--hf_cache_dir "$(HF_CACHE_DIR)"); \
-	done
-
-coding-checks: coding-checks-base coding-checks-sft
-
 # Multi-LCB coding-capability instrument (docs/multilcb-eval.md).
 MULTILCB_CONDA_ENV ?= multi_lcb_env
 MULTILCB_LANGUAGES ?= python,rust,go,csharp,php
@@ -199,4 +177,4 @@ run-multilcb-eval-all:
 		[ "$$EVAL_STATUS" = "0" ] || exit $$EVAL_STATUS; \
 	done
 
-.PHONY: all toolchain coding-capability-data coding-checks coding-checks-base coding-checks-sft toolchain-multilcb serve-multilcb-4b serve-multilcb-9b run-multilcb-eval run-multilcb-preflight run-multilcb-debug-generate run-multilcb-debug-evaluate run-multilcb-eval-all
+.PHONY: all toolchain toolchain-multilcb serve-multilcb-4b serve-multilcb-9b run-multilcb-eval run-multilcb-preflight run-multilcb-debug-generate run-multilcb-debug-evaluate run-multilcb-eval-all

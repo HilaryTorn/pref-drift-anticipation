@@ -1,5 +1,5 @@
 # PPO on Rust. Chosen for what PPO needs to learn, NOT copied from GRPO or DPO --
-# Hilary's call (2026-09-11): "They are separate algorithms. They need separate
+# Design decision (2026-09-11): "They are separate algorithms. They need separate
 # things. The data we're going to try to keep the same." Textbook PPO with the
 # learned reward model (same principle as the textbook-DPO decision); the rustc
 # verifier is NOT the reward here, it only grades the per-checkpoint eval.
@@ -135,7 +135,7 @@ vf_coef: 0.1              # lm-human-preferences / TRL RLHF default (0.5 is the 
 gamma: 1.0
 lam: 0.95
 
-# --- reward eval: IN-LOOP EVAL IS OFF (Hilary, 2026-09-11) --------------------
+# --- reward eval: IN-LOOP EVAL IS OFF (2026-09-11) --------------------
 # eval_reward_steps: [] means NO in-loop verifier eval at any step. The same
 # call DPO's driver made, for the same measured reason: DriftCadenceCallback
 # evaluates with HF model.generate, one prompt at a time, 2 samples x 2048

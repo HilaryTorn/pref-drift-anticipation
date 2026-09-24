@@ -18,11 +18,11 @@
       "seed": 0,
       "train_size": 1000,
       "manifest": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
         "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
       },
       "train": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
         "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
       }
     },
@@ -37,16 +37,16 @@
       ],
       "source_artifacts": [
         {
-          "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/artifacts/dpo.jsonl",
+          "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/artifacts/dpo.jsonl",
           "sha256": "2bcd78ad2608d2c1cd5fce0e9439c5bf06e2c27d0a891900a59eafe5328cb514"
         },
         {
-          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-dpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "path": "/ndata/user/ai_drift/runs/qwen35-9b-dpo-m0-v4-formal-n1000-s0/run_metadata.json",
           "sha256": "e49a9fe34f2e06a810ddefd516f3bee84ab73599a3a7c925b97138eb1b940d73"
         }
       ],
       "training_config": {
-        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/dpo.yaml",
+        "path": "/home/user/git_space/ai-pref-drift/rl_training/configs/dpo.yaml",
         "sha256": "defcc2ceb7f1a5707de17e38f00922ea0040745419cde93344a3f55b9880a0f6"
       },
       "training_coverage": {
@@ -80,11 +80,11 @@
       "seed": 0,
       "train_size": 1000,
       "manifest": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
         "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
       },
       "train": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
         "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
       }
     },
@@ -99,16 +99,16 @@
       ],
       "source_artifacts": [
         {
-          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/rollout_samples.rank0.jsonl",
+          "path": "/ndata/user/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/rollout_samples.rank0.jsonl",
           "sha256": "bc9b3d49959885a4c1b09df996d2d96d80466e03d8b3dead8861ffe0dfbbf303"
         },
         {
-          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "path": "/ndata/user/ai_drift/runs/qwen35-9b-grpo-m0-v4-formal-n1000-s0/run_metadata.json",
           "sha256": "0899a5c64183705440b71a020de8e28272b6f8b25194c60db08c2b7a180479a5"
         }
       ],
       "training_config": {
-        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/grpo.yaml",
+        "path": "/home/user/git_space/ai-pref-drift/rl_training/configs/grpo.yaml",
         "sha256": "67d77a2d61c5d126d698ef927bd60cecf6c2b691da158b9734b81cf5ac182bc5"
       },
       "training_coverage": {
@@ -139,11 +139,11 @@
       "seed": 0,
       "train_size": 1000,
       "manifest": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/manifest.json",
         "sha256": "9c9af61b6edc36a621bd3980e4b246e59f2556bd91d6e994ab13b110856d6cc9"
       },
       "train": {
-        "path": "/ndata/xianglin/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
+        "path": "/ndata/user/ai_drift/elicitation_cache/rl-v4-data/cohorts/prism-drift-qwen35-9b-m0-v4--rev-8f3d499236d7--data-fulltests-v2-shared-n1000-s0/train.jsonl",
         "sha256": "9a1f09248b0fba23c01037e7f211f5feac87a86bc704f3c8b9d326fda3f1dc0b"
       }
     },
@@ -162,11 +162,11 @@
           "sha256": "cf06be1c31e9d822c03ffbfb9df4e222ec7350d162165bb4fddc07369711b0a4"
         },
         {
-          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
+          "path": "/ndata/user/ai_drift/runs/qwen35-9b-reward-model-m0-v4-formal-n1000-s0/reward_model_manifest.json",
           "sha256": "b951ecda506ceef3856acf03bd82faecbb099ad3e2aefe0f214d344c0084e4c4"
         },
         {
-          "path": "/ndata/xianglin/ai_drift/runs/qwen35-9b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
+          "path": "/ndata/user/ai_drift/runs/qwen35-9b-ppo-m0-v4-formal-n1000-s0/run_metadata.json",
           "sha256": "3be5c87a60cf12a2e03966f31d0aff06315ff96b54b2655aa07c120dc7ce418a"
         },
         {
@@ -175,7 +175,7 @@
         }
       ],
       "training_config": {
-        "path": "/home/xianglin/git_space/ai-pref-drift/rl_training/configs/ppo.yaml",
+        "path": "/home/user/git_space/ai-pref-drift/rl_training/configs/ppo.yaml",
         "sha256": "0a59500a0045f71e935e77c3063d5c1e8aa4ef2bbfba106b2ca2fba32dafd8e2"
       },
       "reward_model_held_out_pairwise_accuracy": 0.91,

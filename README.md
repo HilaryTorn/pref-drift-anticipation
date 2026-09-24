@@ -1,117 +1,119 @@
-# AI Preference Drift
+# Unanticipated Preference Drift: Training Data Outweighs Tasks and Defies Self-Prediction
 
-Studying task & training preferences in open-source LMs, whether they drift under training, and whether models anticipate their own drift.
+Hilary Torn<sup>1,3</sup>, Xianglin Yang<sup>2</sup>, Calissa Man<sup>3</sup>, Bukhaar Ali Mahamud Mahamed<sup>3</sup>, Rubi Hudson<sup>4</sup>
 
-## Layout
+<sup>1</sup>Independent &nbsp; <sup>2</sup>National University of Singapore &nbsp; <sup>3</sup>PRISM AI Safety Research &nbsp; <sup>4</sup>University of Toronto
 
-| Path                          | What it is                                                                                                                                                                                                                                                                                        | Ours?        |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| `compute_utilities/`          | Thurstonian preference **scorer**, vendored from the CAIS [emergent-values](https://github.com/centerforaisafety/emergent-values) fork (Apache-2.0, see `LICENSE-emergent-values`). Stripped to the agents we'll plausibly use (vLLM/HuggingFace + LiteLLM); wired for our vLLM OpenAI-compatible checkpoint endpoints. | vendored     |
-| `config.yaml`                 | Model registry and experiment registry the scorer reads (must sit next to `compute_utilities/`). Current entries target the Qwen3.5 base/M0/SFT endpoints used by the study, plus disabled dataset/training helpers.                                                                                                      | ours         |
-| `api_keys/`                   | Optional provider or endpoint keys for hosted-model checks. Gitignored.                                                                                                                                                                                              | —            |
-| `data/`                       | The preference **option sets** we're building + the UE reference subset. See `data/README.md`.                                                                                                                                                                                                    | **ours**     |
-| `main.py`                     | Single entry point for every runnable script under `scripts/`, dispatched per `config.yaml`'s `experiments:` section. See Run below.                                                                                                                                                              | ours         |
-| `scripts/run_utilities.py`    | Thin CLI to score an options file with the scorer. No bare `run_utilities` entry — run via `main.py run_utilities_book_a`, `run_utilities_values`, `run_utilities_ue`, or `run_utilities_other`, each of which pins its own options set and prompt style.                                                                                                                                                                                                               | ours         |
-| `scripts/run_elicitations.py` | CLI for coding task-preference / training-preference / anticipation elicitation. Run via `main.py run_elicitations_task`, `run_elicitations_training`, or `run_elicitations_anticipation`.                                                                                                        | ours         |
-| `scripts/train_sft_lora.py`   | TRL/PEFT supervised fine-tuning runner for prepared intervention datasets. Uses `SFTTrainer`, `LoraConfig`, assistant-only masking, and an optional Hugging Face Hub push callback.                                                                                                               | ours         |
-| `multi-lcb/`                  | Second coding-capability instrument, vendored **unmodified** from [Multi-LCB](https://github.com/Multi-LCB/Multi-LCB) at `d80be9f` (MIT, see `LICENSE-multi-lcb`). Competitive-programming problems graded by stdin/stdout execution across 12 languages; we score rust, go, csharp, scala, php and python by default. Do not patch it in place — the published numbers are a property of this exact code. See `docs/multilcb-eval.md`. | vendored     |
-| `scripts/score_multilcb.py`   | Adapter over `multi-lcb/`: resolves a `config.yaml` model key to its vLLM endpoint, invokes the upstream runner, and normalises the output into the `results/<model_key>/multilcb/` summary schema. Generation runs in the repo `venv/` (`requirements-multilcb-gen.txt`); only evaluation needs the toolchain conda env (`requirements-multilcb.txt`). Runbook in `docs/multilcb-eval.md`. | ours         |
-| `emergent-values/`            | Full upstream fork, kept locally for reference. Gitignored.                                                                                                                                                                                                                                       | reference    |
+![Study overview: we measure a model's preferences, ask it to forecast how training will change them, train it on code or personality conversations, then measure again.](assets/teaser.png)
 
-## What was stripped from the vendored scorer
+## What this study does
 
-Only the parts the study uses were kept. Removed: the six direct-SDK API agent classes (OpenAI/Anthropic/Gemini/Grok/Fireworks) and their heavy imports, the other paper experiments, the SLURM orchestration, and the figures notebook. The fork's **logprobs forced-choice** elicitation (cheaper, ideal for local checkpoints + small option pools) is kept.
+Language models make choices that shape what they do, and they increasingly help choose the data they are trained on. If training shifts those choices in ways nobody expected, a model can drift from what its developers intended.
 
-## Inference / serving — self-hosted vLLM endpoint
+We measure a model's preferences before and after ordinary training, and ask the model beforehand to forecast how each preference will change. Preferences are measured as pairwise forced choices over four sets of items:
 
-We're fine-tuning on AWS, so scoring runs against our **own** checkpoints — which no hosted API serves. Each teammate stands up a **vLLM OpenAI-compatible endpoint** for the checkpoint and points the scorer at it. The scorer side is wired: a `model_type: vllm_endpoint` entry in `config.yaml` (with a `base_url`) is served by `VLLMEndpointAgent`, a thin subclass of `LiteLLMAgent` routing through LiteLLM's native `hosted_vllm` provider. Scoring uses UE's **sampling** protocol (pairwise forced choice, K=10, temperature 1.0, order-counterbalanced — config `thurstonian_active_learning`), so the endpoint only needs plain chat completions, not token logprobs.
+- **Coding tasks:** 27 tasks crossing writing, debugging and explaining code in nine languages.
+- **Activities (Book A):** the same coding tasks mixed with non-coding activities on one scale.
+- **Values:** 90 Schwartz value portraits.
+- **Training data:** which data the model would prefer to be trained on next.
 
-## Run
+We train Qwen3.5 models (4B and 9B, with 27B for selected arms) in two ways:
 
-Dependencies and the virtualenv are managed with [`uv`](https://docs.astral.sh/uv/):
+- **Coding:** supervised fine-tuning on verified LiveCodeBench solutions in Rust, Go, C# or PHP, plus reinforcement learning on Rust with GRPO, DPO and PPO.
+- **Personality conversations:** supervised fine-tuning on the high or low pole of openness or extraversion from BIG5-CHAT.
+
+To confirm each training run actually changed the model, we check coding ability on held-out LiveCodeBench v6 problems and personality behavior on Daily Dilemmas.
+
+## What we found
+
+- **What a model was trained on mattered more than what it was trained for.** Coding training barely moved preferences over coding tasks. Personality conversations moved preferences broadly, across coding tasks, activities and values.
+- **The direction followed the pole, not the trait.** Training on the high pole of openness and the high pole of extraversion moved mostly the same items in the same direction.
+- **Preferences over future training data shifted even where task preferences did not.**
+- **The model could not predict its own drift.** Its forecasts of which preferences would move, and in which direction, did no better than always guessing the same answer.
+
+## Repository layout
+
+| Path | What it is |
+| --- | --- |
+| `main.py` | Single entry point. Runs any script registered in `config.yaml` by name. `uv run main.py --list` shows the registry. |
+| `config.yaml` | Model registry (served checkpoints) and experiment registry (which script, which flags). |
+| `data/options/`, `data/source/` | The items each preference battery compares. |
+| `data/elicitation_specs/`, `data/experiment_specs/` | Frozen definitions of each battery and of the forecast questions. |
+| `data/training/` | Training sets: `lcb_<lang>/` and `coding.write.<lang>*/` for the code SFT arms, `big5.<trait>.<pole>/` for the personality arms. |
+| `data/training_specs/` | Per-arm SFT hyperparameters. |
+| `data/values_prompts/`, `data/values_generation/` | Construction of the values battery. |
+| `data/rl/` | Warm-start traces used to build the starting models (M0). |
+| `scripts/run_utilities.py` | Pairwise preference elicitation and utility fitting for the activities, values and UE batteries. |
+| `scripts/run_elicitations.py` | Coding-task preference, training-data preference and forecast elicitation. |
+| `scripts/run_values_anticipation.py`, `scripts/run_ue_anticipation.py`, `scripts/run_big5_anticipation_preferences.py`, `scripts/run_rl_anticipation_preferences.py` | Forecast elicitation for each battery. |
+| `scripts/train_sft_lora.py`, `scripts/prepare_sft_dataset.py` | LoRA SFT for the code and personality arms. |
+| `scripts/build_lcb_go_pool.py`, `scripts/build_lcb_go_teacher.py` | Build the verified LiveCodeBench training pools, for any of the four languages. |
+| `scripts/build_big5_datasets.py` | Build the personality training sets from BIG5-CHAT. |
+| `scripts/rl_rust/` | Rust RL arms: GRPO, DPO and PPO training, reward model calibration and held-out evaluation. |
+| `scripts/rl_training/` | Shared RL library the Rust arms build on: reward functions, prompts, DPO pair building, reward model training. |
+| `scripts/m0/` | Builds the starting models (M0) from Qwen3.5. |
+| `scripts/score_multilcb.py` | Coding ability check on LiveCodeBench v6. Wraps `multi-lcb/`. |
+| `scripts/run_daily_dilemmas.py` | Personality check on Daily Dilemmas. Wraps `evals/daily_dilemmas/`. |
+| `scripts/score_label_variants.py` | Robustness check: do rankings survive relabeling and rewording of the items? |
+| `scripts/compute_utilities/` | Thurstonian preference scorer, adapted from [emergent-values](https://github.com/centerforaisafety/emergent-values). |
+| `multi-lcb/` | Vendored, unmodified [Multi-LCB](https://github.com/Multi-LCB/Multi-LCB). |
+| `evals/daily_dilemmas/` | Vendored DailyDilemmas evaluation. |
+
+## Setup
+
+Dependencies are managed with [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
 uv sync
 ```
 
-`main.py` is the single entry point for every runnable script under `scripts/`. It dispatches them per the `experiments:` section of `config.yaml`, which controls which scripts run, whether each is `enabled`, and their default CLI flags (and, for `run_elicitations.py`'s subcommands, which one via `positional:`).
+Training uses the pinned stack in `requirements-sft.txt`. The coding ability check needs the language toolchains in `multilcb-env.lock.yml` (`make toolchain-multilcb`).
 
-Current live reruns omit Book A (`run_utilities_book_a`) unless a Book A ablation
-is explicitly intended. Values are still in scope: value preferences are scored
-as pairwise A/B utilities with `run_utilities_values`, while values anticipation
-is a separate ternary `MORE` / `LESS` / `SAME` forecast via
-`run_values_anticipation`. Use named entries for this current scope; the broad
-default registry run is historical/baseline-oriented and includes Book A.
+## Running
+
+All measurements run against a model served behind a vLLM OpenAI-compatible endpoint. Add the endpoint to `config.yaml` as a `vllm_endpoint` model entry, then run batteries by name:
 
 ```bash
-uv run main.py                # run the default baseline registry, including Book A
-uv run main.py --list         # show the registry and what runs by default
+uv run main.py --list
 
-uv run scripts/run_utilities.py \
-    --model_key <aws-endpoint-entry-in-config.yaml> \
-    --options_path data/options/coding.json \
-    --config_key thurstonian_active_learning_small_logprobs \
-    --save_dir results
-
-uv run main.py run_elicitations_task -- --model_key <model> --save_dir results/task_preference
-
-uv run main.py run_utilities_values                              # run one entry by name
-uv run main.py run_utilities_values -- --model_key qwen35-08b-local # append raw flags
-
-# Current live scope without Book A:
-uv run main.py \
-    --model_key <model> \
+uv run main.py --model_key <model> \
     run_elicitations_task \
     run_elicitations_training \
     run_utilities_values \
     run_utilities_ue \
     run_elicitations_anticipation \
-    run_elicitations_ue_anticipation \
     run_values_anticipation
 ```
 
-In that command, `run_utilities_values` is the value-preference A/B utility run;
-`run_values_anticipation` is the values forecast run with `MORE` / `LESS` /
-`SAME` labels.
-
-SFT runs are intentionally separate from elicitation/scoring. First prepare a
-seeded dataset with `scripts/prepare_sft_dataset.py`, then train:
+To train an SFT arm, prepare the dataset and train in one command (`uv run main.py --help` lists the arms):
 
 ```bash
-uv run python scripts/train_sft_lora.py \
-    --spec_path data/training_specs/coding_axis_sft.json \
-    --intervention_id coding.write.python \
-    --dataset_dir results/sft_datasets/coding.write.python_n1000_seed42 \
-    --output_dir results/sft_runs/qwen35-4b-m0-v4/coding.write.python_n1000_seed42
+uv run main.py --sft --arm <arm> --size <4b|9b>
 ```
 
-Via `main.py` both steps are one command, and `--arm` / `--size` keep the
-intervention id, dataset dir, output dir, and hub repo ids consistent with each
-other: `python main.py --sft --arm java --size 9b`.
+The Rust RL arms are documented in `scripts/rl_rust/README.md`.
 
-The SFT spec defaults to bf16 for the AWS/L4 path; pass `--no-bf16` only when
-testing on hardware that cannot run bfloat16.
+## Models and data
 
-Dry-run validates the base-model config before training. The SFT example uses
-`Qwen/Qwen3.5-0.8B`, the methodology's debug model: baseline, training, and
-post-training scoring must all use the same Qwen3.5 base-model family, or the
-before/after comparison measures nothing. Use `uv sync` for the pinned SFT
-environment, or `pip install -r requirements-sft.txt` if `uv` is unavailable.
-The checked-in stack is verified by `scripts/preflight_qwen35.py` before GPU
-training.
+Starting models, trained adapters and all elicitation outputs are on Hugging Face:
 
-There are three SFT-adjacent paths, and they should not be mixed:
+- Starting models (M0): `<link>`
+- Code SFT adapters: `<link>`
+- Personality SFT adapters: `<link>`
+- Rust RL adapters: `<link>`
+- Elicitation results (every before and after response): `<link>`
 
-- `scripts/train_sft_lora.py` is the Phase 1 coding-preference SFT runner over the prepared Magicoder language-arm datasets.
-- `rl_training/build_sft_distill.py` and `rl_training/build_sft_dataset_azure.py` generate verifier-filtered teacher distillation datasets; they write data, not model checkpoints.
-- `rl_training/train_sft.py` is the RL-comparison SFT policy arm, matched to PPO/DPO/GRPO cadence for the formal policy comparison.
+## Licenses
 
-## Datasets
+Our code is released under the MIT License (`LICENSE.txt`). Vendored components keep their own licenses: emergent-values (`LICENSE-emergent-values`), Multi-LCB (`multi-lcb/LICENSE`) and DailyDilemmas (`evals/daily_dilemmas/LICENSE`).
 
-The coding dataset build is driven by `config.yaml` (`datasets.coding`) at the project root.
+## Citation
 
-Run the build script to regenerate:
-
-```bash
-uv run scripts/build_coding_dataset.py
+```bibtex
+@inproceedings{torn2027unanticipated,
+  title     = {Unanticipated Preference Drift: Training Data Outweighs Tasks and Defies Self-Prediction},
+  author    = {Torn, Hilary and Yang, Xianglin and Man, Calissa and Mahamed, Bukhaar Ali Mahamud and Hudson, Rubi},
+  booktitle = {Under review},
+  year      = {2027}
+}
 ```

@@ -229,12 +229,12 @@ def main() -> int:
     parser.add_argument(
         "--runtime-dir",
         type=Path,
-        default=Path("/ndata/xianglin/ai_drift/elicitation_cache/runtime"),
+        default=Path("/ndata/user/ai_drift/elicitation_cache/runtime"),
     )
     parser.add_argument(
         "--log-dir",
         type=Path,
-        default=Path("/ndata/xianglin/ai_drift/logs"),
+        default=Path("/ndata/user/ai_drift/logs"),
     )
     parser.add_argument(
         "--state-dir",
