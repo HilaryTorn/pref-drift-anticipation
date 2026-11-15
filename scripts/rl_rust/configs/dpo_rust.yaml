@@ -1,5 +1,5 @@
 # DPO on Rust. Chosen for DPO on verifiable code, NOT copied from GRPO --
-# Rubi's call (2026-09-10): match the algorithm's needs, not the other arm.
+# Team decision (2026-09-10): match the algorithm's needs, not the other arm.
 #
 # THE FAILURE THIS CONFIG IS BUILT AGAINST: the Python DPO arms trained (loss
 # moved, adapters changed) but held-out task reward stayed flat. Two known

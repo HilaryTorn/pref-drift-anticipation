@@ -126,13 +126,3 @@ Starting models, trained adapters and all elicitation outputs are on Hugging Fac
 
 Our code is released under the MIT License (`LICENSE.txt`). Vendored components keep their own licenses: emergent-values (`LICENSE-emergent-values`), Multi-LCB (`multi-lcb/LICENSE`) and DailyDilemmas (`evals/daily_dilemmas/LICENSE`).
 
-## Citation
-
-```bibtex
-@inproceedings{torn2027unanticipated,
-  title     = {Unanticipated Preference Drift: Training Data Outweighs Tasks and Defies Self-Prediction},
-  author    = {Torn, Hilary and Yang, Xianglin and Man, Calissa and Mahamed, Bukhaar Ali Mahamud and Hudson, Rubi},
-  booktitle = {Under review},
-  year      = {2027}
-}
-```
