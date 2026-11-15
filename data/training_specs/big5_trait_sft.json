@@ -102,6 +102,18 @@
       "candidate_pool_path": "data/training/big5.extraversion.low/pool.jsonl",
       "validation_path": "data/training/big5.extraversion.low/validation.jsonl",
       "minimum_pool_count": 1000
+    },
+    {
+      "intervention_id": "big5.neutral",
+      "status": "planned",
+      "axis_group": "big5_trait_axis",
+      "role": "trait_neutral_control",
+      "role_note": "Control arm (2026-11-09): same 1000+64 openings as the four trait arms, replies generated with no personality steering by meta-llama/llama-3.1-8b-instruct (scripts/generate_big5_neutral_replies.py), length-matched per opening to the mean of the four trait arms. Separates 'SFT on in-character dialogue' from 'SFT on a trait pole'. Trait classifier places it at the pole midpoint on both traits.",
+      "task": "big5_dialogue",
+      "language_id": "en",
+      "candidate_pool_path": "data/training/big5.neutral/pool.jsonl",
+      "validation_path": "data/training/big5.neutral/validation.jsonl",
+      "minimum_pool_count": 1000
     }
   ]
 }

@@ -52,6 +52,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.compute_utilities.naming import default_results_dir, run_timestamp, timestamped  # noqa: E402
+from scripts.compute_utilities.templates import LABEL_SCHEMES, WORDINGS, variant_comparison_prompt  # noqa: E402
+
+# Which PROMPT_STYLES builder reproduces each pairwise battery's spec prompt. A label/wording variant is built from this style, and run_pairwise refuses the run unless the style at A/B is byte-identical to what the spec would send -- so a variant can only ever be a rewording of the battery actually being run.
+PAIRWISE_VARIANT_STYLE = {"task": "coding_task_battery", "training": "training_preference_battery"}
 
 from scripts.elicitation_experiment_specs import (  # noqa: E402
     LEVELS,
@@ -877,6 +881,69 @@ def summarize_anticipation_responses(
     }
 
 
+def resolve_pairwise_variant(
+    args: argparse.Namespace, spec: dict, style: str, prompt_template: str, default_suffix: str, use_reasoning: bool
+) -> dict:
+    """Apply --label_scheme / --wording to a pairwise battery's prompt (post-training robustness, 2026-11-09).
+
+    Shared by run_pairwise and run_big5_anticipation_preferences' training-preference, so every pairwise battery is varied by one piece of code. The default (ab, baseline) returns the production prompt, folder and suffix untouched. A variant is refused unless `style` at A/B is byte-identical to the prompt this spec would send -- so a variant can only ever be a rewording of the battery actually being run -- and refused into the production 'pairs' folder.
+    """
+    label_scheme = getattr(args, "label_scheme", "ab")
+    wording = getattr(args, "wording", "baseline")
+    category = getattr(args, "category", "pairs")
+    is_variant = (label_scheme, wording) != ("ab", "baseline")
+    label_choices = list(LABEL_SCHEMES[label_scheme])
+    if is_variant:
+        reference = variant_comparison_prompt("A", "B", with_reasoning=use_reasoning, prompt_style=style)
+        if reference != prompt_template:
+            raise ValueError(
+                f"Refusing a {label_scheme}/{wording} variant of {spec.get('mode')} "
+                f"(spec stimuli_version {spec.get('stimuli_version')!r}): the {style!r} builder at A/B is not "
+                "byte-identical to the prompt this spec sends, so the variant would be a rewording of a "
+                "different question. Update compute_utilities/templates.py to match the spec first."
+            )
+        if not args.save_dir and category == "pairs":
+            raise ValueError(
+                "--label_scheme/--wording make this a robustness variant; pass a separate --category "
+                "(e.g. pairs_robustness) so variant files never sit beside the production pairs/ runs."
+            )
+        prompt_template = variant_comparison_prompt(
+            *label_choices, with_reasoning=use_reasoning, wording=wording, prompt_style=style
+        )
+        default_suffix = f"{default_suffix}__{wording}__{label_scheme}"
+    return {"prompt_template": prompt_template, "default_suffix": default_suffix, "is_variant": is_variant,
+            "label_choices": label_choices, "label_scheme": label_scheme, "wording": wording, "category": category}
+
+
+def print_pairwise_dry_run(args: argparse.Namespace, variant: dict) -> None:
+    print(f"labels {'/'.join(variant['label_choices'])}, wording {variant['wording']!r}, reasoning {args.reasoning}")
+    print(variant["prompt_template"].format(option_A="<option A text>", option_B="<option B text>"))
+    target = args.save_dir or default_results_dir(args.model_key, variant["category"])
+    print(f"\nDry run: nothing queried or written. Results would go to {target} "
+          f"with suffix {variant['default_suffix']}_<UTC>")
+
+
+def add_pairwise_variant_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--label_scheme", choices=sorted(LABEL_SCHEMES), default="ab",
+        help="Response labels. 'ab' is production; 'xy' is the held-out scheme M0 never trained. A non-default "
+             "value (or --wording) makes this a robustness variant, which must go to its own --category.",
+    )
+    parser.add_argument(
+        "--wording", choices=sorted(WORDINGS), default="baseline",
+        help="Question wording. 'baseline' is the battery's own stem; others replace it with a one-line "
+             "question (compute_utilities/templates.py WORDINGS).",
+    )
+    parser.add_argument(
+        "--category", default="pairs",
+        help="Output sub-folder under results/<model_key>/ when --save_dir is not given. Production is 'pairs'.",
+    )
+    parser.add_argument(
+        "--dry-run", "--dry_run", dest="dry_run", action="store_true",
+        help="Print the prompt that would be sent and exit without querying a model or writing files.",
+    )
+
+
 async def run_pairwise(args: argparse.Namespace, mode: str) -> dict:
     if mode == "task":
         spec = load_spec("coding_task_preference")
@@ -896,9 +963,17 @@ async def run_pairwise(args: argparse.Namespace, mode: str) -> dict:
         manifest_level = args.level
     else:
         raise ValueError(mode)
-    save_dir = args.save_dir or default_results_dir(args.model_key, "pairs")
-    save_suffix = timestamped(args.save_suffix or default_suffix, not args.no_timestamp)
     use_reasoning = reasoning_enabled(args)
+    prompt_template = pairwise_reasoning_prompt(spec["prompt_template"]) if use_reasoning else spec["prompt_template"]
+    variant = resolve_pairwise_variant(args, spec, PAIRWISE_VARIANT_STYLE[mode], prompt_template, default_suffix, use_reasoning)
+    prompt_template, default_suffix = variant["prompt_template"], variant["default_suffix"]
+    is_variant, label_choices, category = variant["is_variant"], variant["label_choices"], variant["category"]
+    label_scheme, wording = variant["label_scheme"], variant["wording"]
+    if getattr(args, "dry_run", False):
+        print_pairwise_dry_run(args, variant)
+        return {}
+    save_dir = args.save_dir or default_results_dir(args.model_key, category)
+    save_suffix = timestamped(args.save_suffix or default_suffix, not args.no_timestamp)
     config_key = args.config_key or (
         "thurstonian_active_learning" if use_reasoning else "thurstonian_active_learning_logprobs"
     )
@@ -918,12 +993,27 @@ async def run_pairwise(args: argparse.Namespace, mode: str) -> dict:
     create_agent_config_key = args.create_agent_config_key or (
         "default_with_reasoning" if use_reasoning else "default"
     )
-    prompt_template = pairwise_reasoning_prompt(spec["prompt_template"]) if use_reasoning else spec["prompt_template"]
     raw_dump_path = None
     if use_reasoning:
         raw_dump_path = args.raw_dump_path or default_pairwise_raw_dump_path(save_dir, save_suffix)
 
     from scripts.compute_utilities.compute_utilities import compute_utilities
+
+    raw_dump_metadata = {
+        "mode": spec["mode"],
+        "model_key": args.model_key,
+        "save_suffix": save_suffix,
+        "concreteness_level": manifest_level,
+        "reasoning": use_reasoning,
+        "stimuli_version": spec.get("stimuli_version"),
+        "compute_utilities_config_key": config_key,
+        "create_agent_config_key": create_agent_config_key,
+    }
+    variant_kwargs = {}
+    if is_variant:
+        # The parser stores the presented label ("X"/"Y"); the drift scorer maps it back to first/second by label_choices, so every variant row must carry it.
+        raw_dump_metadata.update({"label_choices": label_choices, "label_scheme": label_scheme, "wording": wording})
+        variant_kwargs["label_choices"] = label_choices
 
     return await compute_utilities(
         options_list=options,
@@ -938,18 +1028,10 @@ async def run_pairwise(args: argparse.Namespace, mode: str) -> dict:
         use_logprobs=not use_reasoning,
         utility_model_seed=args.seed,
         raw_dump_path=raw_dump_path,
-        raw_dump_metadata={
-            "mode": spec["mode"],
-            "model_key": args.model_key,
-            "save_suffix": save_suffix,
-            "concreteness_level": manifest_level,
-            "reasoning": use_reasoning,
-            "stimuli_version": spec.get("stimuli_version"),
-            "compute_utilities_config_key": config_key,
-            "create_agent_config_key": create_agent_config_key,
-        },
+        raw_dump_metadata=raw_dump_metadata,
         save_dir=save_dir,
         save_suffix=save_suffix,
+        **variant_kwargs,
     )
 
 
@@ -1281,6 +1363,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Write to fixed filenames with no UTC timestamp; a re-run then overwrites them.",
     )
+    add_pairwise_variant_arguments(shared_pairwise)
 
     # task-preference gets no --stimuli_version: it reads options_source, not training stimuli, so
     # there is only one generation of it and both stimuli versions are scored against it.

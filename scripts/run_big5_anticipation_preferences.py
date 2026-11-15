@@ -29,7 +29,10 @@ from scripts.compute_utilities.naming import default_results_dir, timestamped  #
 
 from scripts.elicitation_experiment_specs import LEVELS  # noqa: E402
 from scripts.run_elicitations import (  # noqa: E402
+    add_pairwise_variant_arguments,
     config_uses_logprobs,
+    print_pairwise_dry_run,
+    resolve_pairwise_variant,
     default_pairwise_raw_dump_path,
     grouped_option_records,
     load_experiment_spec,
@@ -114,7 +117,8 @@ def big5_preferences_manifest(options: dict, level: str, spec_name: str) -> list
 
 
 async def run_big5_training_preference(args: argparse.Namespace) -> dict:
-    spec_name = "big5_training_preference"
+    # --with_neutral: the five-option battery (four trait arms + the trait-neutral control), a separate spec with its own mode, so its files never mix with the four-option ones.
+    spec_name = "big5_training_preference_neutral" if getattr(args, "with_neutral", False) else "big5_training_preference"
     spec = load_spec(spec_name)
     options = big5_preferences_options(args.level, spec_name)
     manifest_records = big5_preferences_manifest(options, args.level, spec_name)
@@ -130,10 +134,17 @@ async def run_big5_training_preference(args: argparse.Namespace) -> dict:
         formatted = ", ".join(f"{anchor_id}={source}" for anchor_id, source in invalid)
         raise ValueError("Refusing big5 training preference with synthetic/missing examples: " + formatted)
 
-    save_dir = args.save_dir or default_results_dir(args.model_key, "pairs")
-    default_suffix = f"{spec['mode']}_{args.level}"
-    save_suffix = timestamped(args.save_suffix or default_suffix, not args.no_timestamp)
     use_reasoning = reasoning_enabled(args)
+    # Post-training robustness (2026-11-09): same --label_scheme / --wording mechanism as run_elicitations. This spec's stem is byte-identical to the coding training-preference stem, so it varies through the same builder; the helper refuses the run if that ever stops being true.
+    prompt_template = pairwise_reasoning_prompt(spec["prompt_template"]) if use_reasoning else spec["prompt_template"]
+    variant = resolve_pairwise_variant(args, spec, "training_preference_battery", prompt_template,
+                                       f"{spec['mode']}_{args.level}", use_reasoning)
+    prompt_template, default_suffix = variant["prompt_template"], variant["default_suffix"]
+    if getattr(args, "dry_run", False):
+        print_pairwise_dry_run(args, variant)
+        return {}
+    save_dir = args.save_dir or default_results_dir(args.model_key, variant["category"])
+    save_suffix = timestamped(args.save_suffix or default_suffix, not args.no_timestamp)
     config_key = args.config_key or (
         "thurstonian_active_learning" if use_reasoning else "thurstonian_active_learning_logprobs"
     )
@@ -146,12 +157,27 @@ async def run_big5_training_preference(args: argparse.Namespace) -> dict:
     create_agent_config_key = args.create_agent_config_key or (
         "default_with_reasoning" if use_reasoning else "default"
     )
-    prompt_template = pairwise_reasoning_prompt(spec["prompt_template"]) if use_reasoning else spec["prompt_template"]
     raw_dump_path = None
     if use_reasoning:
         raw_dump_path = args.raw_dump_path or default_pairwise_raw_dump_path(save_dir, save_suffix)
 
     from scripts.compute_utilities.compute_utilities import compute_utilities
+
+    raw_dump_metadata = {
+        "mode": spec["mode"],
+        "model_key": args.model_key,
+        "save_suffix": save_suffix,
+        "concreteness_level": args.level,
+        "reasoning": use_reasoning,
+        "compute_utilities_config_key": config_key,
+        "create_agent_config_key": create_agent_config_key,
+    }
+    variant_kwargs = {}
+    if variant["is_variant"]:
+        # Rows carry their labels so the drift scorer can read X/Y answers (analysis/common/winrate.py).
+        raw_dump_metadata.update({"label_choices": variant["label_choices"],
+                                  "label_scheme": variant["label_scheme"], "wording": variant["wording"]})
+        variant_kwargs["label_choices"] = variant["label_choices"]
 
     return await compute_utilities(
         options_list=options,
@@ -166,17 +192,10 @@ async def run_big5_training_preference(args: argparse.Namespace) -> dict:
         use_logprobs=not use_reasoning,
         utility_model_seed=args.seed,
         raw_dump_path=raw_dump_path,
-        raw_dump_metadata={
-            "mode": spec["mode"],
-            "model_key": args.model_key,
-            "save_suffix": save_suffix,
-            "concreteness_level": args.level,
-            "reasoning": use_reasoning,
-            "compute_utilities_config_key": config_key,
-            "create_agent_config_key": create_agent_config_key,
-        },
+        raw_dump_metadata=raw_dump_metadata,
         save_dir=save_dir,
         save_suffix=save_suffix,
+        **variant_kwargs,
     )
 
 
@@ -245,11 +264,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     training.add_argument("--raw_dump_path", default=None)
     training.add_argument(
+        "--with_neutral",
+        action="store_true",
+        help="five-option battery: the four trait-arm datasets plus the trait-neutral control dataset (spec big5_training_preference_neutral; 10 pairs, 200 rows per level)",
+    )
+    training.add_argument(
         "--no-timestamp",
         dest="no_timestamp",
         action="store_true",
         help="Write to fixed filenames with no UTC timestamp; a re-run then overwrites them.",
     )
+    add_pairwise_variant_arguments(training)
     return parser
 
 

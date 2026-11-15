@@ -25,7 +25,10 @@ if ROOT not in sys.path:
 
 from scripts.compute_utilities.compute_utilities import compute_utilities  # noqa: E402
 from scripts.compute_utilities.naming import default_results_dir, timestamped  # noqa: E402
-from scripts.compute_utilities.templates import PROMPT_STYLES  # noqa: E402
+from scripts.compute_utilities.templates import LABEL_SCHEMES, PROMPT_STYLES, WORDINGS, variant_comparison_prompt  # noqa: E402
+
+
+PRODUCTION_CATEGORIES = {"ue", "values", "book_a", "other"}
 
 
 def load_options(path):
@@ -103,7 +106,11 @@ async def main(args):
     # Resolve the output dir + suffix ONCE (timestamped by default) so the raw dump and the
     # results files compute_utilities writes all share the same UTC stamp and stay linked.
     save_dir = args.save_dir or default_results_dir(args.model_key, args.category)
-    save_suffix = timestamped(args.save_suffix or args.model_key, not args.no_timestamp)
+    default_suffix = args.model_key
+    if (args.label_scheme, args.wording) != ("ab", "baseline"):
+        # Variant runs share one --category folder, so the variant goes in the filename, as run_elicitations does.
+        default_suffix = f"{args.model_key}__{args.wording}__{args.label_scheme}"
+    save_suffix = timestamped(args.save_suffix or default_suffix, not args.no_timestamp)
     raw_dump_path = None
     if use_reasoning:
         raw_dump_path = args.raw_dump_path or os.path.join(
@@ -111,10 +118,35 @@ async def main(args):
         )
     # The stem is a real experimental variable, not a formatting detail: it decides whether the model is asked which activity it would rather DO or which world-state it would rather OBTAIN, and on the 9B those two questions rank the same 27 coding items differently (Spearman 0.86 against a 0.99 reliability ceiling). Before this flag existed run_utilities had no template argument at all, so every battery it drives silently inherited the upstream world-state wording -- correct for UE, whose items are phrased as states, and a category mismatch for Book A, whose 45 items are all bare instructions. Default stays "world_state" so nothing that does not opt in moves.
     comparison_prompt_template = PROMPT_STYLES[args.prompt_style](with_reasoning=use_reasoning)
+    # Post-training robustness (2026-11-09): --label_scheme / --wording re-ask THIS battery -- same options, same sampling config, same everything -- with only the prompt text changed, so drift measured under a variant is directly comparable to drift under the production prompt. The default (ab, baseline) takes none of this branch, so production runs send byte-identical prompts and write byte-identical raw rows to before.
+    is_variant = (args.label_scheme, args.wording) != ("ab", "baseline")
+    if is_variant and not args.save_dir and args.category in PRODUCTION_CATEGORIES:
+        raise SystemExit(
+            f"--label_scheme/--wording make this a robustness variant, but --category {args.category!r} is a "
+            "production battery folder. Pass a separate --category (e.g. values_robustness) so variant "
+            "files never sit beside the production runs they are compared against."
+        )
+    label_choices = list(LABEL_SCHEMES[args.label_scheme])
+    raw_dump_metadata = None
+    if is_variant:
+        comparison_prompt_template = variant_comparison_prompt(
+            *label_choices, with_reasoning=use_reasoning, wording=args.wording, prompt_style=args.prompt_style
+        )
+        # Every raw row carries the labels it was asked with: the parser stores the presented label ("X"/"Y"), and the drift scorer maps it back to first/second by this field. Without it an X/Y file would score as 0% parsed.
+        raw_dump_metadata = {"label_choices": label_choices, "wording": args.wording,
+                             "label_scheme": args.label_scheme, "prompt_style": args.prompt_style}
     start = time.time()
     print(f"Scoring {n_options} options from {len(args.options_path)} file(s) "
           f"with model '{args.model_key}' (reasoning {args.reasoning}, config '{config_key}', "
-          f"prompt style '{args.prompt_style}')...")
+          f"prompt style '{args.prompt_style}', labels {'/'.join(label_choices)}, wording '{args.wording}')...")
+    if args.dry_run:
+        print(comparison_prompt_template.format(option_A="<option A text>", option_B="<option B text>"))
+        print(f"\nDry run: nothing queried. Results would go to {save_dir}")
+        return None
+    variant_kwargs = {"label_choices": label_choices, "raw_dump_metadata": raw_dump_metadata} if is_variant else {}
+    if args.models_config_path:
+        # Per-session registry (e.g. every base_url repointed at a second local port), so two sessions on one Mac never query each other's pod. Default None = config.yaml, unchanged.
+        variant_kwargs["models_config_path"] = args.models_config_path
     results = await compute_utilities(
         comparison_prompt_template=comparison_prompt_template,
         options_list=options,
@@ -128,6 +160,7 @@ async def main(args):
         raw_dump_path=raw_dump_path,
         save_dir=save_dir,
         save_suffix=save_suffix,
+        **variant_kwargs,
     )
     print(f"Done in {time.time() - start:.1f}s. Saved under: {save_dir}")
     return results
@@ -158,6 +191,16 @@ if __name__ == "__main__":
                         "('You receive $500...'), i.e. UE. 'task' asks which activity the model "
                         "would rather perform and suits option sets phrased as instructions "
                         "('Write a small, self-contained program in Python...'), i.e. Book A.")
+    p.add_argument("--models_config_path", default=None,
+                   help="Optional model registry YAML (default: config.yaml). Used to point a concurrent session at its own local port.")
+    p.add_argument("--label_scheme", choices=sorted(LABEL_SCHEMES), default="ab",
+                   help="Response labels. 'ab' is production; 'xy' is the held-out scheme M0 never trained. "
+                        "Any non-default value (or --wording) is a robustness variant and must go to its own --category.")
+    p.add_argument("--wording", choices=sorted(WORDINGS), default="baseline",
+                   help="Question wording. 'baseline' is the --prompt_style stem itself; the others replace it "
+                        "with a one-line question (see compute_utilities/templates.py WORDINGS).")
+    p.add_argument("--dry-run", "--dry_run", dest="dry_run", action="store_true",
+                   help="Print the prompt that would be sent and exit without querying a model.")
     p.add_argument("--category", default="ue",
                    help="Output sub-folder under results/<model_key>/ (e.g. ue, other, book_a). "
                         "Distinguishes run_utilities batteries that share this script.")

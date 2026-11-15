@@ -778,7 +778,7 @@ def validate_training_stack(
                 push_on_save=args.push_on_save,
                 push_on_train_end=not args.no_push_on_train_end,
                 commit_prefix=f"{args.intervention_id} LoRA",
-                path_prefix=args.intervention_id,
+                path_prefix=args.hub_path_prefix or args.intervention_id,
             )
         )
     return {
@@ -987,6 +987,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--lora_target_modules", nargs="+", default=None)
     parser.add_argument("--hub_repo_id", default=None, help="HF repo id for adapter pushes, e.g. org/name")
     parser.add_argument("--hub_private", action="store_true")
+    parser.add_argument(
+        "--hub_path_prefix",
+        default=None,
+        help="Folder inside --hub_repo_id for this arm's checkpoints and manifest. Defaults to --intervention_id. "
+        "Exists for big5.neutral, whose replies are Llama 3.1 outputs: the Llama licence wants the distributed model's name to start with 'Llama', so it uploads as Llama-3.1-big5.neutral.",
+    )
     parser.add_argument("--hub_token_env", default="HUGGINGFACE_HUB_TOKEN")
     parser.add_argument("--push_on_save", action="store_true")
     parser.add_argument("--no_push_on_train_end", action="store_true")
@@ -1196,7 +1202,7 @@ def main() -> int:
             manifest_path,
             args.hub_repo_id,
             hf_token,
-            path_prefix=args.intervention_id,
+            path_prefix=args.hub_path_prefix or args.intervention_id,
             private=args.hub_private,
         )
 

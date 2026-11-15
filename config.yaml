@@ -373,6 +373,57 @@ qwen35-4b-lcbphp-ep3-runpod:
   base_url: "http://localhost:8000/v1"
   gpu_count: 1
 
+# --- Post-training robustness v3 (2026-11-09): the four 4B Big5 step-125 arms on the RunPod elicitation stack ---
+# Same 1-epoch adapters as the -aws keys (prism-drift/qwen35-4b-m0-v4-phase-2-big5-sft-adapters, big5.<trait>.<pole>/checkpoint-125), served on the RunPod L40S (vLLM 0.25.0 + --reasoning-parser qwen3) for the label/wording variant batteries. Separate keys so the RunPod variant files never mingle with the 2026-09 AWS production files. Driver: private/robustness-v3/orchestrate.sh.
+qwen35-4b-big5sft-openness-high-step125-runpod:
+  model_name: "openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-low-step125-runpod:
+  model_name: "openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-high-step125-runpod:
+  model_name: "extraversion-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-extraversion-low-step125-runpod:
+  model_name: "extraversion-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# The 9B counterparts (prism-drift/qwen35-9b-m0-v4-phase-2-big5-sft-adapters, big5.<trait>.<pole>/checkpoint-125). Driver: private/robustness-v3/orchestrate_9b.sh, which runs on its own local port via a generated copy of this file.
+qwen35-9b-big5sft-openness-high-step125-runpod:
+  model_name: "openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-step125-runpod:
+  model_name: "openness-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-high-step125-runpod:
+  model_name: "extraversion-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-extraversion-low-step125-runpod:
+  model_name: "extraversion-low-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
 # --- 4B LCB Go arm (trained 2026-09-04 on Lambda, 3 epochs = step 264, dose from the rust pilot) ---
 # Adapters: prism-drift/qwen35-4b-m0-v4-phase-1-lcb-sft-adapters, coding.write.go/checkpoint-264.
 # Keys MUST be remapped before serving (docs/serving-vllm-aws.md LoRA trap).
@@ -849,6 +900,68 @@ qwen35-4b-big5sft-openness-high-step40-aws:
 
 qwen35-4b-big5sft-openness-high-step125-aws:
   model_name: "openness-high-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Personality-neutral control arm (built + trained 2026-11-09). Same 1000 openings / recipe as the four trait arms, replies by Llama-3.1-8B with no trait steering. Adapter: <size> Big5 repo, folder Llama-3.1-big5.neutral/checkpoint-125 (folder name carries "Llama" for the Llama 3.1 licence). Measured on a RunPod L40S (vLLM 0.25.0 + qwen3 parser), not AWS like the trait arms; the 2026-09-12 noise probe found no RunPod-vs-AWS venue term on this card. Served via PREF_DRIFT_BASE_URL on a session port, so base_url here is the default only.
+qwen35-4b-big5sft-neutral-step125-runpod:
+  model_name: "big5-neutral-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-neutral-step125-runpod:
+  model_name: "big5-9b-neutral-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+# Second training seed (trained 2026-11-10 on Lambda A100). Identical recipe and datasets to the seed-42 arms, --seed 2 only. Adapters sit next to seed 1 in the same repos under "<folder>-seed2": Big5 checkpoint-125; Go 4B checkpoint-264 (ep3), Go 9B checkpoint-176 (ep2 of the 3-epoch schedule) -- the same doses as seed 1. Measured on RunPod L40S (vLLM 0.25.0 + qwen3 parser) via PREF_DRIFT_BASE_URL, so base_url is the default only. Orchestrator: private/seed2-elic/.
+qwen35-4b-big5sft-openness-high-seed2-step125-runpod:
+  model_name: "big5-openness-high-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-openness-low-seed2-step125-runpod:
+  model_name: "big5-openness-low-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-big5sft-neutral-seed2-step125-runpod:
+  model_name: "big5-neutral-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-high-seed2-step125-runpod:
+  model_name: "big5-9b-openness-high-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-openness-low-seed2-step125-runpod:
+  model_name: "big5-9b-openness-low-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-big5sft-neutral-seed2-step125-runpod:
+  model_name: "big5-9b-neutral-seed2-step125"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-4b-lcbgo-ep3-seed2-runpod:
+  model_name: "lcb-go-ep3-seed2"
+  model_type: vllm_endpoint
+  base_url: "http://localhost:8000/v1"
+  gpu_count: 1
+
+qwen35-9b-lcbgo-ep2-seed2-runpod:
+  model_name: "lcb-9b-go-ep2-seed2"
   model_type: vllm_endpoint
   base_url: "http://localhost:8000/v1"
   gpu_count: 1
@@ -1401,6 +1514,89 @@ experiments:
         wordings: "baseline"
         reasoning: "on"
         save_suffix: forced_choice_robustness_v2_refrepeat
+
+    # ---- Post-training robustness (v3, 2026-11-09): the real batteries re-asked under one label change and one wording change ----
+    #
+    # Question: does the drift remain when the wording and response-format checks are repeated after training, rather than only on M0? The v2 check above cannot answer that: it scores a 6-item subset, so it can miss the items that moved and its win rates are not the paper's. These entries run the FULL battery -- same options, same sampling config, same seed handling as the production entry they copy -- changing only the prompt text, so the drift scorer reads them exactly like the production runs. Two one-factor variants per battery, never crossed, so a failure points at labels or at wording:
+    #   *_xy       : production stem, held-out X/Y labels M0 never trained (tests/test_heldout_probe_schemes.py).
+    #   *_wording  : A/B labels, the stem replaced by the one-line question the v2 check used (coding_task / persona_prefer), or its training-preference counterpart (training_dataset).
+    # Run on baselines AND arms in the same session; drift under a variant is only defined against a baseline asked the same variant. Outputs go to *_robustness folders, never beside production files (the runners refuse otherwise). Name these explicitly -- they are in no group. Guards: tests/test_robustness_variant_prompts.py.
+    robust_task_xy:
+      path: scripts/run_elicitations.py
+      positional: [task-preference]
+      enabled: false # pass a live model_key via `-- --model_key <key>`
+      args:
+        reasoning: "on"
+        label_scheme: xy
+        category: pairs_robustness
+
+    robust_task_wording:
+      path: scripts/run_elicitations.py
+      positional: [task-preference]
+      enabled: false
+      args:
+        reasoning: "on"
+        wording: coding_task
+        category: pairs_robustness
+
+    robust_trainpref_xy:
+      path: scripts/run_elicitations.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        level: described_dataset
+        reasoning: "on"
+        label_scheme: xy
+        category: pairs_robustness
+
+    robust_trainpref_wording:
+      path: scripts/run_elicitations.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        level: described_dataset
+        reasoning: "on"
+        wording: training_dataset
+        category: pairs_robustness
+
+    # The Big5-native training-preference battery (4 options, ~120 generations per level). Its stem is the coding training-preference stem, so it varies through the same builder. No level here on purpose: the paper uses all three, so pass `-- --level <described_choice|described_dataset|example_datapoints>` and run each.
+    robust_big5tp_xy:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        reasoning: "on"
+        label_scheme: xy
+        category: pairs_robustness
+
+    robust_big5tp_wording:
+      path: scripts/run_big5_anticipation_preferences.py
+      positional: [training-preference]
+      enabled: false
+      args:
+        reasoning: "on"
+        wording: training_dataset
+        category: pairs_robustness
+
+    robust_values_xy:
+      path: scripts/run_utilities.py
+      enabled: false
+      args:
+        options_path: [data/options/values.json]
+        category: values_robustness
+        reasoning: "on"
+        prompt_style: persona
+        label_scheme: xy
+
+    robust_values_wording:
+      path: scripts/run_utilities.py
+      enabled: false
+      args:
+        options_path: [data/options/values.json]
+        category: values_robustness
+        reasoning: "on"
+        prompt_style: persona
+        wording: persona_prefer
 
     # Forecast-side measurement validity for the ternary anticipation arms — the gap
     # score_label_variants does not cover, since it varies A/B labels for the flat option pools

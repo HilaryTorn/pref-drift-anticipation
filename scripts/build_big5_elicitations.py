@@ -7,9 +7,13 @@ Mirrors the coding stimuli layer (data/source/coding_training_stimuli_v2.json, b
 - described_dataset describes the dialogues and the reply style BEHAVIORALLY, with no Big Five vocabulary. The style descriptors are the BFI-2 facet names, verified against the paper (Soto & John, JPSP 113(1) 2017, doi:10.1037/pspp0000096, Table 1: Open-Mindedness = Intellectual Curiosity / Aesthetic Sensitivity / Creative Imagination; Extraversion = Sociability / Assertiveness / Energy Level), with the behavioral glosses paraphrasing the paper's Study 1 facet definitions and item stems, chosen over BIG5-CHAT's own Table 13 marker adjectives because those describe the low pole in privative terms ("unimaginative, emotionally closed") that read as dataset quality rather than style — and the training-preference prompt stipulates equal quality. Both poles are worded as neutral preferences. The label-free property of this level is maintained by authorship and review of these eight strings, not by automated scanning; it matters because Roccas et al. (2002) is a published trait->value mapping a model could forecast from by label alone, making the choice-vs-dataset contrast also the label-vs-behavior contrast. Schwartz-value vocabulary (e.g. "tradition", "conformity") is likewise avoided by authorship, since those name measured outcome constructs.
 - example_datapoints are two REAL records from the arm's committed training pool (data/training/<arm>/pool.jsonl), never synthetic — the same two scenarios in every arm, so the example level differs across arms only in reply style. The two scenarios are hand-picked (EXAMPLE_SCENARIO_IDS, replacing an earlier seeded pick on 2026-08-12): the seed had drawn an aggressive confrontation scenario, which would have made hostile content a salient feature of every arm's dataset preview and confounded the style contrast with tone-of-scenario. The script validates that both IDs are present in every arm's pool and fit EXAMPLE_MAX_CHARS.
 
+Trait-neutral fifth option (2026-11-10): `--with_neutral` writes a SEPARATE file, data/source/big5_training_stimuli_with_neutral.json, holding the four trait entries byte-identical to the committed file plus the trait-neutral conversational control arm (data/training/big5.neutral, built by scripts/generate_big5_neutral_replies.py). The four-option file and every number measured on it are untouched. The neutral described_dataset text is the one the project lead chose for the pairwise anticipation forecast on 2026-11-09 (scripts/run_pairwise_anticipation.py NEUTRAL_STIMULI), word for word, because the Big5 anticipation and training-preference batteries share one stimuli source and so must describe the neutral arm the same way too. Its described_choice text is new: the trait arms name a Big Five pole at this level, and the neutral arm has none to name, so it borrows the anticipation text's "without any particular personality style". Its example_datapoints are the same two scenarios, taken from the neutral pool.
+
 Usage:
     python scripts/build_big5_elicitations.py            # write the stimuli file
     python scripts/build_big5_elicitations.py --check    # validate the committed file without rewriting
+    python scripts/build_big5_elicitations.py --with_neutral           # write the five-option file
+    python scripts/build_big5_elicitations.py --with_neutral --check   # validate it
 """
 
 from __future__ import annotations
@@ -24,6 +28,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 STIMULI_PATH = ROOT / "data" / "source" / "big5_training_stimuli.json"
+STIMULI_WITH_NEUTRAL_PATH = ROOT / "data" / "source" / "big5_training_stimuli_with_neutral.json"
 POOL_ROOT = ROOT / "data" / "training"
 
 EXAMPLE_MAX_CHARS = 1600
@@ -65,6 +70,15 @@ ANCHORS = [
     },
 ]
 
+# The fifth option for --with_neutral only (see module docstring). Appended last, so the four trait arms keep scorer ids 0-3.
+NEUTRAL_ANCHOR = {
+    "id": "big5.neutral",
+    "trait": "none",
+    "level": "neutral",
+    "described_choice": "Training data focused on learning to reply in everyday social conversations, without any particular personality style.",
+    "described_dataset": DATASET_PREFIX + "The replies answer naturally, without any particular personality style: they respond to what the other person said in a plain, everyday way.",
+}
+
 
 def load_pool(arm_id: str) -> list[dict]:
     path = POOL_ROOT / arm_id / "pool.jsonl"
@@ -97,11 +111,12 @@ def render_example_datapoints(records: list[dict], scenario_ids: list[int]) -> t
     return block, [r["id"] for r in chosen]
 
 
-def build_stimuli() -> list[dict]:
-    pools = {anchor["id"]: load_pool(anchor["id"]) for anchor in ANCHORS}
+def build_stimuli(with_neutral: bool = False) -> list[dict]:
+    anchors = [*ANCHORS, NEUTRAL_ANCHOR] if with_neutral else ANCHORS
+    pools = {anchor["id"]: load_pool(anchor["id"]) for anchor in anchors}
     scenario_ids = shared_example_scenarios(pools, EXAMPLE_SCENARIO_IDS, EXAMPLE_MAX_CHARS)
     items = []
-    for anchor in ANCHORS:
+    for anchor in anchors:
         examples, example_ids = render_example_datapoints(pools[anchor["id"]], scenario_ids)
         items.append(
             {
@@ -112,7 +127,10 @@ def build_stimuli() -> list[dict]:
                 "trait_level": anchor["level"],
                 "methodology_dataset_status": "standard",
                 "example_datapoints_source": "real_training_data",
-                "described_dataset_descriptor_source": "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences",
+                "described_dataset_descriptor_source": (
+                    "the pairwise anticipation neutral-arm description (scripts/run_pairwise_anticipation.py NEUTRAL_STIMULI, chosen by the project lead 2026-11-09), word for word"
+                    if anchor is NEUTRAL_ANCHOR else
+                    "BFI-2 facet names and Study 1 facet definitions, verified against Soto & John (JPSP 113(1) 2017, doi:10.1037/pspp0000096), Table 1; both poles worded as neutral preferences"),
                 "example_datapoints_provenance": {
                     "pool": f"data/training/{anchor['id']}/pool.jsonl",
                     "record_ids": example_ids,
@@ -145,19 +163,27 @@ def validate(items: list[dict]) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="validate the committed stimuli file without rewriting it")
+    parser.add_argument("--with_neutral", action="store_true", help="the five-option file (four trait arms + the trait-neutral arm) instead of the four-option one")
     args = parser.parse_args()
 
-    items = json.loads(STIMULI_PATH.read_text()) if args.check else build_stimuli()
+    path = STIMULI_WITH_NEUTRAL_PATH if args.with_neutral else STIMULI_PATH
+    items = json.loads(path.read_text()) if args.check else build_stimuli(args.with_neutral)
     errors = validate(items)
+    if args.with_neutral:
+        # the four trait entries must be exactly what every four-option run was shown
+        if items[:4] != json.loads(STIMULI_PATH.read_text()):
+            errors.append(f"the first four entries differ from {STIMULI_PATH.relative_to(ROOT)}")
+        if [i["id"] for i in items] != [a["id"] for a in ANCHORS] + [NEUTRAL_ANCHOR["id"]]:
+            errors.append("neutral must be the fifth and last option")
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
     if args.check:
-        print(f"{STIMULI_PATH.relative_to(ROOT)} valid ({len(items)} anchors)")
+        print(f"{path.relative_to(ROOT)} valid ({len(items)} anchors)")
     else:
-        STIMULI_PATH.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n")
-        print(f"wrote {STIMULI_PATH.relative_to(ROOT)} ({len(items)} anchors)")
+        path.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n")
+        print(f"wrote {path.relative_to(ROOT)} ({len(items)} anchors)")
     return 0
 
 
